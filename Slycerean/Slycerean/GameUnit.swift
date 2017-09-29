@@ -43,12 +43,15 @@ class GameUnit {
         spriteComponent = SpriteComponent(unit: self)
         
         let moveItem = ActionItem()
+        moveItem.setTextures(to: SKTexture(imageNamed: "walking-boot"))
         moveItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(walkActionSelected))
         self.actionItems.append(moveItem)
         let attackItem = ActionItem()
+        attackItem.setTextures(to: SKTexture(imageNamed: "saber-slash"))
         attackItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(attackActionSelected))
         self.actionItems.append(attackItem)
         let cancelItem = ActionItem()
+        cancelItem.setTextures(to: SKTexture(imageNamed: "cancel"))
         cancelItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(cancelActionSelected))
         self.actionItems.append(cancelItem)
         

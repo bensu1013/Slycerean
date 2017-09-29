@@ -67,6 +67,12 @@ class GameCamera: SKCameraNode {
         self.bounds = view.bounds
         
         super.init()
+        overlay.zPosition = 2000
+        addChild(overlay)
+        
+        let hud = UnitHUDComponent()
+        hud.position = CGPoint(x: 650, y: 450)
+        overlay.addChild(hud)
         
         cameraPanned = UIPanGestureRecognizer(target: self, action: #selector(cameraPanned(_:)))
         cameraPanned.minimumNumberOfTouches = 1

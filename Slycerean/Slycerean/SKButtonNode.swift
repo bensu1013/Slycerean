@@ -48,7 +48,7 @@ class SKButtonNode: SKSpriteNode {
         self.disabledTexture = disabledTexture
         self.label = SKLabelNode(fontNamed: "Helvetica")
         
-        super.init(texture: defaultTexture, color: UIColor.white, size: CGSize(width: 128, height: 128))
+        super.init(texture: defaultTexture, color: UIColor.white, size: CGSize(width: 64, height: 64))
         self.texture = defaultTexture
         isUserInteractionEnabled = true
         
