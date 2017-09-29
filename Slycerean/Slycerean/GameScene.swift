@@ -50,8 +50,6 @@ class GameScene: SKScene {
         
         masterNode = SKNode()
         
-        //
-//        masterNode.zRotation = 3.14/4
         addChild(masterNode)
         gameBoard = GameBoard(filename: "Level_0")
         masterNode.addChild(gameBoard)

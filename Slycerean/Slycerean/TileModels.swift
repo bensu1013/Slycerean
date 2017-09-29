@@ -105,6 +105,8 @@ class HighlightSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // TODO: something isn't working when tiles are tapped on for movement
+    
     @objc func buttonAction() {
         switch self.type {
         case .move:

@@ -21,13 +21,14 @@ class UnitHUDComponent: SKNode {
     override init() {
         super.init()
         
-        backgroundCard = SKSpriteNode(color: .lightGray, size: CGSize(width: 200, height: 100))
-        
+        backgroundCard = SKSpriteNode(color: .orange, size: CGSize(width: 500, height: 300))
+        backgroundCard?.alpha = 0.9
 //        backgroundCard?.anchorPoint = .zero
         addChild(backgroundCard!)
         nameNode = SKLabelNode(text: "TempName")
         
         healthPointNode = HealthPointLabelComponent()
+        healthPointNode?.position = CGPoint(x: -100, y: 0)
         addChild(healthPointNode!)
     }
     
@@ -49,25 +50,28 @@ class HealthPointLabelComponent: SKNode {
         
         let mainLabelNode = SKLabelNode(text: "HP")
         mainLabel = mainLabelNode
+        mainLabelNode.fontColor = UIColor.black
         mainLabelNode.position = CGPoint.zero
         mainLabelNode.zPosition = 10
         addChild(mainLabelNode)
         
         let healthBarNode = SKSpriteNode(color: .red, size: CGSize(width: 120, height: 15))
         healthBar = healthBarNode
-        healthBarNode.position = CGPoint(x: 80, y: 0)
+        healthBarNode.position = CGPoint(x: 80, y: 15)
         healthBarNode.zPosition = 0
         addChild(healthBarNode)
         
         let currentAmountLabelNode = SKLabelNode(text: "50")
         currentAmoutLabel = currentAmountLabelNode
-        currentAmountLabelNode.position = CGPoint(x: 160, y: 4)
+        currentAmountLabelNode.fontColor = UIColor.black
+        currentAmountLabelNode.position = CGPoint(x: 160, y: 3)
         currentAmountLabelNode.zPosition = 10
         addChild(currentAmountLabelNode)
         
         let maximumAmountLabelNode = SKLabelNode(text: "/58")
         maximumAmountLabel = maximumAmountLabelNode
-        maximumAmountLabelNode.position = CGPoint(x: 180 + currentAmountLabelNode.frame.size.width, y: -4)
+        maximumAmountLabelNode.fontColor = UIColor.black
+        maximumAmountLabelNode.position = CGPoint(x: 165 + currentAmountLabelNode.frame.size.width, y: -3)
         maximumAmountLabelNode.zPosition = 12
         addChild(maximumAmountLabelNode)
     }

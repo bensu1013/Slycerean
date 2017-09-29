@@ -71,7 +71,7 @@ class GameCamera: SKCameraNode {
         addChild(overlay)
         
         let hud = UnitHUDComponent()
-        hud.position = CGPoint(x: 650, y: 450)
+        hud.position = CGPoint(x: -500, y: 350)
         overlay.addChild(hud)
         
         cameraPanned = UIPanGestureRecognizer(target: self, action: #selector(cameraPanned(_:)))

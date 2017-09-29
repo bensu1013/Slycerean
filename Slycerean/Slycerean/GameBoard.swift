@@ -201,7 +201,7 @@ extension GameBoard {
         removeAllChildrenInLayerNamed(kLayerNamedHighlight)
     }
     
-    func tryInsertWalkPathHighLight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
+    private func tryInsertWalkPathHighLight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
            !layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
             layerNamed(kLayerNamedHighlight, insert: HighlightSprite(unit: unit, actionType: .move), at: tileCoord)
@@ -236,7 +236,7 @@ extension GameBoard {
         }        
     }
     
-    func tryInsertAttackPathHighlight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
+    private func tryInsertAttackPathHighlight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidAttackingTile(for: tileCoord) &&
             !layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
             layerNamed(kLayerNamedHighlight, insert: HighlightSprite(unit: unit, actionType: .attack), at: tileCoord)
