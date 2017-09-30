@@ -31,8 +31,8 @@ class GameCamera: SKCameraNode {
     public var allowPause: Bool = true
     
     // zoom constraints
-    public var minZoom: CGFloat = 0.5
-    public var maxZoom: CGFloat = 2.0
+    public var minZoom: CGFloat = 0.8
+    public var maxZoom: CGFloat = 1.5
     public var isAtMaxZoom: Bool { return zoom == maxZoom }
     /// Clamp factor to alleviate cracks in tilemap.
     public var zoomClamping: CameraZoomClamping = .none {
@@ -60,7 +60,7 @@ class GameCamera: SKCameraNode {
             overlay.isHidden = !showOverlay
         }
     }
-    
+    let hud = UnitHUDComponent()
     init(view: SKView, node: SKNode) {
         
         self.world = node
@@ -70,8 +70,8 @@ class GameCamera: SKCameraNode {
         overlay.zPosition = 2000
         addChild(overlay)
         
-        let hud = UnitHUDComponent()
-        hud.position = CGPoint(x: -500, y: 350)
+        
+        hud.position = CGPoint(x: -750, y: 500)
         overlay.addChild(hud)
         
         cameraPanned = UIPanGestureRecognizer(target: self, action: #selector(cameraPanned(_:)))
@@ -121,9 +121,10 @@ class GameCamera: SKCameraNode {
         let zoomAction = SKAction.scale(to: zoomClamped, duration: interval)
         
         if (interval == 0) {
-            world.setScale(zoomClamped)
+//            world.setScale(zoomClamped)
+            setScale(zoomClamped)
         } else {
-            world.run(zoomAction)
+            run(zoomAction)
         }
         
         //        if let tilemap = (scene as? SKTiledScene)?.tilemap {
@@ -207,6 +208,7 @@ extension GameCamera {
             //
             //                delegate.sceneDoubleTapped(location: location)
             //            }
+            hud.updateUI()
         }
     }
     
@@ -225,10 +227,11 @@ extension GameCamera {
         }
         
         if recognizer.state == .changed {
-            zoom *= recognizer.scale
+            let invertedScale = (-recognizer.scale + 2)
+            zoom *= invertedScale
             
             // set the world scaling here
-            setCameraZoomAtLocation(scale: world.xScale * recognizer.scale, location: focusLocation)
+            setCameraZoomAtLocation(scale: xScale * invertedScale, location: focusLocation)
             recognizer.scale = 1
         }
     }
