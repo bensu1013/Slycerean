@@ -99,7 +99,9 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        hudUIHook?.updateUI()
+        if let _ = unitTurn {
+            hudUIHook?.updateUI()
+        }
         
     }
     

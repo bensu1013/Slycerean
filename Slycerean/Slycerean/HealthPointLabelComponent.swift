@@ -13,7 +13,7 @@ class HealthPointLabelComponent: SKNode {
     weak var unit: GameUnit?
     
     var mainLabel = SKLabelNode()
-    var healthBar = SKSpriteNode()
+    var healthBar = StatusBarComponent(color: .red)
     var currentAmoutLabel = SKLabelNode()
     var separatorLabel = SKLabelNode()
     var maximumAmountLabel = SKLabelNode()
@@ -31,17 +31,13 @@ class HealthPointLabelComponent: SKNode {
         mainLabel.verticalAlignmentMode = .center
         addChild(mainLabel)
         
-        healthBar.color = .red
-        healthBar.size = CGSize(width: 120, height: 15)
         healthBar.position = CGPoint(x: mainLabel.position.x + mainLabel.frame.size.width + 5, y: 0)
-        healthBar.zPosition = 0
-        healthBar.anchorPoint = CGPoint(x: 0, y: 0.5)
         addChild(healthBar)
         
         currentAmoutLabel.fontColor = UIColor.black
         currentAmoutLabel.fontSize = 36
         currentAmoutLabel.fontName = "Optima"
-        currentAmoutLabel.position = CGPoint(x: healthBar.position.x + healthBar.frame.size.width + 5, y: 3)
+        currentAmoutLabel.position = CGPoint(x: healthBar.position.x + healthBar.barWidth + 5, y: 3)
         currentAmoutLabel.zPosition = 10
         currentAmoutLabel.horizontalAlignmentMode = .left
         currentAmoutLabel.verticalAlignmentMode = .center
@@ -78,12 +74,17 @@ class HealthPointLabelComponent: SKNode {
         separatorLabel.position = CGPoint(x: currentAmoutLabel.position.x + currentAmoutLabel.frame.size.width + 5, y: -2)
         maximumAmountLabel.text = "\(unit.maximumHealthPoints)"
         maximumAmountLabel.position = CGPoint(x: separatorLabel.position.x + separatorLabel.frame.size.width, y: -3)
+        
+        let scale = CGFloat(unit.currentHealthPoints) / CGFloat(unit.maximumHealthPoints)
+        healthBar.animateBarToScale(scale, duration: 0)
     }
     
     func updateUI() {
         guard let unit = unit else { return }
         currentAmoutLabel.text = "\(unit.currentHealthPoints)"
         maximumAmountLabel.text = "\(unit.maximumHealthPoints)"
+        let scale = CGFloat(unit.currentHealthPoints) / CGFloat(unit.maximumHealthPoints)
+        healthBar.animateBarToScale(scale)
     }
     
 }

@@ -49,7 +49,7 @@ class UnitHUDComponent: SKNode {
     }
     
     // showing a new unit
-    func setupHUDFor (unit: GameUnit) {
+    func setupHUDFor(unit: GameUnit) {
         self.unit = unit
         healthPointNode?.displayNewUnit(unit)
     }
