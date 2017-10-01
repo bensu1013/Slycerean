@@ -26,21 +26,31 @@ class UnitHUDComponent: SKNode {
     
     var backgroundCard: SKSpriteNode?
     var nameNode: SKLabelNode?
-    var healthPointNode: HealthPointLabelComponent?
+    var healthPointNode: HealthPointStatusComponent?
     var manaPointNode: SKSpriteNode?
     
     override init() {
         super.init()
         isHidden = true
         
-        backgroundCard = SKSpriteNode(color: .gray, size: CGSize(width: 500, height: 300))
-        backgroundCard?.alpha = 0.2
+        backgroundCard = SKSpriteNode(color: .gray, size: CGSize(width: 600, height: 300))
+        backgroundCard?.alpha = 0.3
         backgroundCard?.anchorPoint = CGPoint(x: 0, y: 1)
         addChild(backgroundCard!)
-        nameNode = SKLabelNode(text: "TempName")
         
-        healthPointNode = HealthPointLabelComponent()
-        healthPointNode?.position = CGPoint(x: 10, y: -120)
+        nameNode = SKLabelNode(text: "TempName")
+        nameNode?.position = CGPoint(x: 20, y: -20)
+        nameNode?.horizontalAlignmentMode = .left
+        nameNode?.verticalAlignmentMode = .center
+        nameNode?.fontSize = 40
+        nameNode?.fontColor = .black
+        nameNode?.fontName = "Optima-Bold"
+        nameNode?.zPosition = 10
+        addChild(nameNode!)
+        
+        healthPointNode = HealthPointStatusComponent()
+        healthPointNode?.position = CGPoint(x: 15, y: -80)
+        healthPointNode?.zPosition = 10
         addChild(healthPointNode!)
     }
     

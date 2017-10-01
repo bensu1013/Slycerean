@@ -13,8 +13,12 @@ class StatusBarComponent: SKNode {
     
     internal var baseBar = SKSpriteNode()
     internal var visibleBar = SKSpriteNode()
-    var barWidth: CGFloat {
+    
+    var width: CGFloat {
         return baseBar.size.width
+    }
+    var height: CGFloat {
+        return baseBar.size.height
     }
     
     init(color: UIColor) {

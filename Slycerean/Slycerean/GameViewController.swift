@@ -18,18 +18,18 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let scene = GameScene.init(size: CGSize(width: 1500, height: 1000))
+        // figure out scene sized based on device width/height ratios to fix camera node positions
+        let scene = GameScene.init(size: CGSize(width: 1920, height: 1280))
         scene.scaleMode = .aspectFill
         
         // Present the scene
         if let view = self.view as! SKView? {
             
             let camera = GameCamera(view: view, node: scene.masterNode)
-            hud.position = CGPoint(x: -750, y: 500)
             camera.overlay.addChild(hud)
             scene.setupCamera(camera)
-            
             scene.hudUIHook = hud
+            hud.position = CGPoint(x: -960, y: 540) // currently has height clipped to 1080 because of iphone7+ size
             
             view.presentScene(scene)
             
