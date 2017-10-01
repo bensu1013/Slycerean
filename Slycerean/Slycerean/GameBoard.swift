@@ -171,7 +171,7 @@ extension GameBoard {
         mainHighlightTile.animateBlinking()
         layerNamed(kLayerNamedHighlight, insert: mainHighlightTile, at: unitPosition)
         
-        while steps < unit.moveSpaces {
+        while steps < unit.unusedMovementSteps {
             var nextTiles = [TileCoord]()
             for startPos in startTiles {
                 let top = startPos.top

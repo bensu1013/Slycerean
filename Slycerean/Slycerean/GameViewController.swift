@@ -12,6 +12,9 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    let hud = UnitHUDComponent()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,8 +23,14 @@ class GameViewController: UIViewController {
         
         // Present the scene
         if let view = self.view as! SKView? {
-            scene.gameCamera = GameCamera(view: view, node: scene.masterNode)
-            scene.setupCamera()
+            
+            let camera = GameCamera(view: view, node: scene.masterNode)
+            hud.position = CGPoint(x: -750, y: 500)
+            camera.overlay.addChild(hud)
+            scene.setupCamera(camera)
+            
+            scene.hudUIHook = hud
+            
             view.presentScene(scene)
             
             view.ignoresSiblingOrder = true

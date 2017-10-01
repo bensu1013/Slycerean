@@ -20,7 +20,7 @@ class GameScene: SKScene {
     var entities = [GKEntity]()
     var tempTurnIndex = 1
     
-    
+    var hudUIHook: UnitHUDComponent?
     
     var unitTurn: GameUnit? {
         didSet {
@@ -66,22 +66,25 @@ class GameScene: SKScene {
         player1.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layerNamed(kLayerNamedUnit, insert: player1.spriteComponent, at: player1.tileCoord)
         
-        unitTurn = player
-        unitTurn!.prepareTurn()
+        
     }
     
-    func setupCamera() {
+    func setupCamera(_ gameCamera: GameCamera) {
+        self.gameCamera = gameCamera
         self.addChild(gameCamera)
         self.camera = gameCamera
     }
     
-//    var lastPanPosition: CGPoint?
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        guard let touch = touches.first else { return }
-//        if lastPanPosition == nil {
-//            lastPanPosition = touch.location(in: self)
-//        }
-//    }
+    var didSetupFirstTurn = false
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if !didSetupFirstTurn {
+            unitTurn = player
+            unitTurn!.prepareTurn()
+            hudUIHook?.setupHUDFor(unit: player)
+            didSetupFirstTurn = true
+        }
+        
+    }
 //    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        guard let touch = touches.first else { return }
 //        if let position = lastPanPosition {
@@ -91,20 +94,13 @@ class GameScene: SKScene {
 //            lastPanPosition = currentPanPosition
 //        }
 //    }
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        lastPanPosition = nil
-//    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        unitTurn?.currentHealthPoints -= 3
+    }
     
     override func update(_ currentTime: TimeInterval) {
-        // Initialize lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
-        }
+        hudUIHook?.updateUI()
         
-        // Calculate time since last update
-        //let dt = currentTime - self.lastUpdateTime
-
-        self.lastUpdateTime = currentTime
     }
     
     func nextUnitTurn() {
@@ -112,11 +108,13 @@ class GameScene: SKScene {
             tempTurnIndex = 1
             player.prepareTurn()
             unitTurn = player
+            hudUIHook?.setupHUDFor(unit: player)
             gameCamera.move(to: player.spriteComponent.position, animated: true)
         } else {
             tempTurnIndex = 0
             player1.prepareTurn()
             unitTurn = player1
+            hudUIHook?.setupHUDFor(unit: player1)
             gameCamera.move(to: player1.spriteComponent.position, animated: true)
         }
         

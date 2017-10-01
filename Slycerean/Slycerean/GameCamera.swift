@@ -53,14 +53,14 @@ class GameCamera: SKCameraNode {
     fileprivate var lastLocation: CGPoint!
     
     // quick & dirty overlay node
-    internal let overlay: SKNode = SKNode()
+    let overlay: SKNode = SKNode()
     public var showOverlay: Bool = true {
         didSet {
             guard oldValue != showOverlay else { return }
             overlay.isHidden = !showOverlay
         }
     }
-    let hud = UnitHUDComponent()
+
     init(view: SKView, node: SKNode) {
         
         self.world = node
@@ -69,10 +69,6 @@ class GameCamera: SKCameraNode {
         super.init()
         overlay.zPosition = 2000
         addChild(overlay)
-        
-        
-        hud.position = CGPoint(x: -750, y: 500)
-        overlay.addChild(hud)
         
         cameraPanned = UIPanGestureRecognizer(target: self, action: #selector(cameraPanned(_:)))
         cameraPanned.minimumNumberOfTouches = 1
@@ -208,7 +204,6 @@ extension GameCamera {
             //
             //                delegate.sceneDoubleTapped(location: location)
             //            }
-            hud.updateUI()
         }
     }
     

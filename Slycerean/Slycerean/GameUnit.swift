@@ -34,7 +34,18 @@ class GameUnit {
     
     var tileCoord: TileCoord
     
-    var moveSpaces: Int = 4
+    
+    
+    
+    var currentHealthPoints: Int = 32
+    var maximumHealthPoints: Int = 32
+    
+    var unusedMovementSteps: Int = 4
+    var totalMovementSteps: Int = 4
+    
+    var unusedMagicPowers = 2
+    var totalMagicPowers = 2
+    
     
     init(scene: GameScene) {
         tileCoord = TileCoord(col: 1, row: 1)
