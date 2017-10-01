@@ -28,18 +28,22 @@ class UnitHUDComponent: SKNode {
     var nameNode: SKLabelNode?
     var healthPointNode: HealthPointStatusComponent?
     var manaPointNode: SKSpriteNode?
+    var size: CGSize
     
-    override init() {
+    required init(size: CGSize) {
+        
+        self.size = size
+        
         super.init()
         isHidden = true
         
-        backgroundCard = SKSpriteNode(color: .gray, size: CGSize(width: 600, height: 300))
+        backgroundCard = SKSpriteNode(color: .gray, size: size)
         backgroundCard?.alpha = 0.3
         backgroundCard?.anchorPoint = CGPoint(x: 0, y: 1)
         addChild(backgroundCard!)
         
         nameNode = SKLabelNode(text: "TempName")
-        nameNode?.position = CGPoint(x: 20, y: -20)
+        nameNode?.position = CGPoint(x: 30, y: -30)
         nameNode?.horizontalAlignmentMode = .left
         nameNode?.verticalAlignmentMode = .center
         nameNode?.fontSize = 40
@@ -49,7 +53,7 @@ class UnitHUDComponent: SKNode {
         addChild(nameNode!)
         
         healthPointNode = HealthPointStatusComponent()
-        healthPointNode?.position = CGPoint(x: 15, y: -80)
+        healthPointNode?.position = CGPoint(x: 25, y: -80)
         healthPointNode?.zPosition = 10
         addChild(healthPointNode!)
     }
@@ -61,6 +65,7 @@ class UnitHUDComponent: SKNode {
     // showing a new unit
     func setupHUDFor(unit: GameUnit) {
         self.unit = unit
+        nameNode?.text = "\(unit.firstName) \(unit.lastName)"
         healthPointNode?.displayNewUnit(unit)
     }
     

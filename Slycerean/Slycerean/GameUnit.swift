@@ -35,6 +35,8 @@ class GameUnit {
     var tileCoord: TileCoord
     
     
+    var firstName: String = "First"
+    var lastName: String = "Last"
     
     
     var currentHealthPoints: Int = 32
@@ -84,8 +86,8 @@ class GameUnit {
         self.actionItems[1].isEnabled = !hasAttacked
         
         // each action should come from actions available to the unit
-        scene.gameBoard.unitActionMenu.setPosition(at: self.tileCoord)
-        scene.gameBoard.unitActionMenu.bloomActionItems(actionItems)
+//        scene.gameBoard.unitActionMenu.setPosition(at: self.tileCoord)
+//        scene.gameBoard.unitActionMenu.bloomActionItems(actionItems)
     }
     
     func endTurn() {
@@ -97,10 +99,10 @@ class GameUnit {
     }
     
     @objc func walkActionSelected() {
-        scene.gameBoard.activateTilesForMovement(for: self)
-        scene.gameBoard.unitActionMenu.clearActionsItems {
-            
-        }
+//        scene.gameBoard.activateTilesForMovement(for: self)
+//        scene.gameBoard.unitActionMenu.clearActionsItems {
+//            
+//        }
     }
     
     @objc func attackActionSelected() {

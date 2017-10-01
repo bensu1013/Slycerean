@@ -21,6 +21,7 @@ class GameScene: SKScene {
     var tempTurnIndex = 1
     
     var hudUIHook: UnitHUDComponent?
+    var actUIHook: ActionHUDComponent?
     
     var unitTurn: GameUnit? {
         didSet {
@@ -75,15 +76,9 @@ class GameScene: SKScene {
         self.camera = gameCamera
     }
     
-    var didSetupFirstTurn = false
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !didSetupFirstTurn {
-            unitTurn = player
-            unitTurn!.prepareTurn()
-            hudUIHook?.setupHUDFor(unit: player)
-            didSetupFirstTurn = true
-        }
-        
+        unitTurn?.currentHealthPoints -= 3
+        hudUIHook?.updateUI()
     }
 //    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        guard let touch = touches.first else { return }
@@ -94,15 +89,21 @@ class GameScene: SKScene {
 //            lastPanPosition = currentPanPosition
 //        }
 //    }
+    
+    private var didSetupFirstTurn = false
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        unitTurn?.currentHealthPoints -= 3
+        if !didSetupFirstTurn {
+            unitTurn = player
+            unitTurn!.prepareTurn()
+            hudUIHook?.setupHUDFor(unit: player)
+            actUIHook?.setupHUDFor(unit: player)
+            didSetupFirstTurn = true
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if let _ = unitTurn {
-            hudUIHook?.updateUI()
-        }
-        
+      
     }
     
     func nextUnitTurn() {
@@ -111,12 +112,14 @@ class GameScene: SKScene {
             player.prepareTurn()
             unitTurn = player
             hudUIHook?.setupHUDFor(unit: player)
+            actUIHook?.setupHUDFor(unit: player)
             gameCamera.move(to: player.spriteComponent.position, animated: true)
         } else {
             tempTurnIndex = 0
             player1.prepareTurn()
             unitTurn = player1
             hudUIHook?.setupHUDFor(unit: player1)
+            actUIHook?.setupHUDFor(unit: player1)
             gameCamera.move(to: player1.spriteComponent.position, animated: true)
         }
         

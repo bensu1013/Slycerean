@@ -74,8 +74,8 @@ class HighlightSprite: SKNode {
     }
     
     weak var unit: GameUnit?
-    var button: SKButtonNode?
-    var visualNode: SKSpriteNode?
+    var buttonNode: SKButtonNode!
+    var visualNode: SKSpriteNode!
     var type: ActionType
     init(unit: GameUnit, actionType: ActionType) {
         
@@ -85,20 +85,19 @@ class HighlightSprite: SKNode {
         super.init()
         
         self.name = kObjectHighlightPath
-        let buttonNode = SKButtonNode(normalTexture: nil, selectedTexture: nil, disabledTexture: nil)
+        buttonNode = SKButtonNode(normalTexture: nil, selectedTexture: nil, disabledTexture: nil)
         buttonNode.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(buttonAction))
+        buttonNode.size = CGSize(width: 128, height: 128)
         buttonNode.zPosition = 500
-        buttonNode.color = .clear
+        buttonNode.color = .brown
         buttonNode.anchorPoint = .zero
-        self.addChild(buttonNode)
-        self.button = buttonNode
+        addChild(buttonNode)
         
         let panelTexture = type == .move ? SKTexture.init(imageNamed: "blue_panel") : SKTexture.init(imageNamed: "red_panel")
-        let visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
+        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
         visualNode.alpha = 0.65
-        visualNode.position = CGPoint(x: 64, y: 64)
+        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
         self.addChild(visualNode)
-        self.visualNode = visualNode
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -110,11 +109,12 @@ class HighlightSprite: SKNode {
     @objc func buttonAction() {
         switch self.type {
         case .move:
-            self.unit?.scene.gameBoard.deactivateHighlightTiles()
             self.unit?.moveComponent?.moveTo(TPConvert.tileCoordForPosition(self.position))
-        case .attack:
             self.unit?.scene.gameBoard.deactivateHighlightTiles()
+            
+        case .attack:
             self.unit?.attackEventAndDamage()
+            self.unit?.scene.gameBoard.deactivateHighlightTiles()
         }
     }
     

@@ -16,6 +16,7 @@
 		FD78878E1F808C9F003E05CD /* StatusBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */; };
 		FD7887911F809F29003E05CD /* HealthPointStatusComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887901F809F28003E05CD /* HealthPointStatusComponent.swift */; };
 		FD7887931F809FDB003E05CD /* StatusFractionLabelComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887921F809FDB003E05CD /* StatusFractionLabelComponent.swift */; };
+		FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887941F817C60003E05CD /* ActionHUDComponent.swift */; };
 		FD7A84B31F5CB12F0060823D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7A84B21F5CB12F0060823D /* AppDelegate.swift */; };
 		FD7A84B91F5CB12F0060823D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7A84B81F5CB12F0060823D /* GameScene.swift */; };
 		FD7A84BB1F5CB12F0060823D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7A84BA1F5CB12F0060823D /* GameViewController.swift */; };
@@ -45,6 +46,7 @@
 		FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarComponent.swift; sourceTree = "<group>"; };
 		FD7887901F809F28003E05CD /* HealthPointStatusComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPointStatusComponent.swift; sourceTree = "<group>"; };
 		FD7887921F809FDB003E05CD /* StatusFractionLabelComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusFractionLabelComponent.swift; sourceTree = "<group>"; };
+		FD7887941F817C60003E05CD /* ActionHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHUDComponent.swift; sourceTree = "<group>"; };
 		FD7A84AF1F5CB12F0060823D /* Slycerean.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Slycerean.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD7A84B21F5CB12F0060823D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD7A84B81F5CB12F0060823D /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -92,12 +94,29 @@
 		FD78878F1F808CA6003E05CD /* HUDComponents */ = {
 			isa = PBXGroup;
 			children = (
+				FD7887961F817C9A003E05CD /* UnitHUD */,
+				FD7887971F817CA6003E05CD /* ActionHUD */,
+			);
+			name = HUDComponents;
+			sourceTree = "<group>";
+		};
+		FD7887961F817C9A003E05CD /* UnitHUD */ = {
+			isa = PBXGroup;
+			children = (
 				FD7887841F7DD736003E05CD /* UnitHUDComponent.swift */,
 				FD7887901F809F28003E05CD /* HealthPointStatusComponent.swift */,
 				FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */,
 				FD7887921F809FDB003E05CD /* StatusFractionLabelComponent.swift */,
 			);
-			name = HUDComponents;
+			name = UnitHUD;
+			sourceTree = "<group>";
+		};
+		FD7887971F817CA6003E05CD /* ActionHUD */ = {
+			isa = PBXGroup;
+			children = (
+				FD7887941F817C60003E05CD /* ActionHUDComponent.swift */,
+			);
+			name = ActionHUD;
 			sourceTree = "<group>";
 		};
 		FD7A84A61F5CB12F0060823D = {
@@ -248,6 +267,7 @@
 				FD2B32041F6793C600564150 /* PathFinder.swift in Sources */,
 				FD7887911F809F29003E05CD /* HealthPointStatusComponent.swift in Sources */,
 				FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */,
+				FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */,
 				FD7887831F7C955A003E05CD /* AttackSkill.swift in Sources */,
 				FD2B31FF1F65F86200564150 /* TileModels.swift in Sources */,
 				FD7A84B31F5CB12F0060823D /* AppDelegate.swift in Sources */,

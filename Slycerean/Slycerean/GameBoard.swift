@@ -166,8 +166,8 @@ extension GameBoard {
         var steps = 0
         // Bootleg way of changing button to have no action
         let mainHighlightTile = HighlightSprite(unit: unit, actionType: .attack)
-        mainHighlightTile.button?.removeFromParent()
-        mainHighlightTile.button = nil
+        mainHighlightTile.buttonNode.removeFromParent()
+        mainHighlightTile.buttonNode = nil
         mainHighlightTile.animateBlinking()
         layerNamed(kLayerNamedHighlight, insert: mainHighlightTile, at: unitPosition)
         
