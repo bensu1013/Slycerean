@@ -9,13 +9,47 @@
 import SpriteKit
 import GameplayKit
 
+/*
+ 
+ GameScene should be central access point for everything else
+ HUD should relay any inputs to the scene to handle
+ A turn are parts of the scene and how it is displayed
+ 
+ 
+ In the event a new unit is chosen to take its turn
+ - update HUD with unit
+ @ Default State
+ - nothing is shown on board
+ @ Move Ready State
+ - place movement tiles ( units can run out of movesteps )
+ @ Movement State
+ - unit moves
+ @ Attack Ready State ( includes spells )
+ - place attack tiles for chosen skill
+ @ Attacking State
+ - animate attacks, resolve attack
+ @ TurnEnd State
+ - clear and reset relevant objects choose new unitTurn
+ */
+
+
+enum SceneState {
+    case inactive, readyMove, actionMove(TileCoord), readyAttack, actionAttack(TileCoord), turnEnd
+}
+
 class GameScene: SKScene {
+    
+    var sceneState: SceneState = .inactive {
+        didSet {
+            shiftSceneTo(state: sceneState)
+        }
+    }
     
     var gameBoard: GameBoard!
     var player: GameUnit!
     var player1: GameUnit!
     var gameCamera: GameCamera!
-    var masterNode: SKNode!
+    var worldNode: SKNode!
     
     var entities = [GKEntity]()
     var tempTurnIndex = 1
@@ -30,6 +64,7 @@ class GameScene: SKScene {
             }
         }
     }
+    
     var userTurn: Bool = true {
         didSet {
             isUserInteractionEnabled = userTurn
@@ -49,11 +84,8 @@ class GameScene: SKScene {
     
     override func sceneDidLoad() {        
         
-        masterNode = SKNode()
-        
-        addChild(masterNode)
-        gameBoard = GameBoard(filename: "Level_0")
-        masterNode.addChild(gameBoard)
+        gameBoard = GameBoard(scene: self, filename: "Level_0")
+        addChild(gameBoard)
         
         player = GameUnit(scene: self)
         player.spriteComponent.isUserInteractionEnabled = false
@@ -70,63 +102,70 @@ class GameScene: SKScene {
         
     }
     
-    func setupCamera(_ gameCamera: GameCamera) {
-        self.gameCamera = gameCamera
-        self.addChild(gameCamera)
-        self.camera = gameCamera
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         unitTurn?.currentHealthPoints -= 3
         hudUIHook?.updateUI()
-    }
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        guard let touch = touches.first else { return }
-//        if let position = lastPanPosition {
-//            let currentPanPosition = touch.location(in: self)
-//            let diff = currentPanPosition - position
-//            gameCamera.move(by: diff/CGPoint(x: 2, y: 2))
-//            lastPanPosition = currentPanPosition
-//        }
-//    }
-    
-    private var didSetupFirstTurn = false
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !didSetupFirstTurn {
-            unitTurn = player
-            unitTurn!.prepareTurn()
-            hudUIHook?.setupHUDFor(unit: player)
-            actUIHook?.setupHUDFor(unit: player)
-            didSetupFirstTurn = true
-        }
     }
     
     override func update(_ currentTime: TimeInterval) {
       
     }
     
+    func setupCamera(_ gameCamera: GameCamera) {
+        self.gameCamera = gameCamera
+        self.addChild(gameCamera)
+        self.camera = gameCamera
+    }
     func nextUnitTurn() {
         if tempTurnIndex == 0 {
             tempTurnIndex = 1
-            player.prepareTurn()
-            unitTurn = player
-            hudUIHook?.setupHUDFor(unit: player)
-            actUIHook?.setupHUDFor(unit: player)
-            gameCamera.move(to: player.spriteComponent.position, animated: true)
+            prepareSceneFor(unit: player)
         } else {
             tempTurnIndex = 0
-            player1.prepareTurn()
-            unitTurn = player1
-            hudUIHook?.setupHUDFor(unit: player1)
-            actUIHook?.setupHUDFor(unit: player1)
-            gameCamera.move(to: player1.spriteComponent.position, animated: true)
+            prepareSceneFor(unit: player1)
         }
-        
     }
     
+    private func prepareSceneFor(unit: GameUnit) {
+        unitTurn = unit
+        unit.prepareTurn()
+        hudUIHook?.setupHUDFor(unit: unit)
+        actUIHook?.setupHUDFor(scene: self)
+        gameCamera.move(to: unit.spriteComponent.position, animated: true)
+        shiftSceneTo(state: .readyMove)
+    }
     
-
+    func shiftSceneTo(state: SceneState) {
+        gameBoard.deactivateHighlightTiles()
+        switch state {
+        case .inactive:
+            break
+        case .readyMove:
+            stateChangedToReadyMove()
+            break
+        case .actionMove(let tileCoord):
+            unitTurn?.moveComponent.moveTo(tileCoord) {
+                self.shiftSceneTo(state: .readyMove)
+            }
+            break
+        case .readyAttack:
+            gameBoard.activateTilesForAction(for: unitTurn!)
+            break
+        case .actionAttack:
+            unitTurn?.attackEventAndDamage()
+            self.shiftSceneTo(state: .readyMove)
+            break
+        case .turnEnd:
+            unitTurn?.endTurn()
+            unitTurn = nil
+            break
+        }
+    }
+    
+    func stateChangedToReadyMove() {
+        gameBoard.activateTilesForMovement(for: unitTurn!)
+    }
+    
 }
 
 

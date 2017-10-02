@@ -33,6 +33,8 @@ let temporaryTileMap: [String:Any] =
 
 class GameBoard: SKNode {
     
+    weak var gameScene: GameScene!
+    
     /// Width of tilemap
     private var columns = 15
     /// Height of tilemap
@@ -41,16 +43,17 @@ class GameBoard: SKNode {
     private var tileSize = CGSize(width: 128, height: 128)
     
     var collisionMap: CollisionMap!
-    var unitActionMenu = UnitActionMenu()
+//    var unitActionMenu = UnitActionMenu()
     
     var size: CGSize {
         return CGSize(width: CGFloat(columns) * tileSize.width, height: CGFloat(rows) * tileSize.height)
     }
     
     // each level will have several layers
- var layers = [String : LayerNode]()
+    var layers = [String : LayerNode]()
 
-    init?(filename: String) {
+    init?(scene: GameScene, filename: String) {
+        self.gameScene = scene
         super.init()
         
         // logic layer for collisions
@@ -98,7 +101,7 @@ class GameBoard: SKNode {
         self.addChild(unitLayer)
         
         //only one actionmenu active at a time
-        self.addChild(unitActionMenu)
+//        self.addChild(unitActionMenu)
     
     }
     
@@ -165,7 +168,7 @@ extension GameBoard {
         var startTiles = [unitPosition]
         var steps = 0
         // Bootleg way of changing button to have no action
-        let mainHighlightTile = HighlightSprite(unit: unit, actionType: .attack)
+        let mainHighlightTile = HighlightSprite(scene: gameScene, actionType: .attack)
         mainHighlightTile.buttonNode.removeFromParent()
         mainHighlightTile.buttonNode = nil
         mainHighlightTile.animateBlinking()
@@ -204,7 +207,7 @@ extension GameBoard {
     private func tryInsertWalkPathHighLight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
            !layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
-            layerNamed(kLayerNamedHighlight, insert: HighlightSprite(unit: unit, actionType: .move), at: tileCoord)
+            layerNamed(kLayerNamedHighlight, insert: HighlightSprite(scene: gameScene, actionType: .move), at: tileCoord)
             return true
         }
         return false
@@ -239,7 +242,7 @@ extension GameBoard {
     private func tryInsertAttackPathHighlight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidAttackingTile(for: tileCoord) &&
             !layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
-            layerNamed(kLayerNamedHighlight, insert: HighlightSprite(unit: unit, actionType: .attack), at: tileCoord)
+            layerNamed(kLayerNamedHighlight, insert: HighlightSprite(scene: gameScene, actionType: .attack), at: tileCoord)
             return true
         }
         return false

@@ -73,13 +73,13 @@ class HighlightSprite: SKNode {
         case move, attack
     }
     
-    weak var unit: GameUnit?
+    weak var gameScene: GameScene?
     var buttonNode: SKButtonNode!
     var visualNode: SKSpriteNode!
     var type: ActionType
-    init(unit: GameUnit, actionType: ActionType) {
-        
-        self.unit = unit
+    
+    init(scene: GameScene, actionType: ActionType) {
+        self.gameScene = scene
         self.type = actionType
         
         super.init()
@@ -89,7 +89,7 @@ class HighlightSprite: SKNode {
         buttonNode.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(buttonAction))
         buttonNode.size = CGSize(width: 128, height: 128)
         buttonNode.zPosition = 500
-        buttonNode.color = .brown
+        buttonNode.color = .clear
         buttonNode.anchorPoint = .zero
         addChild(buttonNode)
         
@@ -109,12 +109,10 @@ class HighlightSprite: SKNode {
     @objc func buttonAction() {
         switch self.type {
         case .move:
-            self.unit?.moveComponent?.moveTo(TPConvert.tileCoordForPosition(self.position))
-            self.unit?.scene.gameBoard.deactivateHighlightTiles()
-            
+            gameScene?.shiftSceneTo(state: .actionMove(TPConvert.tileCoordForPosition(position)))
         case .attack:
-            self.unit?.attackEventAndDamage()
-            self.unit?.scene.gameBoard.deactivateHighlightTiles()
+            gameScene?.shiftSceneTo(state: .actionAttack(TPConvert.tileCoordForPosition(position)))
+            break
         }
     }
     

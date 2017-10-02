@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class UnitActionMenu: SKNode {
+class DeprecatedUnitActionMenu: SKNode {
     
     override init() {
         super.init()

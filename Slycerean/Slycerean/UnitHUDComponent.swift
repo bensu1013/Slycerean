@@ -18,6 +18,8 @@ import SpriteKit
  */
 class UnitHUDComponent: SKNode {
     
+    weak var gameScene: GameScene?
+    
     weak var unit: GameUnit? {
         didSet{
             self.isHidden = unit == nil
@@ -28,6 +30,7 @@ class UnitHUDComponent: SKNode {
     var nameNode: SKLabelNode?
     var healthPointNode: HealthPointStatusComponent?
     var manaPointNode: SKSpriteNode?
+    var movePointNode: SKLabelNode?
     var size: CGSize
     
     required init(size: CGSize) {
@@ -56,6 +59,16 @@ class UnitHUDComponent: SKNode {
         healthPointNode?.position = CGPoint(x: 25, y: -80)
         healthPointNode?.zPosition = 10
         addChild(healthPointNode!)
+        
+        movePointNode = SKLabelNode(text: "")
+        movePointNode?.position = CGPoint(x: 25, y: -120)
+        movePointNode?.horizontalAlignmentMode = .left
+        movePointNode?.verticalAlignmentMode = .center
+        movePointNode?.fontSize = 40
+        movePointNode?.fontColor = .black
+        movePointNode?.fontName = "Optima-Bold"
+        addChild(movePointNode!)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,10 +80,13 @@ class UnitHUDComponent: SKNode {
         self.unit = unit
         nameNode?.text = "\(unit.firstName) \(unit.lastName)"
         healthPointNode?.displayNewUnit(unit)
+        movePointNode?.text = "\(unit.unusedMovementSteps)"
     }
     
     func updateUI() {
+        guard let unit = unit else { return }
         healthPointNode?.updateUI()
+        movePointNode?.text = "\(unit.unusedMovementSteps)"
     }
     
 }

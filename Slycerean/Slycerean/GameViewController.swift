@@ -35,7 +35,7 @@ class GameViewController: UIViewController {
         // Present the scene
         if let view = self.view as! SKView? {
             
-            let camera = GameCamera(view: view, node: scene.masterNode)
+            let camera = GameCamera(view: view, node: scene.gameBoard)
             camera.overlay.addChild(hud)
             camera.overlay.addChild(acthud)
             scene.setupCamera(camera)
@@ -45,7 +45,7 @@ class GameViewController: UIViewController {
             acthud.position = CGPoint(x: -sceneWidth/2, y: hud.position.y - hud.size.height)
             
             view.presentScene(scene)
-            
+            scene.nextUnitTurn()
             view.ignoresSiblingOrder = true
             
             view.showsFPS = true

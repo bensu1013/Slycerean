@@ -24,7 +24,7 @@ class MoveComponent {
     }
     
     
-    func moveTo(_ toTileCoord: TileCoord) {
+    func moveTo(_ toTileCoord: TileCoord, completion: @escaping ()->()) {
         guard let unit = unit else { return }
         
         unit.hasMoved = true
@@ -42,13 +42,14 @@ class MoveComponent {
         }
         
         self.shortestPath = self.pathfinder.shortestPathFromTileCoord(fromTileCoord, toTileCoord: toTileCoord)
-        if let _ = shortestPath {
+        if let path = shortestPath {
+            unit.unusedMovementSteps -= path.count
             unit.tileCoord = toTileCoord
-            self.popStepAndAnimate()
+            self.popStepAndAnimate { completion() }
         }
     }
     
-    func popStepAndAnimate() {
+    func popStepAndAnimate(completion: @escaping ()->()) {
         currentStepAction = nil
         guard let unit = unit else { return }
         
@@ -57,13 +58,14 @@ class MoveComponent {
             // prep for next action
             unit.prepareTurn()
             unit.spriteComponent.removeAction(forKey: "walk")
+            completion()
             return
         }
         
         // get the next step to move to and remove it from the shortestPath
         let nextTileCoord = shortestPath!.remove(at: 0)
         
-        // determine the direction the cat is facing in order to animate it appropriately
+        // determine the direction in order to animate it appropriately
         let currentTileCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
         
         // make sure the cat is facing in the right direction for its movement
@@ -84,7 +86,7 @@ class MoveComponent {
         
         currentStepAction = SKAction.move(to: TPConvert.positionForTileCoord(nextTileCoord), duration: 0.4)
         unit.spriteComponent.run(currentStepAction!, completion: {
-            self.popStepAndAnimate()
+            self.popStepAndAnimate(completion: completion)
         })
     }
 }

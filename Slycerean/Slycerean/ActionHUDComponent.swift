@@ -9,9 +9,13 @@
 import Foundation
 import SpriteKit
 
+protocol ActionHUDDelegate {
+    
+}
+
 class ActionHUDComponent: SKNode {
     
-    weak var unit: GameUnit?
+    weak var gameScene: GameScene?
     
     var basicAttackButton: ActionItem!
     var endTurnButton: ActionItem!
@@ -40,18 +44,18 @@ class ActionHUDComponent: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupHUDFor(unit: GameUnit) {
-        self.unit = unit
+    func setupHUDFor(scene: GameScene) {
+        gameScene = scene
         
     }
     
     
     @objc func basicAttackAction() {
-        unit?.attackActionSelected()
+        gameScene?.shiftSceneTo(state: .readyAttack)
     }
     
     @objc func endTurnAction() {
-        unit?.endTurn()
+        gameScene?.shiftSceneTo(state: .turnEnd)
     }
     
 }

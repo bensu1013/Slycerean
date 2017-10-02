@@ -22,8 +22,6 @@ enum Direction: String {
 class GameUnit {
     weak var scene: GameScene!
     
-    var actionItems = [ActionItem]()
-    var selectedAction: ActionItem?
     
     var spriteComponent: SpriteComponent!
     var moveComponent: MoveComponent!
@@ -55,19 +53,6 @@ class GameUnit {
         moveComponent = MoveComponent(for: self, in: scene)
         spriteComponent = SpriteComponent(unit: self)
         
-        let moveItem = ActionItem()
-        moveItem.setTextures(to: SKTexture(imageNamed: "walking-boot"))
-        moveItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(walkActionSelected))
-        self.actionItems.append(moveItem)
-        let attackItem = ActionItem()
-        attackItem.setTextures(to: SKTexture(imageNamed: "saber-slash"))
-        attackItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(attackActionSelected))
-        self.actionItems.append(attackItem)
-        let cancelItem = ActionItem()
-        cancelItem.setTextures(to: SKTexture(imageNamed: "cancel"))
-        cancelItem.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(cancelActionSelected))
-        self.actionItems.append(cancelItem)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -81,36 +66,21 @@ class GameUnit {
             self.endTurn()
             return
         }
-        
-        self.actionItems[0].isEnabled = !hasMoved
-        self.actionItems[1].isEnabled = !hasAttacked
-        
-        // each action should come from actions available to the unit
-//        scene.gameBoard.unitActionMenu.setPosition(at: self.tileCoord)
-//        scene.gameBoard.unitActionMenu.bloomActionItems(actionItems)
+//        scene.gameBoard.activateTilesForMovement(for: self)
     }
     
     func endTurn() {
         self.hasMoved = false
         self.hasAttacked = false
-        self.scene.gameBoard.unitActionMenu.clearActionsItems {
-            self.scene.unitTurn = nil
-        }
+        self.unusedMovementSteps = totalMovementSteps
     }
     
     @objc func walkActionSelected() {
-//        scene.gameBoard.activateTilesForMovement(for: self)
-//        scene.gameBoard.unitActionMenu.clearActionsItems {
-//            
-//        }
+
     }
     
     @objc func attackActionSelected() {
-        scene.gameBoard.unitActionMenu.clearActionsItems {
-            let attack = ActionItem()
-            attack.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(self.mockAttackSkill))
-            self.scene.gameBoard.unitActionMenu.bloomActionItems([attack])
-        }
+
     }
     
     @objc func cancelActionSelected() {
@@ -120,9 +90,7 @@ class GameUnit {
     @objc func mockAttackSkill() {
         self.hasAttacked = true
         scene.gameBoard.activateTilesForAction(for: self)
-        scene.gameBoard.unitActionMenu.clearActionsItems {
-            
-        }
+
     }
     
     func attackEventAndDamage() {
