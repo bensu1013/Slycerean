@@ -22,20 +22,16 @@ enum Direction: String {
 class GameUnit {
     weak var scene: GameScene!
     
-    
     var spriteComponent: SpriteComponent!
     var moveComponent: MoveComponent!
     
-    var hasMoved    = false
-    var hasAttacked = false
-    var hasFinished = false
+    var hasActed    = false
+    var hasFinished = false 
     
     var tileCoord: TileCoord
     
-    
     var firstName: String = "First"
     var lastName: String = "Last"
-    
     
     var currentHealthPoints: Int = 32
     var maximumHealthPoints: Int = 32
@@ -60,41 +56,24 @@ class GameUnit {
     }
     
     func prepareTurn() {
-        if hasMoved && hasAttacked {
-            // end turn
-            // scene next unit's turn
-            self.endTurn()
-            return
-        }
-//        scene.gameBoard.activateTilesForMovement(for: self)
-    }
-    
-    func endTurn() {
-        self.hasMoved = false
-        self.hasAttacked = false
+        self.hasActed = false
+        hasFinished = false
         self.unusedMovementSteps = totalMovementSteps
     }
     
-    @objc func walkActionSelected() {
+    func newTurn() {
+        self.hasActed = false
+        self.unusedMovementSteps = totalMovementSteps
+    }
+    
+    func endTurn() {
+        self.hasFinished = true
+    }
 
-    }
     
-    @objc func attackActionSelected() {
-
-    }
-    
-    @objc func cancelActionSelected() {
-        self.endTurn()
-    }
-    
-    @objc func mockAttackSkill() {
-        self.hasAttacked = true
-        scene.gameBoard.activateTilesForAction(for: self)
-
-    }
-    
-    func attackEventAndDamage() {
-        self.prepareTurn()
+    func attackEventAndDamage(completion: @escaping ()->()) {
+        hasActed = true
+        completion()
     }
     
 }

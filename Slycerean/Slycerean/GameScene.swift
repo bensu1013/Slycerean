@@ -57,13 +57,7 @@ class GameScene: SKScene {
     var hudUIHook: UnitHUDComponent?
     var actUIHook: ActionHUDComponent?
     
-    var unitTurn: GameUnit? {
-        didSet {
-            if unitTurn == nil {
-                nextUnitTurn()
-            }
-        }
-    }
+    var currentActiveUnit: GameUnit?
     
     var userTurn: Bool = true {
         didSet {
@@ -103,7 +97,7 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        unitTurn?.currentHealthPoints -= 3
+        currentActiveUnit?.currentHealthPoints -= 3
         hudUIHook?.updateUI()
     }
     
@@ -127,43 +121,58 @@ class GameScene: SKScene {
     }
     
     private func prepareSceneFor(unit: GameUnit) {
-        unitTurn = unit
+        currentActiveUnit = unit
         unit.prepareTurn()
         hudUIHook?.setupHUDFor(unit: unit)
         actUIHook?.setupHUDFor(scene: self)
         gameCamera.move(to: unit.spriteComponent.position, animated: true)
-        shiftSceneTo(state: .readyMove)
+        shiftSceneTo(state: .inactive)
     }
     
     func shiftSceneTo(state: SceneState) {
         gameBoard.deactivateHighlightTiles()
         switch state {
         case .inactive:
+            stateChangedToInactive()
             break
         case .readyMove:
             stateChangedToReadyMove()
             break
         case .actionMove(let tileCoord):
-            unitTurn?.moveComponent.moveTo(tileCoord) {
-                self.shiftSceneTo(state: .readyMove)
+            currentActiveUnit?.moveComponent.moveTo(tileCoord) {
+                self.shiftSceneTo(state: .inactive)
             }
             break
         case .readyAttack:
-            gameBoard.activateTilesForAction(for: unitTurn!)
+            gameBoard.activateTilesForAction(for: currentActiveUnit!)
             break
         case .actionAttack:
-            unitTurn?.attackEventAndDamage()
-            self.shiftSceneTo(state: .readyMove)
+            currentActiveUnit?.attackEventAndDamage {
+                self.shiftSceneTo(state: .inactive)
+            }
             break
         case .turnEnd:
-            unitTurn?.endTurn()
-            unitTurn = nil
+            currentActiveUnit?.endTurn()
+            currentActiveUnit = nil
+            self.shiftSceneTo(state: .inactive)
             break
         }
     }
     
+    func stateChangedToInactive() {
+        if let unit = currentActiveUnit {
+            if unit.hasFinished {
+                self.shiftSceneTo(state: .turnEnd)
+            } else {
+                self.shiftSceneTo(state: .readyMove)
+            }
+        } else {
+            nextUnitTurn()
+        }
+    }
+    
     func stateChangedToReadyMove() {
-        gameBoard.activateTilesForMovement(for: unitTurn!)
+        gameBoard.activateTilesForMovement(for: currentActiveUnit!)
     }
     
 }

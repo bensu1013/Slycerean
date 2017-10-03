@@ -23,11 +23,8 @@ class MoveComponent {
         self.pathfinder.dataSource = self
     }
     
-    
     func moveTo(_ toTileCoord: TileCoord, completion: @escaping ()->()) {
         guard let unit = unit else { return }
-        
-        unit.hasMoved = true
         
         // Get the current and desired tile coordinates
         let fromTileCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
@@ -55,8 +52,6 @@ class MoveComponent {
         
         // check if we are done moving
         if shortestPath == nil || shortestPath!.isEmpty {
-            // prep for next action
-            unit.prepareTurn()
             unit.spriteComponent.removeAction(forKey: "walk")
             completion()
             return
