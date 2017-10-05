@@ -70,7 +70,6 @@ class GameUnit {
         self.hasFinished = true
     }
 
-    
     func attackEventAndDamage(completion: @escaping ()->()) {
         hasActed = true
         completion()

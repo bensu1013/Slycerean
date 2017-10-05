@@ -59,13 +59,13 @@ class DeprecatedUnitActionMenu: SKNode {
     
 }
 
+
 class ActionItem: SKButtonNode {
-    
     
     
     required init() {
         super.init(normalTexture: SKTexture.init(imageNamed: "down_1"), selectedTexture: SKTexture.init(imageNamed: "up_1"), disabledTexture: SKTexture.init(imageNamed: "up_1"))
-//        self.color = .blue
+        
         
     }
     
@@ -78,7 +78,7 @@ class ActionItem: SKButtonNode {
         self.defaultTexture = texture
         self.selectedTexture = texture
         self.disabledTexture = texture
-        
+        self.texture = texture
     }
     
 }

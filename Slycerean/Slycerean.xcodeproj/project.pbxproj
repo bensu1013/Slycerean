@@ -33,6 +33,7 @@
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
 		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
 		FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */; };
+		FDC937B21F85C3E600F62A3B /* TileCoord.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC937B11F85C3E600F62A3B /* TileCoord.swift */; };
 		FDD4CADA1F78A701003E1C6B /* GameCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD4CAD91F78A701003E1C6B /* GameCamera.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
 		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
+		FDC937B11F85C3E600F62A3B /* TileCoord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoord.swift; sourceTree = "<group>"; };
 		FDD4CAD91F78A701003E1C6B /* GameCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCamera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +87,7 @@
 				FD7A84D11F641E180060823D /* GameBoard.swift */,
 				FD2B31FE1F65F86200564150 /* TileModels.swift */,
 				FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */,
+				FDC937B11F85C3E600F62A3B /* TileCoord.swift */,
 				FD7E98B61F760EF50012BF6C /* LayerNodes */,
 				FD7A84D31F64D9470060823D /* Level_0.json */,
 			);
@@ -276,6 +279,7 @@
 				FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */,
 				FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */,
 				FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */,
+				FDC937B21F85C3E600F62A3B /* TileCoord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

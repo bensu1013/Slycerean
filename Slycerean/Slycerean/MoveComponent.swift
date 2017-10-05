@@ -63,7 +63,7 @@ class MoveComponent {
         // determine the direction in order to animate it appropriately
         let currentTileCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
         
-        // make sure the cat is facing in the right direction for its movement
+        // make sure the unit is facing in the right direction for its movement
         let diff = nextTileCoord - currentTileCoord
         if abs(diff.col) > abs(diff.row) {
             if diff.col > 0 {

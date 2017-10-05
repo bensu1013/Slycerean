@@ -8,9 +8,16 @@
 
 import Foundation
 
-class AttackSkill {
+protocol ActivateSkill {
+    func useOnUnits(_ units: [GameUnit], completion: @escaping()->())
+    // targeted unit be effected dependant on skill used
+    func effectOnUnit(_ unit: GameUnit)
+    func animatedEffect(completion: @escaping ()->())
+}
+
+class BasicAttackSkill: ActivateSkill {
     
-    var name = ""
+    var name = "Attack"
     // different attack patterns come to mind
     // unit centered with choice of 'breaths'
     // range spaces filled for user to tap to cause aoe
@@ -22,6 +29,21 @@ class AttackSkill {
     /// amount of health change, negative for damage, positive for healing
     var healthModifier = -4
     
+    
+    func useOnUnits(_ units: [GameUnit], completion: @escaping()->()) {
+        animatedEffect {
+            units.forEach({ (unit) in
+                self.effectOnUnit(unit)
+            })
+            completion()
+        }
+    }
+    func effectOnUnit(_ unit: GameUnit) {
+        unit.currentHealthPoints += healthModifier
+    }
+    func animatedEffect(completion: @escaping ()->()) {
+        
+    }
     
 }
 
