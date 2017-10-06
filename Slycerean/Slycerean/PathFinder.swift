@@ -134,7 +134,7 @@ class AStarPathfinder {
     // The open steps list is ordered from lowest to highest fScore
     fileprivate func insertStep(_ step: ShortestPathStep, inOpenSteps openSteps: inout [ShortestPathStep]) {
         openSteps.append(step)
-        openSteps.sorted { $0.fScore <= $1.fScore }
+        let _ = openSteps.sorted { $0.fScore <= $1.fScore }
     }
     
     // Compute the H score from a position to another (from the current position to the final desired position)

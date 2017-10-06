@@ -34,6 +34,7 @@
 		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
 		FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */; };
 		FDC937B21F85C3E600F62A3B /* TileCoord.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC937B11F85C3E600F62A3B /* TileCoord.swift */; };
+		FDC937B41F871AAD00F62A3B /* HighlightLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */; };
 		FDD4CADA1F78A701003E1C6B /* GameCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD4CAD91F78A701003E1C6B /* GameCamera.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		FDC937B11F85C3E600F62A3B /* TileCoord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoord.swift; sourceTree = "<group>"; };
+		FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightLayerNode.swift; sourceTree = "<group>"; };
 		FDD4CAD91F78A701003E1C6B /* GameCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCamera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				FD2B32011F676BB300564150 /* TiledLayerNode.swift */,
+				FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */,
 				FD2B31FC1F65F82E00564150 /* LayerNode.swift */,
 			);
 			name = LayerNodes;
@@ -260,6 +263,7 @@
 				FD7A84CD1F5CFB000060823D /* SpriteComponent.swift in Sources */,
 				FD7A84D21F641E180060823D /* GameBoard.swift in Sources */,
 				FD7A84CF1F5CFB860060823D /* MoveComponent.swift in Sources */,
+				FDC937B41F871AAD00F62A3B /* HighlightLayerNode.swift in Sources */,
 				FD7A84B91F5CB12F0060823D /* GameScene.swift in Sources */,
 				FD2B32021F676BB300564150 /* TiledLayerNode.swift in Sources */,
 				FD7887851F7DD736003E05CD /* UnitHUDComponent.swift in Sources */,
@@ -420,7 +424,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = BS.Slycerean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -435,7 +439,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = BS.Slycerean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

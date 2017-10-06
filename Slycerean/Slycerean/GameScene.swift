@@ -49,7 +49,6 @@ class GameScene: SKScene {
     var player: GameUnit!
     var player1: GameUnit!
     var gameCamera: GameCamera!
-    var worldNode: SKNode!
     
     var entities = [GKEntity]()
     var tempTurnIndex = 1
@@ -102,7 +101,9 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-      
+//        gameBoard.getAllChildrenInLayerNamed(kLayerNamedFloor).forEach { (node) in
+//            node.isHidden = !camera!.contains(node)
+//        }
     }
     
     func setupCamera(_ gameCamera: GameCamera) {
@@ -118,6 +119,14 @@ class GameScene: SKScene {
             tempTurnIndex = 0
             prepareSceneFor(unit: player1)
         }
+    }
+    // taprecognizer of view sent to scene to process
+    func tapped(at point: CGPoint) {
+        let tileCoord = TPConvert.tileCoordForPosition(point)
+        if gameBoard.layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+            
+        }
+        
     }
     
     private func prepareSceneFor(unit: GameUnit) {

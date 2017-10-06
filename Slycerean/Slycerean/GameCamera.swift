@@ -18,7 +18,7 @@ public enum CameraZoomClamping: CGFloat {
 
 class GameCamera: SKCameraNode {
     
-    unowned var world: SKNode
+    weak var gameScene: GameScene?
     internal var bounds: CGRect
     
     public var zoom: CGFloat = 1.0
@@ -43,8 +43,6 @@ class GameCamera: SKCameraNode {
     
     /// Gesture recognizer to recognize camera panning
     public var cameraPanned: UIPanGestureRecognizer!
-    /// Gesture recognizer to recognize double taps
-    public var sceneDoubleTapped: UITapGestureRecognizer!
     /// Gesture recognizer to recognize pinch actions
     public var cameraPinched: UIPinchGestureRecognizer!
     
@@ -61,9 +59,9 @@ class GameCamera: SKCameraNode {
         }
     }
 
-    init(view: SKView, node: SKNode) {
+    init(view: SKView, scene: GameScene) {
         
-        self.world = node
+        self.gameScene = scene
         self.bounds = view.bounds
         
         super.init()
@@ -74,10 +72,6 @@ class GameCamera: SKCameraNode {
         cameraPanned.minimumNumberOfTouches = 1
         cameraPanned.maximumNumberOfTouches = 1
         view.addGestureRecognizer(cameraPanned)
-        
-        sceneDoubleTapped = UITapGestureRecognizer(target: self, action: #selector(sceneDoubleTapped(_:)))
-        sceneDoubleTapped.numberOfTapsRequired = 2
-        view.addGestureRecognizer(sceneDoubleTapped)
         
         // setup pinch recognizer
         cameraPinched = UIPinchGestureRecognizer(target: self, action: #selector(scenePinched(_:)))
@@ -192,20 +186,7 @@ extension GameCamera {
         }
     }
     
-    /**
-     Handler for double taps.
-     - parameter recognizer: `UITapGestureRecognizer` tap gesture recognizer.
-     */
-    @objc func sceneDoubleTapped(_ recognizer: UITapGestureRecognizer) {
-        if (recognizer.state == UIGestureRecognizerState.ended) {
-            let location = recognizer.location(in: recognizer.view)
-            //            for delegate in self.delegates {
-            //                recognizer.numberOfTouches
-            //
-            //                delegate.sceneDoubleTapped(location: location)
-            //            }
-        }
-    }
+
     
     /**
      Update the camera scale in the scene.
@@ -225,7 +206,7 @@ extension GameCamera {
             let invertedScale = (-recognizer.scale + 2)
             zoom *= invertedScale
             
-            // set the world scaling here
+            // scale camera
             setCameraZoomAtLocation(scale: xScale * invertedScale, location: focusLocation)
             recognizer.scale = 1
         }

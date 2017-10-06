@@ -152,6 +152,13 @@ class GameBoard: SKNode {
         }
     }
     
+    func getAllChildrenInLayerNamed(_ name: String) -> [SKNode] {
+        if let layer = layers[name] {
+            return layer.children
+        }
+        return [SKNode]()
+    }
+    
     func removeAllChildrenInLayerNamed(_ name: String) {
         if let layer = layers[name] {
             layer.removeAllChildren()
