@@ -84,13 +84,13 @@ class GameScene: SKScene {
         player.spriteComponent.isUserInteractionEnabled = false
         player.tileCoord = TileCoord(col: 0, row: 2)
         player.spriteComponent.anchorPoint = CGPoint.zero
-        gameBoard.layerNamed(kLayerNamedUnit, insert: player.spriteComponent, at: player.tileCoord)
+        gameBoard.layer(type: .unit, insert: player.spriteComponent, at: player.tileCoord)
         
         player1 = GameUnit(scene: self)
         player1.spriteComponent.isUserInteractionEnabled = false
         player1.tileCoord = TileCoord(col: 2, row: 2)
         player1.spriteComponent.anchorPoint = CGPoint.zero
-        gameBoard.layerNamed(kLayerNamedUnit, insert: player1.spriteComponent, at: player1.tileCoord)
+        gameBoard.layer(type: .unit, insert: player1.spriteComponent, at: player1.tileCoord)
         
         
     }
@@ -123,7 +123,7 @@ class GameScene: SKScene {
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
         let tileCoord = TPConvert.tileCoordForPosition(point)
-        if gameBoard.layerNamed(kLayerNamedHighlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+        if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
             
         }
         

@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class TiledLayerNode: LayerNode {
+class FloorLayerNode: LayerNode {
     
     private let tileSize: CGSize
     
