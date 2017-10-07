@@ -104,6 +104,7 @@ class GameScene: SKScene {
 //        gameBoard.getAllChildrenInLayerNamed(kLayerNamedFloor).forEach { (node) in
 //            node.isHidden = !camera!.contains(node)
 //        }
+
     }
     
     func setupCamera(_ gameCamera: GameCamera) {

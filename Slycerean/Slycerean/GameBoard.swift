@@ -52,11 +52,7 @@ class GameBoard: SKNode {
         return CGSize(width: CGFloat(columns) * tileSize.width, height: CGFloat(rows) * tileSize.height)
     }
     
-    var floorLayer: FloorLayerNode!
-    var doodadLayer: LayerNode!
-    var highlightLayer: HighlightLayerNode!
-    var unitLayer: LayerNode!
-    var effectLayer: LayerNode!
+    var layers = [LayerType : LayerNode]()
     
     init?(scene: GameScene, filename: String) {
         self.gameScene = scene
@@ -83,27 +79,32 @@ class GameBoard: SKNode {
         self.collisionMap = CollisionMap(columns: 15, rows: 15, map: array)
         
         // purely graphical layer, shouldn't need collision checks
-        floorLayer = FloorLayerNode(name: temporaryTileMap["name"]! as! String, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
+        let floorLayer = FloorLayerNode(name: temporaryTileMap["name"]! as! String, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
         floorLayer.zPosition = 0
+        layers[.floor] = floorLayer
         addChild(floorLayer)
         
         // graphical with potential object interaction checks ( traps? )
-        doodadLayer = LayerNode(name: kLayerNamedDoodad)
+        let doodadLayer = LayerNode(name: kLayerNamedDoodad)
         doodadLayer.zPosition = 100
+        layers[.doodad] = doodadLayer
         addChild(doodadLayer)
         
         // selection colors blue / green / red ?
-        highlightLayer = HighlightLayerNode(name: kLayerNamedHighlight)
+        let highlightLayer = HighlightLayerNode(name: kLayerNamedHighlight)
         highlightLayer.zPosition = 200
+        layers[.highlight] = highlightLayer
         addChild(highlightLayer)
         
         // actual unit entities on this layer
-        unitLayer = LayerNode(name: kLayerNamedUnit)
+        let unitLayer = LayerNode(name: kLayerNamedUnit)
         unitLayer.zPosition = 300
+        layers[.unit] = unitLayer
         addChild(unitLayer)
         
-        effectLayer = LayerNode(name: "effect")
+        let effectLayer = LayerNode(name: "effect")
         effectLayer.zPosition = 400
+        layers[.effect] = effectLayer
         addChild(effectLayer)
     
     }
@@ -130,92 +131,41 @@ class GameBoard: SKNode {
     }
     
     func layer(type: LayerType, isUnoccupiedAt tileCoord: TileCoord) -> Bool {
-        switch type {
-        case .floor:
-            return floorLayer.nodes(at: tileCoord).isEmpty
-        case .doodad:
-            return doodadLayer.nodes(at: tileCoord).isEmpty
-        case .highlight:
-            return highlightLayer.nodes(at: tileCoord).isEmpty
-        case .unit:
-            return unitLayer.nodes(at: tileCoord).isEmpty
-        case .effect:
-            return effectLayer.nodes(at: tileCoord).isEmpty
+        if let layer = layers[type] {
+            return layer.nodes(at: tileCoord).isEmpty
         }
+        return true
     }
     
     func layer(type: LayerType, hasObjectNamed objectName: String, at tileCoord: TileCoord) -> Bool {
-        switch type {
-        case .floor:
-            return floorLayer.hasNodeNamed(objectName, atCoord: tileCoord)
-        case .doodad:
-            return doodadLayer.hasNodeNamed(objectName, atCoord: tileCoord)
-        case .highlight:
-            return highlightLayer.hasNodeNamed(objectName, atCoord: tileCoord)
-        case .unit:
-            return unitLayer.hasNodeNamed(objectName, atCoord: tileCoord)
-        case .effect:
-            return effectLayer.hasNodeNamed(objectName, atCoord: tileCoord)
+        if let layer = layers[type] {
+            return layer.hasNodeNamed(objectName, atCoord: tileCoord)
         }
+        return false
     }
     
     func layer(type: LayerType, insert object: SKNode, at tileCoord: TileCoord) {
-        switch type {
-        case .floor:
-            return floorLayer.insertSprite(node: object, at: tileCoord)
-        case .doodad:
-            return doodadLayer.insertSprite(node: object, at: tileCoord)
-        case .highlight:
-            return highlightLayer.insertSprite(node: object, at: tileCoord)
-        case .unit:
-            return unitLayer.insertSprite(node: object, at: tileCoord)
-        case .effect:
-            return effectLayer.insertSprite(node: object, at: tileCoord)
+        if let layer = layers[type] {
+            layer.insertSprite(node: object, at: tileCoord)
         }
     }
     
     func layer(type: LayerType, removeObjectAt tileCoord: TileCoord) {
-        switch type {
-        case .floor:
-            return floorLayer.removeChildren(at: tileCoord)
-        case .doodad:
-            return doodadLayer.removeChildren(at: tileCoord)
-        case .highlight:
-            return highlightLayer.removeChildren(at: tileCoord)
-        case .unit:
-            return unitLayer.removeChildren(at: tileCoord)
-        case .effect:
-            return effectLayer.removeChildren(at: tileCoord)
+        if let layer = layers[type] {
+            layer.removeChildren(at: tileCoord)
         }
     }
     
     func getAllChildrenInLayer(type: LayerType) -> [SKNode] {
-        switch type {
-        case .floor:
-            return floorLayer.children
-        case .doodad:
-            return doodadLayer.children
-        case .highlight:
-            return highlightLayer.children
-        case .unit:
-            return unitLayer.children
-        case .effect:
-            return effectLayer.children
+        if let layer = layers[type] {
+            return layer.children
         }
+        return []
     }
     
     func removeAllChildrenInLayer(type: LayerType) {
-        switch type {
-        case .floor:
-            return floorLayer.removeAllChildren()
-        case .doodad:
-            return doodadLayer.removeAllChildren()
-        case .highlight:
-            return highlightLayer.removeAllChildren()
-        case .unit:
-            return unitLayer.removeAllChildren()
-        case .effect:
-            return effectLayer.removeAllChildren()
+        if let layer = layers[type] {
+            layer.removeAllChildren()
         }
     }
     
