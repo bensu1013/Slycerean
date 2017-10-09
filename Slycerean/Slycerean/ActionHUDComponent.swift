@@ -31,6 +31,7 @@ class ActionHUDComponent: SKNode {
         basicAttackButton.size = CGSize(width: 128, height: 128)
         basicAttackButton.anchorPoint = CGPoint(x: 0, y: 1)
         basicAttackButton.position = CGPoint(x: 30, y: -30)
+        actionButtons.append(basicAttackButton)
         addChild(basicAttackButton)
         
         skillMenuButton = ActionItem()
@@ -38,7 +39,8 @@ class ActionHUDComponent: SKNode {
         skillMenuButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(skillMenuAction))
         skillMenuButton.size = CGSize(width: 128, height: 128)
         skillMenuButton.anchorPoint = CGPoint(x: 0, y: 1)
-        skillMenuButton.position = CGPoint(x: 30, y: -(basicAttackButton.position.y + basicAttackButton.size.height + 30))
+        skillMenuButton.position = CGPoint(x: 30, y: -188)//-(basicAttackButton.position.y + basicAttackButton.size.height + 30))
+        actionButtons.append(skillMenuButton)
         addChild(skillMenuButton)
         
         endTurnButton = ActionItem()
@@ -46,7 +48,8 @@ class ActionHUDComponent: SKNode {
         endTurnButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(endTurnAction))
         endTurnButton.size = CGSize(width: 128, height: 128)
         endTurnButton.anchorPoint = CGPoint(x: 0, y: 1)
-        endTurnButton.position = CGPoint(x: 30, y: -(skillMenuButton.position.y + skillMenuButton.size.height + 30))
+        endTurnButton.position = CGPoint(x: 30, y: -336)//(skillMenuButton.position.y + skillMenuButton.size.height + 30))
+        actionButtons.append(endTurnButton)
         addChild(endTurnButton)
         
     }

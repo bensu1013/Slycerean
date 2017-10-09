@@ -124,10 +124,12 @@ class GameScene: SKScene {
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
         let tileCoord = TPConvert.tileCoordForPosition(point)
-        if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
-            
+        for node in gameBoard.getAllChildrenInLayer(type: .highlight) {
+            if node.name == kObjectHighlightPath {
+                shiftSceneTo(state: .actionMove(tileCoord))
+                return
+            }
         }
-        
     }
     
     private func prepareSceneFor(unit: GameUnit) {

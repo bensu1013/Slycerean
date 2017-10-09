@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
     var hud: UnitHUDComponent!
     var acthud: ActionHUDComponent!
     var gameScene: GameScene!
-    
+    var gameCamera: GameCamera!
     /// Gesture recognizer to recognize double taps
     public var sceneTappedGesture: UITapGestureRecognizer!
     
@@ -40,10 +40,10 @@ class GameViewController: UIViewController {
         skView = SKView(frame: view.frame)
         view.addSubview(skView)
         
-        let camera = GameCamera(view: skView, scene: gameScene)
-        camera.overlay.addChild(hud)
-        camera.overlay.addChild(acthud)
-        gameScene.setupCamera(camera)
+        gameCamera = GameCamera(view: skView, scene: gameScene)
+        gameCamera.overlay.addChild(hud)
+        gameCamera.overlay.addChild(acthud)
+        gameScene.setupCamera(gameCamera)
         gameScene.hudUIHook = hud
         gameScene.actUIHook = acthud
         hud.position = CGPoint(x: -sceneWidth/2, y: sceneHeight/2)
@@ -76,9 +76,27 @@ class GameViewController: UIViewController {
      */
     @objc func sceneTappedAction(_ recognizer: UITapGestureRecognizer) {
         if (recognizer.state == UIGestureRecognizerState.ended) {
-            let location = recognizer.location(in: recognizer.view)
             
-            gameScene?.tapped(at: location)
+            let location = recognizer.location(in: skView)
+            
+            // cameraPoint isnt converting, need to look in to.
+            let scenePoint = gameScene.convertPoint(fromView: location)
+            
+            let cameraPoint = gameScene.convert(scenePoint, to: acthud)
+//            let cameraPoint = gameCamera.overlay.convert(location, to: gameCamera.overlay)
+            for node in acthud.actionButtons {
+                print("point in skview \(location)")
+                print(cameraPoint)
+                print(node.frame)
+                if node.contains(cameraPoint) {
+                    UIApplication.shared.sendAction(node.actionTouchUpInside!, to: node.targetTouchUpInside, from: node, for: nil)
+                    return
+                }
+            }
+            
+            
+            
+            gameScene?.tapped(at: scenePoint)
             
         }
     }

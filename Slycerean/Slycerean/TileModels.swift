@@ -31,7 +31,7 @@ class HighlightSprite: SKNode {
     }
     
     weak var gameScene: GameScene?
-    var buttonNode: SKButtonNode!
+//    var buttonNode: SKButtonNode!
     var visualNode: SKSpriteNode!
     var type: ActionType
     
@@ -42,13 +42,13 @@ class HighlightSprite: SKNode {
         super.init()
         
         self.name = kObjectHighlightPath
-        buttonNode = SKButtonNode(normalTexture: nil, selectedTexture: nil, disabledTexture: nil)
-        buttonNode.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(buttonAction))
-        buttonNode.size = CGSize(width: 128, height: 128)
-        buttonNode.zPosition = 500
-        buttonNode.color = .clear
-        buttonNode.anchorPoint = .zero
-        addChild(buttonNode)
+//        buttonNode = SKButtonNode(normalTexture: nil, selectedTexture: nil, disabledTexture: nil)
+//        buttonNode.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(buttonAction))
+//        buttonNode.size = CGSize(width: 128, height: 128)
+//        buttonNode.zPosition = 500
+//        buttonNode.color = .clear
+//        buttonNode.anchorPoint = .zero
+//        addChild(buttonNode)
         
         let panelTexture = type == .move ? SKTexture.init(imageNamed: "blue_panel") : SKTexture.init(imageNamed: "red_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
