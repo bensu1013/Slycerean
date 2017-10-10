@@ -9,17 +9,19 @@
 import Foundation
 import SpriteKit
 
-class GameView: SKView {
+class BSGameView: SKView {
+    
+    var inputHandler: BSGameInputHandler?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        inputHandler = BSGameInputHandler(view: self)
+//        inputHandler?.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
 }
+

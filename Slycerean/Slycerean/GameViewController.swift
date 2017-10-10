@@ -69,11 +69,7 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
-    /**
-     Handler for double taps.
-     - parameter recognizer: `UITapGestureRecognizer` tap gesture recognizer.
-     */
+
     @objc func sceneTappedAction(_ recognizer: UITapGestureRecognizer) {
         if (recognizer.state == UIGestureRecognizerState.ended) {
             
@@ -81,20 +77,16 @@ class GameViewController: UIViewController {
             
             // cameraPoint isnt converting, need to look in to.
             let scenePoint = gameScene.convertPoint(fromView: location)
-            
             let cameraPoint = gameScene.convert(scenePoint, to: acthud)
 //            let cameraPoint = gameCamera.overlay.convert(location, to: gameCamera.overlay)
             for node in acthud.actionButtons {
-                print("point in skview \(location)")
-                print(cameraPoint)
-                print(node.frame)
                 if node.contains(cameraPoint) {
-                    UIApplication.shared.sendAction(node.actionTouchUpInside!, to: node.targetTouchUpInside, from: node, for: nil)
+                    UIApplication.shared.sendAction(node.actionTouchUpInside!,
+                                                    to: node.targetTouchUpInside,
+                                                    from: node, for: nil)
                     return
                 }
             }
-            
-            
             
             gameScene?.tapped(at: scenePoint)
             

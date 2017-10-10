@@ -26,7 +26,7 @@ class Tile: SKSpriteNode {
 
 class HighlightSprite: SKNode {
     
-    enum ActionType: Int {
+    enum ActionType: String {
         case move, attack
     }
     
@@ -41,7 +41,7 @@ class HighlightSprite: SKNode {
         
         super.init()
         
-        self.name = kObjectHighlightPath
+        self.name = actionType.rawValue
 //        buttonNode = SKButtonNode(normalTexture: nil, selectedTexture: nil, disabledTexture: nil)
 //        buttonNode.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(buttonAction))
 //        buttonNode.size = CGSize(width: 128, height: 128)

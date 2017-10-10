@@ -30,8 +30,13 @@ let temporaryTileMap: [String:Any] =
     [41, 43, 42, 51, 51, 58, 57, 50, 42, 51, 42, 41, 43, 57, 50]]
 ]
 
-enum LayerType {
+enum LayerType: String {
     case floor, doodad, highlight, unit, effect
+    var keyValue: String {
+        get {
+            return "\(self)Layer"
+        }
+    }
 }
 
 class GameBoard: SKNode {
@@ -79,30 +84,30 @@ class GameBoard: SKNode {
         self.collisionMap = CollisionMap(columns: 15, rows: 15, map: array)
         
         // purely graphical layer, shouldn't need collision checks
-        let floorLayer = FloorLayerNode(name: temporaryTileMap["name"]! as! String, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
+        let floorLayer = FloorLayerNode(name: LayerType.floor.keyValue, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
         floorLayer.zPosition = 0
         layers[.floor] = floorLayer
         addChild(floorLayer)
         
         // graphical with potential object interaction checks ( traps? )
-        let doodadLayer = LayerNode(name: kLayerNamedDoodad)
+        let doodadLayer = LayerNode(name: LayerType.doodad.keyValue)
         doodadLayer.zPosition = 100
         layers[.doodad] = doodadLayer
         addChild(doodadLayer)
         
         // selection colors blue / green / red ?
-        let highlightLayer = HighlightLayerNode(name: kLayerNamedHighlight)
+        let highlightLayer = HighlightLayerNode(name: LayerType.highlight.keyValue)
         highlightLayer.zPosition = 200
         layers[.highlight] = highlightLayer
         addChild(highlightLayer)
         
         // actual unit entities on this layer
-        let unitLayer = LayerNode(name: kLayerNamedUnit)
+        let unitLayer = LayerNode(name: LayerType.unit.keyValue)
         unitLayer.zPosition = 300
         layers[.unit] = unitLayer
         addChild(unitLayer)
         
-        let effectLayer = LayerNode(name: "effect")
+        let effectLayer = LayerNode(name: LayerType.effect.keyValue)
         effectLayer.zPosition = 400
         layers[.effect] = effectLayer
         addChild(effectLayer)
@@ -154,6 +159,14 @@ class GameBoard: SKNode {
         if let layer = layers[type] {
             layer.removeChildren(at: tileCoord)
         }
+    }
+    
+    func getAllChildrenByLayersWith(tileCoord: TileCoord) -> [LayerType: [SKNode]] {
+        var nodes = [LayerType:[SKNode]]()
+        for (type, layer) in layers {
+            nodes[type] = layer.nodes(at: tileCoord)
+        }
+        return nodes
     }
     
     func getAllChildrenInLayer(type: LayerType) -> [SKNode] {

@@ -65,7 +65,7 @@ class ActionHUDComponent: SKNode {
     
     
     @objc func basicAttackAction() {
-        gameScene?.shiftSceneTo(state: .readyAttack)
+        gameScene?.sceneState = .readyAttack
     }
     
     @objc func skillMenuAction() {

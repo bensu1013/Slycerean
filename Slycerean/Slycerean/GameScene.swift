@@ -9,6 +9,24 @@
 import SpriteKit
 import GameplayKit
 
+
+/*
+ View        - all visible nodes of the game shown in scene through the gameview
+             - camera
+             - GameScene
+ 
+ Interactor  - game logic that drives everything
+             - takes entities, and derive bare minimal data to give to presenter
+             - PathFinder, gameboard logic
+ Presenter   - layout ui
+             - handles user input
+             - BSGameView , BSGameInputHandler
+ Entity      - GameObjects , units, tiles, all objects
+             - unit, tiles, doodads
+ Routing     - Changing VC's or scenes
+ */
+
+
 /*
  
  GameScene should be central access point for everything else
@@ -95,15 +113,12 @@ class GameScene: SKScene {
         
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        currentActiveUnit?.currentHealthPoints -= 3
-        hudUIHook?.updateUI()
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        currentActiveUnit?.currentHealthPoints -= 3
+//        hudUIHook?.updateUI()
+//    }
     
     override func update(_ currentTime: TimeInterval) {
-//        gameBoard.getAllChildrenInLayerNamed(kLayerNamedFloor).forEach { (node) in
-//            node.isHidden = !camera!.contains(node)
-//        }
 
     }
     
@@ -121,15 +136,37 @@ class GameScene: SKScene {
             prepareSceneFor(unit: player1)
         }
     }
+    
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
+        
+        //taps should be handled in relation to the state of the scene
+        
         let tileCoord = TPConvert.tileCoordForPosition(point)
-        for node in gameBoard.getAllChildrenInLayer(type: .highlight) {
-            if node.name == kObjectHighlightPath {
-                shiftSceneTo(state: .actionMove(tileCoord))
-                return
+        switch sceneState {
+        case .readyMove:
+            if gameBoard.layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
+//                shiftSceneTo(state: .actionMove(tileCoord))
+                self.sceneState = .actionMove(tileCoord)
             }
+            break
+        case .readyAttack:
+            if gameBoard.layer(type: .highlight, hasObjectNamed: "attack", at: tileCoord) {
+//                shiftSceneTo(state: .actionAttack(tileCoord))
+                self.sceneState = .actionAttack(tileCoord)
+            }
+            break
+        default:
+            break
         }
+        
+        
+//        for node in gameBoard.getAllChildrenInLayer(type: .highlight) {
+//            if node.name == kObjectHighlightPath {
+//                shiftSceneTo(state: .actionMove(tileCoord))
+//                return
+//            }
+//        }
     }
     
     private func prepareSceneFor(unit: GameUnit) {
@@ -138,7 +175,8 @@ class GameScene: SKScene {
         hudUIHook?.setupHUDFor(unit: unit)
         actUIHook?.setupHUDFor(scene: self)
         gameCamera.move(to: unit.spriteComponent.position, animated: true)
-        shiftSceneTo(state: .inactive)
+//        shiftSceneTo(state: .inactive)
+        self.sceneState = .inactive
     }
     
     func shiftSceneTo(state: SceneState) {
@@ -152,7 +190,8 @@ class GameScene: SKScene {
             break
         case .actionMove(let tileCoord):
             currentActiveUnit?.moveComponent.moveTo(tileCoord) {
-                self.shiftSceneTo(state: .inactive)
+                self.sceneState = .inactive
+//                self.shiftSceneTo(state: .inactive)
             }
             break
         case .readyAttack:
@@ -160,13 +199,15 @@ class GameScene: SKScene {
             break
         case .actionAttack:
             currentActiveUnit?.attackEventAndDamage {
-                self.shiftSceneTo(state: .inactive)
+//                self.shiftSceneTo(state: .inactive)
+                self.sceneState = .inactive
             }
             break
         case .turnEnd:
             currentActiveUnit?.endTurn()
             currentActiveUnit = nil
-            self.shiftSceneTo(state: .inactive)
+//            self.shiftSceneTo(state: .inactive)
+            self.sceneState = .inactive
             break
         }
     }
@@ -174,9 +215,11 @@ class GameScene: SKScene {
     func stateChangedToInactive() {
         if let unit = currentActiveUnit {
             if unit.hasFinished {
-                self.shiftSceneTo(state: .turnEnd)
+//                self.shiftSceneTo(state: .turnEnd)
+                self.sceneState = .turnEnd
             } else {
-                self.shiftSceneTo(state: .readyMove)
+//                self.shiftSceneTo(state: .readyMove)
+                self.sceneState = .readyMove
             }
         } else {
             nextUnitTurn()
