@@ -169,6 +169,13 @@ class GameBoard: SKNode {
         return nodes
     }
     
+    func getChildrenInLayer(type: LayerType, at tileCoord: TileCoord) -> [SKNode] {
+        if let layer = layers[type] {
+            return layer.nodes(at: tileCoord)
+        }
+        return [SKNode]()
+    }
+    
     func getAllChildrenInLayer(type: LayerType) -> [SKNode] {
         if let layer = layers[type] {
             return layer.children
@@ -193,8 +200,6 @@ extension GameBoard {
         var steps = 0
         // Bootleg way of changing button to have no action
         let mainHighlightTile = HighlightSprite(scene: gameScene, actionType: .attack)
-//        mainHighlightTile.buttonNode.removeFromParent()
-//        mainHighlightTile.buttonNode = nil
         mainHighlightTile.animateBlinking()
         layer(type: .highlight, insert: mainHighlightTile, at: unitPosition)
         
@@ -229,7 +234,7 @@ extension GameBoard {
     
     private func tryInsertWalkPathHighLight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
-            !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+            !layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
             layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .move), at: tileCoord)
             return true
         }
@@ -264,7 +269,7 @@ extension GameBoard {
     
     private func tryInsertAttackPathHighlight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
         if self.isValidAttackingTile(for: tileCoord) &&
-            !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+            !layer(type: .highlight, hasObjectNamed: "attack", at: tileCoord) {
             layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .attack), at: tileCoord)
             return true
         }

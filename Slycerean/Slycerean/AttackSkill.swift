@@ -42,7 +42,7 @@ class BasicAttackSkill: ActivateSkill {
         unit.currentHealthPoints += healthModifier
     }
     func animatedEffect(completion: @escaping ()->()) {
-        
+        completion()
     }
     
 }

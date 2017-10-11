@@ -17,3 +17,4 @@ let kLayerNamedUnit         =  "Unit"
 let kObjectHighlightPath    =  "HightlightPath"
 let kObjectNamedWall        =  "Wall"
 let kObjectNamedFloor       =  "Floor"
+

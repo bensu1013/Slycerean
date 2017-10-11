@@ -65,6 +65,7 @@ class ActionHUDComponent: SKNode {
     
     
     @objc func basicAttackAction() {
+        gameScene?.currentActiveUnit?.chosenSkill = BasicAttackSkill()
         gameScene?.sceneState = .readyAttack
     }
     
@@ -75,7 +76,8 @@ class ActionHUDComponent: SKNode {
     }
     
     @objc func endTurnAction() {
-        gameScene?.shiftSceneTo(state: .turnEnd)
+        gameScene?.currentActiveUnit?.chosenSkill = nil
+        gameScene?.sceneState = .turnEnd
     }
     
 }

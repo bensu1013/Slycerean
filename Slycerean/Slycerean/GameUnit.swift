@@ -42,6 +42,7 @@ class GameUnit {
     var unusedMagicPowers = 2
     var totalMagicPowers = 2
     
+    var chosenSkill: ActivateSkill?
     
     init(scene: GameScene) {
         tileCoord = TileCoord(col: 1, row: 1)
@@ -56,23 +57,25 @@ class GameUnit {
     }
     
     func prepareTurn() {
-        self.hasActed = false
+        hasActed = false
         hasFinished = false
-        self.unusedMovementSteps = totalMovementSteps
+        unusedMovementSteps = totalMovementSteps
     }
     
     func newTurn() {
-        self.hasActed = false
-        self.unusedMovementSteps = totalMovementSteps
+        hasActed = false
+        unusedMovementSteps = totalMovementSteps
     }
     
     func endTurn() {
-        self.hasFinished = true
+        hasFinished = true
     }
 
-    func attackEventAndDamage(completion: @escaping ()->()) {
-        hasActed = true
-        completion()
+    func attackEventAndDamage(units: [GameUnit], completion: @escaping ()->()) {
+        chosenSkill?.useOnUnits(units, completion: {
+            self.hasActed = true
+            completion()
+        })
     }
     
 }
