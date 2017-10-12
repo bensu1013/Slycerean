@@ -242,10 +242,10 @@ extension GameBoard {
     }
     
     func activateTilesForAction(for unit: GameUnit) {
-//        guard let unitAction = unit.selectedAction else {
-//            print("No action found when selection occured")
-//            return
-//        }
+        guard let unitAction = unit.chosenSkill else {
+            print("No skill found when selection occured")
+            return
+        }
         
         let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
         

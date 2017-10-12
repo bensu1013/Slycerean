@@ -113,11 +113,6 @@ class GameScene: SKScene {
         
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        currentActiveUnit?.currentHealthPoints -= 3
-//        hudUIHook?.updateUI()
-//    }
-    
     override func update(_ currentTime: TimeInterval) {
 
     }
@@ -170,8 +165,8 @@ class GameScene: SKScene {
     }
     
     func shiftSceneTo(state: SceneState) {
+        
         gameBoard.deactivateHighlightTiles()
-        hudUIHook?.updateUI()
         switch state {
         case .inactive:
             stateChangedToInactive()
@@ -199,7 +194,7 @@ class GameScene: SKScene {
                 target = player1
             }
             let arTar: [GameUnit] = target != nil ? [target!] : []
-            
+            if arTar.isEmpty { return }
             currentActiveUnit?.attackEventAndDamage(units: arTar) {
                 self.sceneState = .inactive
             }
@@ -211,9 +206,11 @@ class GameScene: SKScene {
             self.sceneState = .inactive
             break
         }
+        
     }
     
     func stateChangedToInactive() {
+        hudUIHook?.updateUI()
         if let unit = currentActiveUnit {
             if unit.hasFinished {
                 self.sceneState = .turnEnd

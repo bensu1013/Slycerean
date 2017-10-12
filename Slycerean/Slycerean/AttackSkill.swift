@@ -17,14 +17,11 @@ protocol ActivateSkill {
 
 class BasicAttackSkill: ActivateSkill {
     
-    var name = "Attack"
+    var name = "BasicAttack"
     // different attack patterns come to mind
     // unit centered with choice of 'breaths'
     // range spaces filled for user to tap to cause aoe
-    var attackPattern = [[1, 1, 1],
-                         [0, 1, 0],
-                         [0, 1, 0],
-                         [0, 9, 0]]
+//    var attackPattern =
     
     /// amount of health change, negative for damage, positive for healing
     var healthModifier = -4
@@ -47,11 +44,24 @@ class BasicAttackSkill: ActivateSkill {
     
 }
 
+enum AttackDirection {
+    // Used to build an attack pattern
+    case up(Int),down(Int),left(Int),right(Int)
+    
+}
 
-struct AttackCoordinate {
+struct BasicAttackPattern {
     
-    
+    /// Array represents an attack pattern
+    let pattern: [AttackDirection] = [.up(2)]
+    let distance: Int = 0
     
     
     
 }
+
+
+
+
+
+
