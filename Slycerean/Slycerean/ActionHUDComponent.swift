@@ -71,7 +71,7 @@ class ActionHUDComponent: SKNode {
     
     @objc func skillMenuAction() {
         // expand menu take skills from
-        // gameScene?.unitTurn?.skills
+//        gameScene?.currentActiveUnit?.equippedSkills
         
     }
     

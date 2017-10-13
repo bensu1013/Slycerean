@@ -207,19 +207,19 @@ extension GameBoard {
             var nextTiles = [TileCoord]()
             for startPos in startTiles {
                 let top = startPos.top
-                if tryInsertWalkPathHighLight(at: top, for: unit) {
+                if tryInsertWalkPathHighLight(at: top) {
                     nextTiles.append(top)
                 }
                 let bottom = startPos.bottom
-                if tryInsertWalkPathHighLight(at: bottom, for: unit) {
+                if tryInsertWalkPathHighLight(at: bottom) {
                     nextTiles.append(bottom)
                 }
                 let left = startPos.left
-                if tryInsertWalkPathHighLight(at: left, for: unit) {
+                if tryInsertWalkPathHighLight(at: left) {
                     nextTiles.append(left)
                 }
                 let right = startPos.right
-                if tryInsertWalkPathHighLight(at: right, for: unit) {
+                if tryInsertWalkPathHighLight(at: right) {
                     nextTiles.append(right)
                 }
             }
@@ -232,7 +232,7 @@ extension GameBoard {
         removeAllChildrenInLayer(type: .highlight)
     }
     
-    private func tryInsertWalkPathHighLight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
+    private func tryInsertWalkPathHighLight(at tileCoord: TileCoord) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
             !layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
             layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .move), at: tileCoord)
@@ -248,26 +248,95 @@ extension GameBoard {
         }
         
         let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
+        let pattern = unitAction.attackPattern
+        let distance = pattern.distance
         
-        let top = unitPosition.top
-        if tryInsertAttackPathHighlight(at: top, for: unit) {
-            
+        var steps = 0
+        var targetTiles = [TileCoord]()
+        if distance > 0 {
+            var checkedTiles = [unitPosition]
+            var startTiles  = [unitPosition]
+            while steps < distance {
+                var nextTiles = [TileCoord]()
+                for startPos in startTiles {
+                    let top = startPos.top
+                    if !checkedTiles.contains(top) {
+                        checkedTiles.append(top)
+                        nextTiles.append(top)
+                        if layer(type: .unit, hasObjectNamed: "Unit", at: top) && isValidAttackingTile(for: top) {
+                            targetTiles.append(top)
+                        }
+                    }
+                    
+                    let bottom = startPos.bottom
+                    if !checkedTiles.contains(bottom) {
+                        checkedTiles.append(bottom)
+                        nextTiles.append(bottom)
+                        if layer(type: .unit, hasObjectNamed: "Unit", at: bottom) && isValidAttackingTile(for: bottom) {
+                            targetTiles.append(bottom)
+                        }
+                    }
+                    let left = startPos.left
+                    if !checkedTiles.contains(left) {
+                        checkedTiles.append(left)
+                        nextTiles.append(left)
+                        if layer(type: .unit, hasObjectNamed: "Unit", at: left) && isValidAttackingTile(for: left) {
+                            targetTiles.append(left)
+                        }
+                    }
+                    let right = startPos.right
+                    if !checkedTiles.contains(right) {
+                        checkedTiles.append(right)
+                        nextTiles.append(right)
+                        if layer(type: .unit, hasObjectNamed: "Unit", at: right) && isValidAttackingTile(for: right) {
+                            targetTiles.append(right)
+                        }
+                    }
+                }
+                startTiles = nextTiles
+                steps += 1
+            }
+        } else {
+            targetTiles.append(unitPosition)
         }
-        let bottom = unitPosition.bottom
-        if tryInsertAttackPathHighlight(at: bottom, for: unit) {
-            
+        
+        
+        for target in targetTiles {
+            switch pattern.pattern {
+            case .point:
+                if tryInsertAttackPathHighlight(at: target) {
+                    
+                }
+                break
+            case .cross(let dist):
+                if tryInsertAttackPathHighlight(at: target) {
+                    
+                }
+                for _ in 1...dist {
+                    if tryInsertAttackPathHighlight(at: target.top) {
+                        
+                    }
+                    if tryInsertAttackPathHighlight(at: target.bottom) {
+                        
+                    }
+                    if tryInsertAttackPathHighlight(at: target.left) {
+                        
+                    }
+                    if tryInsertAttackPathHighlight(at: target.right) {
+                        
+                    }
+                }
+                break
+            case .diamond(let dist):
+                break
+            case .square(let dist):
+                break
+            }
         }
-        let left = unitPosition.left
-        if tryInsertAttackPathHighlight(at: left, for: unit) {
-            
-        }
-        let right = unitPosition.right
-        if tryInsertAttackPathHighlight(at: right, for: unit) {
-            
-        }        
+        
     }
     
-    private func tryInsertAttackPathHighlight(at tileCoord: TileCoord, for unit: GameUnit) -> Bool {
+    private func tryInsertAttackPathHighlight(at tileCoord: TileCoord) -> Bool {
         if self.isValidAttackingTile(for: tileCoord) &&
             !layer(type: .highlight, hasObjectNamed: "attack", at: tileCoord) {
             layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .attack), at: tileCoord)
