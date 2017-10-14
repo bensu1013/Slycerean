@@ -30,6 +30,7 @@
 		FD7A84D41F64D9470060823D /* Level_0.json in Resources */ = {isa = PBXBuildFile; fileRef = FD7A84D31F64D9470060823D /* Level_0.json */; };
 		FD7E94DF1F886D3B00F5B573 /* BSGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7E94DE1F886D3B00F5B573 /* BSGameView.swift */; };
 		FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */; };
+		FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */; };
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
 		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
@@ -67,6 +68,7 @@
 		FD7A84D31F64D9470060823D /* Level_0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_0.json; sourceTree = "<group>"; };
 		FD7E94DE1F886D3B00F5B573 /* BSGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameView.swift; sourceTree = "<group>"; };
 		FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionMap.swift; sourceTree = "<group>"; };
+		FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitLayerNode.swift; sourceTree = "<group>"; };
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
 		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 			children = (
 				FD2B32011F676BB300564150 /* FloorLayerNode.swift */,
 				FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */,
+				FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */,
 				FD2B31FC1F65F82E00564150 /* LayerNode.swift */,
 			);
 			name = LayerNodes;
@@ -291,6 +294,7 @@
 				FD2B31FD1F65F82E00564150 /* LayerNode.swift in Sources */,
 				FD7887931F809FDB003E05CD /* StatusFractionLabelComponent.swift in Sources */,
 				FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */,
+				FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */,
 				FDC80AAA1F8C658A0005C355 /* BSGameSceneManager.swift in Sources */,
 				FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */,
 				FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */,

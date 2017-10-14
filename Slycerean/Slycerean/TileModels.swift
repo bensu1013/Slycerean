@@ -23,24 +23,19 @@ class Tile: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
+enum HighlightType: String {
+    case move, attack
+}
 class HighlightSprite: SKNode {
-    
-    enum ActionType: String {
-        case move, attack
-    }
-    
-    weak var gameScene: GameScene?
     var visualNode: SKSpriteNode!
-    var type: ActionType
+    var type: HighlightType
     
-    init(scene: GameScene, actionType: ActionType) {
-        self.gameScene = scene
-        self.type = actionType
+    init(type: HighlightType) {
+        self.type = type
         
         super.init()
         
-        self.name = actionType.rawValue
+        self.name = type.rawValue
         
         let panelTexture = type == .move ? SKTexture.init(imageNamed: "blue_panel") : SKTexture.init(imageNamed: "red_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))

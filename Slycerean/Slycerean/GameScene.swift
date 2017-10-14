@@ -181,16 +181,14 @@ class GameScene: SKScene {
             
             
             //highlightnodes are being removed too early
-            var highlightTiles: [TileCoord] = []
-            for node in gameBoard.getAllChildrenInLayer(type: .highlight) {
-                highlightTiles.append(TPConvert.tileCoordForPosition(node.position))
-            }
+            let highlightTiles = gameBoard.highlightLayer.getTileTypes
+            
             
             var arTar: [GameUnit] = []
             
-            if highlightTiles.contains(player.tileCoord) {
+            if highlightTiles.contains(where: {$0.tileCoord == player.tileCoord}) {
                 arTar.append(player)
-            } else if highlightTiles.contains(player1.tileCoord) {
+            } else if highlightTiles.contains(where: {$0.tileCoord == player.tileCoord}) {
                 arTar.append(player1)
             }
             

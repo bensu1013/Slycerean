@@ -50,18 +50,22 @@ class GameBoard: SKNode {
     /// Size of each tile
     private var tileSize = CGSize(width: 128, height: 128)
     
-    var collisionMap: CollisionMap!
+    let collisionMap: CollisionMap
 //    var unitActionMenu = UnitActionMenu()
     
     var size: CGSize {
         return CGSize(width: CGFloat(columns) * tileSize.width, height: CGFloat(rows) * tileSize.height)
     }
     
-    var layers = [LayerType : LayerNode]()
+    var floorLayer: FloorLayerNode
+    var doodadLayer: LayerNode
+    var highlightLayer: HighlightLayerNode
+    var unitLayer: UnitLayerNode
+    var effectLayer: LayerNode
     
     init?(scene: GameScene, filename: String) {
-        self.gameScene = scene
-        super.init()
+        gameScene = scene
+        
         
         // logic layer for collisions
         let array = [
@@ -76,42 +80,40 @@ class GameBoard: SKNode {
             0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,
-            0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,
+            0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,
             0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
             0,0,0,0,1,0,0,0,0,0,0,0,0,0,0]
         
-        self.collisionMap = CollisionMap(columns: 15, rows: 15, map: array)
+        collisionMap = CollisionMap(columns: 15, rows: 15, map: array)
         
         // purely graphical layer, shouldn't need collision checks
-        let floorLayer = FloorLayerNode(name: LayerType.floor.keyValue, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
+        floorLayer = FloorLayerNode(name: LayerType.floor.keyValue, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
         floorLayer.zPosition = 0
-        layers[.floor] = floorLayer
-        addChild(floorLayer)
         
         // graphical with potential object interaction checks ( traps? )
-        let doodadLayer = LayerNode(name: LayerType.doodad.keyValue)
+        doodadLayer = LayerNode(name: LayerType.doodad.keyValue)
         doodadLayer.zPosition = 100
-        layers[.doodad] = doodadLayer
-        addChild(doodadLayer)
         
         // selection colors blue / green / red ?
-        let highlightLayer = HighlightLayerNode(name: LayerType.highlight.keyValue)
+        highlightLayer = HighlightLayerNode(name: LayerType.highlight.keyValue)
         highlightLayer.zPosition = 200
-        layers[.highlight] = highlightLayer
-        addChild(highlightLayer)
         
         // actual unit entities on this layer
-        let unitLayer = LayerNode(name: LayerType.unit.keyValue)
+        unitLayer = UnitLayerNode(name: LayerType.unit.keyValue)
         unitLayer.zPosition = 300
-        layers[.unit] = unitLayer
-        addChild(unitLayer)
         
-        let effectLayer = LayerNode(name: LayerType.effect.keyValue)
+        
+        effectLayer = LayerNode(name: LayerType.effect.keyValue)
         effectLayer.zPosition = 400
-        layers[.effect] = effectLayer
+        
+        super.init()
+        
+        addChild(floorLayer)
+        addChild(doodadLayer)
+        addChild(highlightLayer)
+        addChild(unitLayer)
         addChild(effectLayer)
-    
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -136,56 +138,85 @@ class GameBoard: SKNode {
     }
     
     func layer(type: LayerType, isUnoccupiedAt tileCoord: TileCoord) -> Bool {
-        if let layer = layers[type] {
-            return layer.nodes(at: tileCoord).isEmpty
+        switch type {
+        case .floor:
+            return floorLayer.nodes(at: tileCoord).isEmpty
+        case .doodad:
+            return doodadLayer.nodes(at: tileCoord).isEmpty
+        case .highlight:
+            return highlightLayer.nodes(at: tileCoord).isEmpty
+        case .unit:
+            return unitLayer.nodes(at: tileCoord).isEmpty
+        case .effect:
+            return effectLayer.nodes(at: tileCoord).isEmpty
         }
-        return true
     }
     
     func layer(type: LayerType, hasObjectNamed objectName: String, at tileCoord: TileCoord) -> Bool {
-        if let layer = layers[type] {
-            return layer.hasNodeNamed(objectName, atCoord: tileCoord)
+        switch type {
+        case .floor:
+            return floorLayer.hasNodeNamed(objectName, atCoord: tileCoord)
+        case .doodad:
+            return doodadLayer.hasNodeNamed(objectName, atCoord: tileCoord)
+        case .highlight:
+            return highlightLayer.hasNodeNamed(objectName, atCoord: tileCoord)
+        case .unit:
+            return unitLayer.hasNodeNamed(objectName, atCoord: tileCoord)
+        case .effect:
+            return effectLayer.hasNodeNamed(objectName, atCoord: tileCoord)
         }
-        return false
     }
     
     func layer(type: LayerType, insert object: SKNode, at tileCoord: TileCoord) {
-        if let layer = layers[type] {
-            layer.insertSprite(node: object, at: tileCoord)
+        switch type {
+        case .floor:
+            floorLayer.insertSprite(node: object, at: tileCoord)
+        case .doodad:
+            doodadLayer.insertSprite(node: object, at: tileCoord)
+        case .highlight:
+            highlightLayer.insertSprite(node: object, at: tileCoord)
+        case .unit:
+            unitLayer.insertSprite(node: object, at: tileCoord)
+        case .effect:
+            effectLayer.insertSprite(node: object, at: tileCoord)
         }
     }
     
     func layer(type: LayerType, removeObjectAt tileCoord: TileCoord) {
-        if let layer = layers[type] {
-            layer.removeChildren(at: tileCoord)
+        switch type {
+        case .floor:
+            floorLayer.removeChildren(at: tileCoord)
+        case .doodad:
+            doodadLayer.removeChildren(at: tileCoord)
+        case .highlight:
+            highlightLayer.removeChildren(at: tileCoord)
+        case .unit:
+            unitLayer.removeChildren(at: tileCoord)
+        case .effect:
+            effectLayer.removeChildren(at: tileCoord)
         }
     }
     
     func getAllChildrenByLayersWith(tileCoord: TileCoord) -> [LayerType: [SKNode]] {
         var nodes = [LayerType:[SKNode]]()
-        for (type, layer) in layers {
-            nodes[type] = layer.nodes(at: tileCoord)
-        }
+        nodes[.doodad] = floorLayer.nodes(at: tileCoord)
+        nodes[.highlight] = floorLayer.nodes(at: tileCoord)
+        nodes[.unit] = floorLayer.nodes(at: tileCoord)
         return nodes
     }
     
-    func getChildrenInLayer(type: LayerType, at tileCoord: TileCoord) -> [SKNode] {
-        if let layer = layers[type] {
-            return layer.nodes(at: tileCoord)
-        }
-        return [SKNode]()
-    }
-    
-    func getAllChildrenInLayer(type: LayerType) -> [SKNode] {
-        if let layer = layers[type] {
-            return layer.children
-        }
-        return []
-    }
-    
     func removeAllChildrenInLayer(type: LayerType) {
-        if let layer = layers[type] {
-            layer.removeAllChildren()
+        switch type {
+        case .floor:
+            floorLayer.removeAllChildren()
+        case .doodad:
+            doodadLayer.removeAllChildren()
+        case .highlight:
+            highlightLayer.removeAllChildren()
+        case .unit:
+            unitLayer.removeAllChildren()
+        case .effect:
+            effectLayer.removeAllChildren()
         }
     }
     
@@ -199,7 +230,7 @@ extension GameBoard {
         var startTiles = [unitPosition]
         var steps = 0
         // Bootleg way of changing button to have no action
-        let mainHighlightTile = HighlightSprite(scene: gameScene, actionType: .attack)
+        let mainHighlightTile = HighlightSprite(type: .attack)
         mainHighlightTile.animateBlinking()
         layer(type: .highlight, insert: mainHighlightTile, at: unitPosition)
         
@@ -235,7 +266,7 @@ extension GameBoard {
     private func tryInsertWalkPathHighLight(at tileCoord: TileCoord) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
             !layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
-            layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .move), at: tileCoord)
+            layer(type: .highlight, insert: HighlightSprite(type: .move), at: tileCoord)
             return true
         }
         return false
@@ -263,7 +294,7 @@ extension GameBoard {
                     if !checkedTiles.contains(top) {
                         checkedTiles.append(top)
                         nextTiles.append(top)
-                        if layer(type: .unit, hasObjectNamed: "Unit", at: top) && isValidAttackingTile(for: top) {
+                        if unitLayer.hasNodeNamed("Unit", atCoord: top) && isValidAttackingTile(for: top) {
                             targetTiles.append(top)
                         }
                     }
@@ -272,7 +303,7 @@ extension GameBoard {
                     if !checkedTiles.contains(bottom) {
                         checkedTiles.append(bottom)
                         nextTiles.append(bottom)
-                        if layer(type: .unit, hasObjectNamed: "Unit", at: bottom) && isValidAttackingTile(for: bottom) {
+                        if unitLayer.hasNodeNamed("Unit", atCoord: bottom) && isValidAttackingTile(for: bottom) {
                             targetTiles.append(bottom)
                         }
                     }
@@ -280,7 +311,7 @@ extension GameBoard {
                     if !checkedTiles.contains(left) {
                         checkedTiles.append(left)
                         nextTiles.append(left)
-                        if layer(type: .unit, hasObjectNamed: "Unit", at: left) && isValidAttackingTile(for: left) {
+                        if unitLayer.hasNodeNamed("Unit", atCoord: left) && isValidAttackingTile(for: left) {
                             targetTiles.append(left)
                         }
                     }
@@ -288,7 +319,7 @@ extension GameBoard {
                     if !checkedTiles.contains(right) {
                         checkedTiles.append(right)
                         nextTiles.append(right)
-                        if layer(type: .unit, hasObjectNamed: "Unit", at: right) && isValidAttackingTile(for: right) {
+                        if unitLayer.hasNodeNamed("Unit", atCoord: right) && isValidAttackingTile(for: right) {
                             targetTiles.append(right)
                         }
                     }
@@ -304,34 +335,40 @@ extension GameBoard {
         for target in targetTiles {
             switch pattern.pattern {
             case .point:
-                if tryInsertAttackPathHighlight(at: target) {
+                if isValidHighlightTile(at: target) {
                     
                 }
                 break
             case .cross(let dist):
-                if tryInsertAttackPathHighlight(at: target) {
-                    
-                }
+                var highlightTileAndType = [TileAndType]()
+                highlightTileAndType.append((target, .attack))
                 var top = target.top
                 var bottom = target.bottom
                 var left = target.left
                 var right = target.right
+                
 
                 for _ in 1...dist {
                     
-                    if tryInsertAttackPathHighlight(at: top) {
-                        top = top.top
+                    if isValidAttackingTile(for: top) {
+                        highlightTileAndType.append((top, .attack))
                     }
-                    if tryInsertAttackPathHighlight(at: bottom) {
-                        bottom = bottom.bottom
+                    if isValidAttackingTile(for: top) {
+                        highlightTileAndType.append((bottom, .attack))
                     }
-                    if tryInsertAttackPathHighlight(at: left) {
-                        left = left.left
+                    if isValidAttackingTile(for: top) {
+                        highlightTileAndType.append((left, .attack))
                     }
-                    if tryInsertAttackPathHighlight(at: right) {
-                        right = right.right
+                    if isValidAttackingTile(for: top) {
+                        highlightTileAndType.append((right, .attack))
                     }
+                    
+                    top = top.top
+                    bottom = bottom.bottom
+                    left = left.left
+                    right = right.right
                 }
+                highlightLayer.addHighlights(at: highlightTileAndType)
                 break
             case .diamond(let dist):
                 break
@@ -342,13 +379,8 @@ extension GameBoard {
         
     }
     
-    private func tryInsertAttackPathHighlight(at tileCoord: TileCoord) -> Bool {
-        if self.isValidAttackingTile(for: tileCoord) &&
-            !layer(type: .highlight, hasObjectNamed: "attack", at: tileCoord) {
-            layer(type: .highlight, insert: HighlightSprite(scene: gameScene, actionType: .attack), at: tileCoord)
-            return true
-        }
-        return false
+    private func isValidHighlightTile(at tileCoord: TileCoord) -> Bool {
+        return self.isValidAttackingTile(for: tileCoord) && highlightLayer.hasNodeNamed("attack", atCoord: tileCoord)
     }
     
 }
