@@ -11,19 +11,9 @@ import GameplayKit
 
 
 /*
- View        - all visible nodes of the game shown in scene through the gameview
-             - camera
-             - GameScene
+ Observing the view seems to be the wrong approach for this game
  
- Interactor  - game logic that drives everything
-             - takes entities, and derive bare minimal data to give to presenter
-             - PathFinder, gameboard logic
- Presenter   - layout ui
-             - handles user input
-             - BSGameView , BSGameInputHandler
- Entity      - GameObjects , units, tiles, all objects
-             - unit, tiles, doodads
- Routing     - Changing VC's or scenes
+ Arrays of structs should be used more abundantly as states of units or layers
  */
 
 
@@ -165,8 +155,9 @@ class GameScene: SKScene {
     }
     
     func shiftSceneTo(state: SceneState) {
-        
-        gameBoard.deactivateHighlightTiles()
+//        defer {
+            gameBoard.deactivateHighlightTiles()
+//        }
         switch state {
         case .inactive:
             stateChangedToInactive()
@@ -187,13 +178,22 @@ class GameScene: SKScene {
             // figure out units effected
             // resolve event
             // switch state
-            var target: GameUnit?
-            if player.tileCoord == tileCoord {
-                target = player
-            } else if player1.tileCoord == tileCoord {
-                target = player1
+            
+            
+            //highlightnodes are being removed too early
+            var highlightTiles: [TileCoord] = []
+            for node in gameBoard.getAllChildrenInLayer(type: .highlight) {
+                highlightTiles.append(TPConvert.tileCoordForPosition(node.position))
             }
-            let arTar: [GameUnit] = target != nil ? [target!] : []
+            
+            var arTar: [GameUnit] = []
+            
+            if highlightTiles.contains(player.tileCoord) {
+                arTar.append(player)
+            } else if highlightTiles.contains(player1.tileCoord) {
+                arTar.append(player1)
+            }
+            
             if arTar.isEmpty { return }
             currentActiveUnit?.attackEventAndDamage(units: arTar) {
                 self.sceneState = .inactive

@@ -312,18 +312,24 @@ extension GameBoard {
                 if tryInsertAttackPathHighlight(at: target) {
                     
                 }
+                var top = target.top
+                var bottom = target.bottom
+                var left = target.left
+                var right = target.right
+
                 for _ in 1...dist {
-                    if tryInsertAttackPathHighlight(at: target.top) {
-                        
+                    
+                    if tryInsertAttackPathHighlight(at: top) {
+                        top = top.top
                     }
-                    if tryInsertAttackPathHighlight(at: target.bottom) {
-                        
+                    if tryInsertAttackPathHighlight(at: bottom) {
+                        bottom = bottom.bottom
                     }
-                    if tryInsertAttackPathHighlight(at: target.left) {
-                        
+                    if tryInsertAttackPathHighlight(at: left) {
+                        left = left.left
                     }
-                    if tryInsertAttackPathHighlight(at: target.right) {
-                        
+                    if tryInsertAttackPathHighlight(at: right) {
+                        right = right.right
                     }
                 }
                 break

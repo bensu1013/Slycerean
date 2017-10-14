@@ -55,7 +55,7 @@ enum AttackPatternStyle {
 
 struct MeleeAttackPattern: AttackPattern {
     /// Array represents an attack pattern
-    var pattern: AttackPatternStyle = .cross(1)
+    var pattern: AttackPatternStyle = .cross(3)
     var distance: Int = 3
 }
 
