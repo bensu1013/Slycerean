@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TileCoord {
+class TileCoord: Hashable {
     var col: Int
     var row: Int
     init(col: Int, row: Int) {
@@ -38,6 +38,9 @@ class TileCoord {
     }
     var bottomRight: TileCoord {
         return TileCoord(col: col + 1, row: row - 1)
+    }
+    var hashValue: Int {// Szudzik's function to merge two intergers in to a unique hash
+        return col >= row ? col * col + col + row : col + row * row
     }
     func at(direction: Direction) -> TileCoord {
         switch direction {

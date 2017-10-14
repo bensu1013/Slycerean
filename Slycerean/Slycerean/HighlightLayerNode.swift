@@ -9,28 +9,27 @@
 import Foundation
 import SpriteKit
 
-typealias TileAndType = (tileCoord: TileCoord, type: HighlightType)
+typealias TileAndHighlightType = (tileCoord: TileCoord, type: HighlightType)
 
 class HighlightLayerNode: LayerNode {
     
-    private var tileTypes = [TileAndType]()
+    private var groupedHighlightTiles = [TileCoord:[TileAndHighlightType]]()
     
-    var getTileTypes: [TileAndType] {
-        return tileTypes
+    var getGroupedHighlightTiles: [TileCoord:[TileAndHighlightType]] {
+        return groupedHighlightTiles
     }
     
-    func addHighlights(at tileAndTypes: [TileAndType]) {
-        tileTypes = tileAndTypes
-        for tileAndType in tileAndTypes {
+    func addHighlights(at tileCoord: TileCoord, with groupedTiles: [TileAndHighlightType]) {
+        groupedHighlightTiles[tileCoord] = groupedTiles
+        for tileAndType in groupedTiles {
             removeChildren(at: tileAndType.tileCoord)
-            
             let highlight = HighlightSprite(type: tileAndType.type)
             insertSprite(node: highlight, at: tileAndType.tileCoord)
         }
     }
     
     func removeHighlights() {
-        tileTypes.removeAll()
+        groupedHighlightTiles.removeAll()
         removeAllChildren()
     }
     

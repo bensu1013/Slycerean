@@ -340,7 +340,7 @@ extension GameBoard {
                 }
                 break
             case .cross(let dist):
-                var highlightTileAndType = [TileAndType]()
+                var highlightTileAndType = [TileAndHighlightType]()
                 highlightTileAndType.append((target, .attack))
                 var top = target.top
                 var bottom = target.bottom
@@ -353,13 +353,13 @@ extension GameBoard {
                     if isValidAttackingTile(for: top) {
                         highlightTileAndType.append((top, .attack))
                     }
-                    if isValidAttackingTile(for: top) {
+                    if isValidAttackingTile(for: bottom) {
                         highlightTileAndType.append((bottom, .attack))
                     }
-                    if isValidAttackingTile(for: top) {
+                    if isValidAttackingTile(for: left) {
                         highlightTileAndType.append((left, .attack))
                     }
-                    if isValidAttackingTile(for: top) {
+                    if isValidAttackingTile(for: right) {
                         highlightTileAndType.append((right, .attack))
                     }
                     
@@ -368,11 +368,11 @@ extension GameBoard {
                     left = left.left
                     right = right.right
                 }
-                highlightLayer.addHighlights(at: highlightTileAndType)
+                highlightLayer.addHighlights(at: target, with: highlightTileAndType)
                 break
-            case .diamond(let dist):
+            case .diamond( _):
                 break
-            case .square(let dist):
+            case .square( _):
                 break
             }
         }

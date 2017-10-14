@@ -155,9 +155,7 @@ class GameScene: SKScene {
     }
     
     func shiftSceneTo(state: SceneState) {
-//        defer {
-            gameBoard.deactivateHighlightTiles()
-//        }
+        gameBoard.deactivateHighlightTiles()
         switch state {
         case .inactive:
             stateChangedToInactive()
@@ -181,7 +179,12 @@ class GameScene: SKScene {
             
             
             //highlightnodes are being removed too early
-            let highlightTiles = gameBoard.highlightLayer.getTileTypes
+            var highlightTiles = [TileAndHighlightType]()
+            for (key, values) in gameBoard.highlightLayer.getGroupedHighlightTiles {
+                if key == tileCoord {
+                    highlightTiles = values
+                }
+            }
             
             
             var arTar: [GameUnit] = []
