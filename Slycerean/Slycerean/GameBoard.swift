@@ -270,11 +270,10 @@ extension GameBoard {
         }
         return false
     }
-    
-    func activateTilesForAction(for unit: GameUnit) {
+    func getTargetTiles(for unit: GameUnit) -> [TileCoord] {
         guard let unitAction = unit.chosenSkill else {
             print("No skill found when selection occured")
-            return
+            return []
         }
         
         let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
@@ -329,7 +328,18 @@ extension GameBoard {
         } else {
             targetTiles.append(unitPosition)
         }
+        return targetTiles
+    }
+    
+    func activateTilesForAction(for unit: GameUnit) {
+        guard let unitAction = unit.chosenSkill else {
+            print("No skill found when selection occured")
+            return
+        }
         
+        let pattern = unitAction.attackPattern
+        
+        let targetTiles = getTargetTiles(for: unit)
         
         for target in targetTiles {
             switch pattern.pattern {
