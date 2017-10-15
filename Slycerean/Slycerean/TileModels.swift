@@ -24,32 +24,68 @@ class Tile: SKSpriteNode {
     }
 }
 enum HighlightType: String {
-    case move, attack
+    case movementMain, movementStep, targetMain, targetSplash
 }
-class HighlightSprite: SKNode {
+class HighlightSprite: SKSpriteNode {
     var visualNode: SKSpriteNode!
     var type: HighlightType
     
     init(type: HighlightType) {
         self.type = type
-        
-        super.init()
-        
+        super.init(texture: nil, color: .clear, size: CGSize.init(width: 128, height: 128))
+        self.anchorPoint = .zero
         self.name = type.rawValue
-        
-        let panelTexture = type == .move ? SKTexture.init(imageNamed: "blue_panel") : SKTexture.init(imageNamed: "red_panel")
-        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
-        visualNode.alpha = 0.65
-        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
-        self.addChild(visualNode)
+        setupFor(type: type)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func animateBlinking() {
-        
+    private func setupFor(type: HighlightType) {
+        switch type {
+        case .movementMain:
+            setupForMovementMain()
+        case .movementStep:
+            setupForMovementStep()
+        case .targetMain:
+            setupForTargetMain()
+        case .targetSplash:
+            setupForTargetSplash()
+        }
+    }
+    
+    private func setupForMovementMain() {
+        let panelTexture = SKTexture.init(imageNamed: "blue_panel")
+        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
+        visualNode.alpha = 0.65
+        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
+        self.addChild(visualNode)
+        animateBlinking(for: visualNode)
+    }
+    private func setupForMovementStep() {
+        let panelTexture = SKTexture.init(imageNamed: "blue_panel")
+        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
+        visualNode.alpha = 0.65
+        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
+        self.addChild(visualNode)
+    }
+    private func setupForTargetMain() {
+        let panelTexture = SKTexture.init(imageNamed: "red_panel")
+        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
+        visualNode.alpha = 0.65
+        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
+        self.addChild(visualNode)
+        animateBlinking(for: visualNode)
+    }
+    private func setupForTargetSplash() {
+        let panelTexture = SKTexture.init(imageNamed: "green_panel")
+        visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
+        visualNode.alpha = 0.65
+        visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
+        self.addChild(visualNode)
+    }
+    private func animateBlinking(for node: SKNode) {
         if let _ = action(forKey: "blinking") { return }
         
         let sizeDown = SKAction.scale(to: 0.9, duration: 0.2)
@@ -64,8 +100,7 @@ class HighlightSprite: SKNode {
         
         let repeatAction = SKAction.repeatForever(SKAction.sequence([seqDown, seqUp]))
         
-        visualNode?.run(repeatAction, withKey: "blinking")
-        
+        node.run(repeatAction, withKey: "blinking")
     }
     
 }

@@ -130,12 +130,12 @@ class GameScene: SKScene {
         let tileCoord = TPConvert.tileCoordForPosition(point)
         switch sceneState {
         case .readyMove:
-            if gameBoard.layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
+            if gameBoard.layer(type: .highlight, hasObjectNamed: HighlightType.movementStep.rawValue, at: tileCoord) {
                 self.sceneState = .actionMove(tileCoord)
             }
             break
         case .readyAttack:
-            if gameBoard.layer(type: .highlight, hasObjectNamed: "attack", at: tileCoord) {
+            if gameBoard.layer(type: .highlight, hasObjectNamed: HighlightType.targetMain.rawValue, at: tileCoord) {
                 self.sceneState = .actionAttack(tileCoord)
             }
             break
@@ -191,7 +191,8 @@ class GameScene: SKScene {
             
             if highlightTiles.contains(where: {$0.tileCoord == player.tileCoord}) {
                 arTar.append(player)
-            } else if highlightTiles.contains(where: {$0.tileCoord == player.tileCoord}) {
+            }
+            if highlightTiles.contains(where: {$0.tileCoord == player1.tileCoord}) {
                 arTar.append(player1)
             }
             

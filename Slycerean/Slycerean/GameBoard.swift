@@ -230,8 +230,7 @@ extension GameBoard {
         var startTiles = [unitPosition]
         var steps = 0
         // Bootleg way of changing button to have no action
-        let mainHighlightTile = HighlightSprite(type: .attack)
-        mainHighlightTile.animateBlinking()
+        let mainHighlightTile = HighlightSprite(type: .movementMain)
         layer(type: .highlight, insert: mainHighlightTile, at: unitPosition)
         
         while steps < unit.unusedMovementSteps {
@@ -265,8 +264,8 @@ extension GameBoard {
     
     private func tryInsertWalkPathHighLight(at tileCoord: TileCoord) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
-            !layer(type: .highlight, hasObjectNamed: "move", at: tileCoord) {
-            layer(type: .highlight, insert: HighlightSprite(type: .move), at: tileCoord)
+            !layer(type: .highlight, hasObjectNamed: HighlightType.movementStep.rawValue, at: tileCoord) {
+            layer(type: .highlight, insert: HighlightSprite(type: .movementStep), at: tileCoord)
             return true
         }
         return false
@@ -341,7 +340,7 @@ extension GameBoard {
                 break
             case .cross(let dist):
                 var highlightTileAndType = [TileAndHighlightType]()
-                highlightTileAndType.append((target, .attack))
+                highlightTileAndType.append((target, .targetMain))
                 var top = target.top
                 var bottom = target.bottom
                 var left = target.left
@@ -351,16 +350,16 @@ extension GameBoard {
                 for _ in 1...dist {
                     
                     if isValidAttackingTile(for: top) {
-                        highlightTileAndType.append((top, .attack))
+                        highlightTileAndType.append((top, .targetSplash))
                     }
                     if isValidAttackingTile(for: bottom) {
-                        highlightTileAndType.append((bottom, .attack))
+                        highlightTileAndType.append((bottom, .targetSplash))
                     }
                     if isValidAttackingTile(for: left) {
-                        highlightTileAndType.append((left, .attack))
+                        highlightTileAndType.append((left, .targetSplash))
                     }
                     if isValidAttackingTile(for: right) {
-                        highlightTileAndType.append((right, .attack))
+                        highlightTileAndType.append((right, .targetSplash))
                     }
                     
                     top = top.top
