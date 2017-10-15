@@ -270,21 +270,15 @@ extension GameBoard {
         }
         return false
     }
-    func getTargetTiles(for unit: GameUnit) -> [TileCoord] {
-        guard let unitAction = unit.chosenSkill else {
-            print("No skill found when selection occured")
-            return []
-        }
+    func searchForTargetTiles(beginningAt tileCoord: TileCoord, with skill: ActivatableSkill) -> [TileCoord] {
         
-        let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
-        let pattern = unitAction.attackPattern
-        let distance = pattern.distance
+        let distance = skill.attackPattern.distance
         
         var steps = 0
         var targetTiles = [TileCoord]()
         if distance > 0 {
-            var checkedTiles = [unitPosition]
-            var startTiles  = [unitPosition]
+            var checkedTiles = [tileCoord]
+            var startTiles  = [tileCoord]
             while steps < distance {
                 var nextTiles = [TileCoord]()
                 for startPos in startTiles {
@@ -326,58 +320,60 @@ extension GameBoard {
                 steps += 1
             }
         } else {
-            targetTiles.append(unitPosition)
+            targetTiles.append(tileCoord)
         }
         return targetTiles
     }
-    
+    func createTileCoordsForCross(with range: Int, startingAt targetCoord: TileCoord) -> [TileAndHighlightType] {
+        var tileAndHighlightType = [TileAndHighlightType]()
+        tileAndHighlightType.append((targetCoord, .targetMain))
+        var top = targetCoord.top
+        var bottom = targetCoord.bottom
+        var left = targetCoord.left
+        var right = targetCoord.right
+        
+        
+        for _ in 1...range {
+            
+            if isValidAttackingTile(for: top) {
+                tileAndHighlightType.append((top, .targetSplash))
+            }
+            if isValidAttackingTile(for: bottom) {
+                tileAndHighlightType.append((bottom, .targetSplash))
+            }
+            if isValidAttackingTile(for: left) {
+                tileAndHighlightType.append((left, .targetSplash))
+            }
+            if isValidAttackingTile(for: right) {
+                tileAndHighlightType.append((right, .targetSplash))
+            }
+            
+            top = top.top
+            bottom = bottom.bottom
+            left = left.left
+            right = right.right
+        }
+        return tileAndHighlightType
+    }
     func activateTilesForAction(for unit: GameUnit) {
         guard let unitAction = unit.chosenSkill else {
             print("No skill found when selection occured")
             return
         }
         
-        let pattern = unitAction.attackPattern
+        let startCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
+        let targetTiles = searchForTargetTiles(beginningAt: startCoord, with: unitAction)
         
-        let targetTiles = getTargetTiles(for: unit)
-        
-        for target in targetTiles {
-            switch pattern.pattern {
+        for targetCoord in targetTiles {
+            switch unitAction.attackPattern.pattern {
             case .point:
-                if isValidHighlightTile(at: target) {
+                if isValidHighlightTile(at: targetCoord) {
                     
                 }
                 break
-            case .cross(let dist):
-                var highlightTileAndType = [TileAndHighlightType]()
-                highlightTileAndType.append((target, .targetMain))
-                var top = target.top
-                var bottom = target.bottom
-                var left = target.left
-                var right = target.right
-                
-
-                for _ in 1...dist {
-                    
-                    if isValidAttackingTile(for: top) {
-                        highlightTileAndType.append((top, .targetSplash))
-                    }
-                    if isValidAttackingTile(for: bottom) {
-                        highlightTileAndType.append((bottom, .targetSplash))
-                    }
-                    if isValidAttackingTile(for: left) {
-                        highlightTileAndType.append((left, .targetSplash))
-                    }
-                    if isValidAttackingTile(for: right) {
-                        highlightTileAndType.append((right, .targetSplash))
-                    }
-                    
-                    top = top.top
-                    bottom = bottom.bottom
-                    left = left.left
-                    right = right.right
-                }
-                highlightLayer.addHighlights(at: target, with: highlightTileAndType)
+            case .cross(let range):
+                let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)
+                highlightLayer.addHighlights(at: targetCoord, with: tileAndHighlightType)
                 break
             case .diamond( _):
                 break
