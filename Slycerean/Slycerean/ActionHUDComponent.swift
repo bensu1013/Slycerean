@@ -39,7 +39,7 @@ class ActionHUDComponent: SKNode {
         skillMenuButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(skillMenuAction))
         skillMenuButton.size = CGSize(width: 128, height: 128)
         skillMenuButton.anchorPoint = CGPoint(x: 0, y: 1)
-        skillMenuButton.position = CGPoint(x: 30, y: -188)//-(basicAttackButton.position.y + basicAttackButton.size.height + 30))
+        skillMenuButton.position = CGPoint(x: 30, y: -188)//basicAttackButton.position.y - basicAttackButton.size.height - 30)
         actionButtons.append(skillMenuButton)
         addChild(skillMenuButton)
         
@@ -72,7 +72,10 @@ class ActionHUDComponent: SKNode {
     @objc func skillMenuAction() {
         // expand menu take skills from
 //        gameScene?.currentActiveUnit?.equippedSkills
-        
+        let skills = gameScene?.currentActiveUnit?.equippedSkills
+        for _ in skills! {
+            
+        }
     }
     
     @objc func endTurnAction() {

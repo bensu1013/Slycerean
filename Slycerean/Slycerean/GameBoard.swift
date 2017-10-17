@@ -270,7 +270,7 @@ extension GameBoard {
         }
         return false
     }
-    func searchForTargetTiles(beginningAt tileCoord: TileCoord, with skill: ActivatableSkill) -> [TileCoord] {
+    func searchForTargetTiles(beginningAt tileCoord: TileCoord, with skill: BSActivatableSkill) -> [TileCoord] {
         
         let distance = skill.attackPattern.distance
         
@@ -367,9 +367,7 @@ extension GameBoard {
         for targetCoord in targetTiles {
             switch unitAction.attackPattern.pattern {
             case .point:
-                if isValidHighlightTile(at: targetCoord) {
-                    
-                }
+                highlightLayer.addHighlights(at: targetCoord, with: [(targetCoord, .targetMain)])
                 break
             case .cross(let range):
                 let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)

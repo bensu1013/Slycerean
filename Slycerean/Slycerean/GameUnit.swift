@@ -42,15 +42,15 @@ class GameUnit {
     var unusedMagicPowers = 2
     var totalMagicPowers = 2
     
-    var chosenSkill: ActivatableSkill?
-    var equippedSkills = [ActivatableSkill]()
+    var chosenSkill: BSActivatableSkill?
+    var equippedSkills = [BSActivatableSkill]()
     
     init(scene: GameScene) {
         tileCoord = TileCoord(col: 1, row: 1)
         self.scene = scene
         moveComponent = MoveComponent(for: self, in: scene)
         spriteComponent = SpriteComponent(unit: self)
-        equippedSkills.append(BasicAttackSkill())
+        equippedSkills.append(BSFireballSkill())
     }
     
     required init?(coder aDecoder: NSCoder) {

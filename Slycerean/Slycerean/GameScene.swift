@@ -54,12 +54,10 @@ class GameScene: SKScene {
     }
     
     var gameBoard: GameBoard!
-    var player: GameUnit!
-    var player1: GameUnit!
+
     var gameCamera: GameCamera!
-    
-    var entities = [GKEntity]()
-    var tempTurnIndex = 1
+    var unitEntities = [GameUnit]()
+    var tempTurnIndex = 0
     
     var hudUIHook: UnitHUDComponent?
     var actUIHook: ActionHUDComponent?
@@ -88,19 +86,26 @@ class GameScene: SKScene {
         gameBoard = GameBoard(scene: self, filename: "Level_0")
         addChild(gameBoard)
         
-        player = GameUnit(scene: self)
+        let player = GameUnit(scene: self)
         player.spriteComponent.isUserInteractionEnabled = false
         player.tileCoord = TileCoord(col: 0, row: 2)
         player.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: player.spriteComponent, at: player.tileCoord)
+        unitEntities.append(player)
         
-        player1 = GameUnit(scene: self)
+        let player1 = GameUnit(scene: self)
         player1.spriteComponent.isUserInteractionEnabled = false
         player1.tileCoord = TileCoord(col: 2, row: 2)
         player1.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: player1.spriteComponent, at: player1.tileCoord)
+        unitEntities.append(player1)
         
-        
+        let player2 = GameUnit(scene: self)
+        player2.spriteComponent.isUserInteractionEnabled = false
+        player2.tileCoord = TileCoord(col: 5, row: 5)
+        player2.spriteComponent.anchorPoint = CGPoint.zero
+        gameBoard.layer(type: .unit, insert: player2.spriteComponent, at: player2.tileCoord)
+        unitEntities.append(player2)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -113,13 +118,8 @@ class GameScene: SKScene {
         self.camera = gameCamera
     }
     func nextUnitTurn() {
-        if tempTurnIndex == 0 {
-            tempTurnIndex = 1
-            prepareSceneFor(unit: player)
-        } else {
-            tempTurnIndex = 0
-            prepareSceneFor(unit: player1)
-        }
+        prepareSceneFor(unit: unitEntities[tempTurnIndex])
+        tempTurnIndex = tempTurnIndex + 1 >= unitEntities.count ? 0 : tempTurnIndex + 1
     }
     
     // taprecognizer of view sent to scene to process
@@ -189,11 +189,10 @@ class GameScene: SKScene {
             
             var arTar: [GameUnit] = []
             
-            if highlightTiles.contains(where: {$0.tileCoord == player.tileCoord}) {
-                arTar.append(player)
-            }
-            if highlightTiles.contains(where: {$0.tileCoord == player1.tileCoord}) {
-                arTar.append(player1)
+            for unitEntity in unitEntities {
+                if highlightTiles.contains(where: {$0.tileCoord == unitEntity.tileCoord}) {
+                    arTar.append(unitEntity)
+                }
             }
             
             if arTar.isEmpty { return }

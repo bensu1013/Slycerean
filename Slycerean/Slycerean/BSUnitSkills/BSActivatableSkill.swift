@@ -8,19 +8,20 @@
 
 import Foundation
 
-protocol ActivatableSkill {
-    var attackPattern: AttackPattern { get set }
+protocol BSActivatableSkill {
+    var attackPattern: BSAttackPattern { get set }
+    
     func useOnUnits(_ units: [GameUnit], completion: @escaping()->())
     // targeted unit be effected dependant on skill used
     func effectOnUnit(_ unit: GameUnit)
     func animatedEffect(completion: @escaping ()->())
 }
 
-class BasicAttackSkill: ActivatableSkill {
+class BasicAttackSkill: BSActivatableSkill {
     
     var name = "BasicAttack"
 
-    var attackPattern: AttackPattern = MeleeAttackPattern()
+    var attackPattern = BSAttackPattern.init(pattern: .point, distance: 1)
     
     /// amount of health change, negative for damage, positive for healing
     var healthModifier = -4
@@ -34,35 +35,18 @@ class BasicAttackSkill: ActivatableSkill {
             completion()
         }
     }
+    
     func effectOnUnit(_ unit: GameUnit) {
         unit.currentHealthPoints += healthModifier
     }
+    
     func animatedEffect(completion: @escaping ()->()) {
         completion()
     }
     
 }
 
-protocol AttackPattern {
-    var pattern: AttackPatternStyle { get set }
-    var distance: Int { get set }
-}
 
-enum AttackPatternStyle {
-    // Used to build an attack pattern
-    case cross(Int),square(Int),diamond(Int),point
-}
-
-struct MeleeAttackPattern: AttackPattern {
-    /// Array represents an attack pattern
-    var pattern: AttackPatternStyle = .cross(3)
-    var distance: Int = 3
-}
-
-struct RangeAttackPattern: AttackPattern {
-    var pattern: AttackPatternStyle = .point
-    var distance: Int = 5
-}
 
 
 
