@@ -45,6 +45,8 @@ class GameUnit {
     var chosenSkill: BSActivatableSkill?
     var equippedSkills = [BSActivatableSkill]()
     
+    var battleTeam: BattleTeam = .neutral
+    
     init(scene: GameScene) {
         tileCoord = TileCoord(col: 1, row: 1)
         self.scene = scene
@@ -60,11 +62,6 @@ class GameUnit {
     func prepareTurn() {
         hasActed = false
         hasFinished = false
-        unusedMovementSteps = totalMovementSteps
-    }
-    
-    func newTurn() {
-        hasActed = false
         unusedMovementSteps = totalMovementSteps
     }
     

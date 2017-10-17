@@ -15,8 +15,12 @@ class GameViewController: UIViewController {
     var skView: SKView!
     var hud: UnitHUDComponent!
     var acthud: ActionHUDComponent!
+    var confirmhud: ConfirmationHUDComponent!
     var gameScene: GameScene!
     var gameCamera: GameCamera!
+    
+
+    
     /// Gesture recognizer to recognize double taps
     public var sceneTappedGesture: UITapGestureRecognizer!
     
@@ -36,6 +40,7 @@ class GameViewController: UIViewController {
         
         hud = UnitHUDComponent(size: CGSize(width: sceneWidth / 3, height: sceneHeight / 4))
         acthud = ActionHUDComponent()
+        confirmhud = ConfirmationHUDComponent()
         
         skView = SKView(frame: view.frame)
         view.addSubview(skView)
@@ -43,11 +48,22 @@ class GameViewController: UIViewController {
         gameCamera = GameCamera(view: skView, scene: gameScene)
         gameCamera.overlay.addChild(hud)
         gameCamera.overlay.addChild(acthud)
+        gameCamera.overlay.addChild(confirmhud)
+        
         gameScene.setupCamera(gameCamera)
         gameScene.hudUIHook = hud
         gameScene.actUIHook = acthud
+        gameScene.confirmUIHook = confirmhud
+        
         hud.position = CGPoint(x: -sceneWidth/2, y: sceneHeight/2)
         acthud.position = CGPoint(x: -sceneWidth/2, y: hud.position.y - hud.size.height)
+        confirmhud.position = .zero
+        
+        
+        
+        
+        
+        
         
         skView.presentScene(gameScene)
         skView.ignoresSiblingOrder = true
@@ -79,6 +95,22 @@ class GameViewController: UIViewController {
             let scenePoint = gameScene.convertPoint(fromView: location)
             let cameraPoint = gameScene.convert(scenePoint, to: acthud)
 //            let cameraPoint = gameCamera.overlay.convert(location, to: gameCamera.overlay)
+            
+            let confirmPoint = gameScene.convert(scenePoint, to: confirmhud)
+            if gameScene.isConfirming {
+                if confirmhud.cancelNode.contains(confirmPoint) {
+                    gameScene?.sceneState = .readyMove
+                    gameScene?.isConfirming = false
+                    confirmhud.isHidden = true
+                } else if confirmhud.confirmNode.contains(confirmPoint) {
+                    gameScene?.sceneState = .actionMove(gameScene.desiredMoveTile!)
+                    gameScene?.desiredMoveTile = nil
+                    gameScene?.isConfirming = false
+                    confirmhud.isHidden = true
+                }
+                return
+            }
+            
             for node in acthud.actionButtons {
                 if node.contains(cameraPoint) {
                     UIApplication.shared.sendAction(node.actionTouchUpInside!,

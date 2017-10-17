@@ -61,8 +61,11 @@ class GameScene: SKScene {
     
     var hudUIHook: UnitHUDComponent?
     var actUIHook: ActionHUDComponent?
-    
+    var confirmUIHook: ConfirmationHUDComponent?
     var currentActiveUnit: GameUnit?
+    
+    var isConfirming = false
+    var desiredMoveTile: TileCoord?
     
     var userTurn: Bool = true {
         didSet {
@@ -131,7 +134,12 @@ class GameScene: SKScene {
         switch sceneState {
         case .readyMove:
             if gameBoard.layer(type: .highlight, hasObjectNamed: HighlightType.movementStep.rawValue, at: tileCoord) {
-                self.sceneState = .actionMove(tileCoord)
+//                self.sceneState = .actionMove(tileCoord)
+                gameBoard.removeAllChildrenInLayer(type: .highlight)
+                gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
+                confirmUIHook?.isHidden = false
+                isConfirming = true
+                desiredMoveTile = tileCoord
             }
             break
         case .readyAttack:
