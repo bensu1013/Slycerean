@@ -61,10 +61,6 @@ class GameViewController: UIViewController {
         
         
         
-        
-        
-        
-        
         skView.presentScene(gameScene)
         skView.ignoresSiblingOrder = true
         skView.showsFPS = true
@@ -101,12 +97,12 @@ class GameViewController: UIViewController {
                 if confirmhud.cancelNode.contains(confirmPoint) {
                     gameScene?.sceneState = .readyMove
                     gameScene?.isConfirming = false
-                    confirmhud.isHidden = true
+                    confirmhud.cancelTapped()
                 } else if confirmhud.confirmNode.contains(confirmPoint) {
                     gameScene?.sceneState = .actionMove(gameScene.desiredMoveTile!)
                     gameScene?.desiredMoveTile = nil
                     gameScene?.isConfirming = false
-                    confirmhud.isHidden = true
+                    confirmhud.confirmTapped()
                 }
                 return
             }

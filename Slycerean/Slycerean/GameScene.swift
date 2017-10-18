@@ -23,7 +23,6 @@ import GameplayKit
  HUD should relay any inputs to the scene to handle
  A turn are parts of the scene and how it is displayed
  
- 
  In the event a new unit is chosen to take its turn
  - update HUD with unit
  @ Default State
@@ -59,9 +58,9 @@ class GameScene: SKScene {
     var unitEntities = [GameUnit]()
     var tempTurnIndex = 0
     
-    var hudUIHook: UnitHUDComponent?
-    var actUIHook: ActionHUDComponent?
-    var confirmUIHook: ConfirmationHUDComponent?
+    weak var hudUIHook: UnitHUDComponent?
+    weak var actUIHook: ActionHUDComponent?
+    weak var confirmUIHook: ConfirmationHUDComponent?
     var currentActiveUnit: GameUnit?
     
     var isConfirming = false
@@ -137,7 +136,7 @@ class GameScene: SKScene {
 //                self.sceneState = .actionMove(tileCoord)
                 gameBoard.removeAllChildrenInLayer(type: .highlight)
                 gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
-                confirmUIHook?.isHidden = false
+                confirmUIHook?.showAlert(titled: "Move To This Location?")
                 isConfirming = true
                 desiredMoveTile = tileCoord
             }
@@ -150,7 +149,6 @@ class GameScene: SKScene {
         default:
             break
         }
-        
     }
     
     private func prepareSceneFor(unit: GameUnit) {
@@ -218,7 +216,7 @@ class GameScene: SKScene {
         
     }
     
-    func stateChangedToInactive() {
+    private func stateChangedToInactive() {
         hudUIHook?.updateUI()
         if let unit = currentActiveUnit {
             if unit.hasFinished {
@@ -231,7 +229,7 @@ class GameScene: SKScene {
         }
     }
     
-    func stateChangedToReadyMove() {
+    private func stateChangedToReadyMove() {
         gameBoard.activateTilesForMovement(for: currentActiveUnit!)
     }
     
