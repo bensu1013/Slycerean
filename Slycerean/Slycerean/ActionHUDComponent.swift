@@ -63,7 +63,7 @@ class ActionHUDComponent: SKNode {
         
     }
     
-    func tryTappingButton(onPoint point: CGPoint) -> Bool{
+    func tryTappingButton(onPoint point: CGPoint) -> Bool {
         for button in actionButtons {
             if button.contains(point) {
                 UIApplication.shared.sendAction(button.actionTouchUpInside!,

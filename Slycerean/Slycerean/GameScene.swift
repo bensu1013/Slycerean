@@ -58,9 +58,7 @@ class GameScene: SKScene {
     var unitEntities = [GameUnit]()
     var tempTurnIndex = 0
     
-    weak var hudUIHook: UnitHUDComponent?
-    weak var actUIHook: ActionHUDComponent?
-    weak var confirmUIHook: ConfirmationHUDComponent?
+    weak var gameHud: BSGameHUD?
     var currentActiveUnit: GameUnit?
     
     var isConfirming = false
@@ -127,10 +125,11 @@ class GameScene: SKScene {
     
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
+        guard let gameHud = gameHud else { return }
         
         // cameraPoint isnt converting, need to look in to.
-        let cameraPoint = self.convert(point, to: actUIHook!)
-        if actUIHook?.tryTappingButton(onPoint: cameraPoint) ?? false {
+        let cameraPoint = self.convert(point, to: gameHud.actionMenuComponent)
+        if gameHud.tryActionWithTap(on: cameraPoint) {
             return
         }
         
@@ -143,17 +142,13 @@ class GameScene: SKScene {
                 sceneState = .confirmMove(tileCoord)
             }
             break
-        case .confirmMove:
-            let confirmPoint = self.convert(point, to: confirmUIHook!)
-            if confirmUIHook!.cancelNode.contains(confirmPoint) {
+        case .confirmMove(let tileCoord):
+            let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
+            guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
+            if tapped {
+                sceneState = .actionMove(tileCoord)
+            } else {
                 sceneState = .readyMove
-                isConfirming = false
-                confirmUIHook?.cancelTapped()
-            } else if confirmUIHook!.confirmNode.contains(confirmPoint) {
-                sceneState = .actionMove(desiredMoveTile!)
-                desiredMoveTile = nil
-                isConfirming = false
-                confirmUIHook?.confirmTapped()
             }
             break
         case .readyAttack:
@@ -169,8 +164,8 @@ class GameScene: SKScene {
     private func prepareSceneFor(unit: GameUnit) {
         currentActiveUnit = unit
         unit.prepareTurn()
-        hudUIHook?.setupHUDFor(unit: unit)
-        actUIHook?.setupHUDFor(scene: self)
+        gameHud?.setSelectedUnitHud(with: unit)
+        gameHud?.setGameScene(self)
         gameCamera.move(to: unit.spriteComponent.position, animated: true)
         self.sceneState = .inactive
     }
@@ -185,13 +180,11 @@ class GameScene: SKScene {
             stateChangedToReadyMove()
             break
         case .confirmMove(let tileCoord):
-            
             gameBoard.removeAllChildrenInLayer(type: .highlight)
             gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
-            confirmUIHook?.showAlert(titled: "Move To This Location?")
+            gameHud?.showConfirmation(with: "Move to this location?")
             isConfirming = true
             desiredMoveTile = tileCoord
-            
             break
         case .actionMove(let tileCoord):
             currentActiveUnit?.moveComponent.moveTo(tileCoord) {
@@ -243,7 +236,7 @@ class GameScene: SKScene {
     }
     
     private func stateChangedToInactive() {
-        hudUIHook?.updateUI()
+        gameHud?.updateUI()
         if let unit = currentActiveUnit {
             if unit.hasFinished {
                 self.sceneState = .turnEnd

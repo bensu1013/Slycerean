@@ -60,6 +60,19 @@ class ConfirmationHUDComponent: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Three cases for yes, no or didnt tap
+    func tryConfirmWithTap(on point: CGPoint) -> Bool? {
+        if cancelNode.contains(point) {
+            cancelTapped()
+            return false
+        }
+        if confirmNode.contains(point) {
+            confirmTapped()
+            return true
+        }
+        return nil
+    }
+    
     func cancelTapped() {
         cancelNode.run(popBounceAction())
     }

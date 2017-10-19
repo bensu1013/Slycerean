@@ -13,9 +13,7 @@ import GameplayKit
 class GameViewController: UIViewController {
     
     var skView: SKView!
-    var hud: UnitHUDComponent!
-    var acthud: ActionHUDComponent!
-    var confirmhud: ConfirmationHUDComponent!
+    var gameHud: BSGameHUD!
     var gameScene: GameScene!
     var gameCamera: GameCamera!
     
@@ -38,28 +36,16 @@ class GameViewController: UIViewController {
         gameScene = GameScene.init(size: CGSize(width: sceneWidth, height: sceneHeight))
         gameScene.scaleMode = .aspectFill
         
-        hud = UnitHUDComponent(size: CGSize(width: sceneWidth / 3, height: sceneHeight / 4))
-        acthud = ActionHUDComponent()
-        confirmhud = ConfirmationHUDComponent()
+        gameHud = BSGameHUD(gameSceneSize: CGSize(width: sceneWidth, height: sceneHeight))
         
         skView = SKView(frame: view.frame)
         view.addSubview(skView)
         
         gameCamera = GameCamera(view: skView, scene: gameScene)
-        gameCamera.overlay.addChild(hud)
-        gameCamera.overlay.addChild(acthud)
-        gameCamera.overlay.addChild(confirmhud)
+        gameCamera.overlay.addChild(gameHud)
         
         gameScene.setupCamera(gameCamera)
-        gameScene.hudUIHook = hud
-        gameScene.actUIHook = acthud
-        gameScene.confirmUIHook = confirmhud
-        
-        hud.position = CGPoint(x: -sceneWidth/2, y: sceneHeight/2)
-        acthud.position = CGPoint(x: -sceneWidth/2, y: hud.position.y - hud.size.height)
-        confirmhud.position = .zero
-        
-        
+        gameScene.gameHud = gameHud
         
         skView.presentScene(gameScene)
         skView.ignoresSiblingOrder = true
