@@ -63,6 +63,17 @@ class ActionHUDComponent: SKNode {
         
     }
     
+    func tryTappingButton(onPoint point: CGPoint) -> Bool{
+        for button in actionButtons {
+            if button.contains(point) {
+                UIApplication.shared.sendAction(button.actionTouchUpInside!,
+                                                to: button.targetTouchUpInside,
+                                                from: button, for: nil)
+                return true
+            }
+        }
+        return false
+    }
     
     @objc func basicAttackAction() {
         gameScene?.currentActiveUnit?.chosenSkill = BasicAttackSkill()

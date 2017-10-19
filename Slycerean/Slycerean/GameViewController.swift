@@ -87,34 +87,7 @@ class GameViewController: UIViewController {
             
             let location = recognizer.location(in: skView)
             
-            // cameraPoint isnt converting, need to look in to.
             let scenePoint = gameScene.convertPoint(fromView: location)
-            let cameraPoint = gameScene.convert(scenePoint, to: acthud)
-//            let cameraPoint = gameCamera.overlay.convert(location, to: gameCamera.overlay)
-            
-            let confirmPoint = gameScene.convert(scenePoint, to: confirmhud)
-            if gameScene.isConfirming {
-                if confirmhud.cancelNode.contains(confirmPoint) {
-                    gameScene?.sceneState = .readyMove
-                    gameScene?.isConfirming = false
-                    confirmhud.cancelTapped()
-                } else if confirmhud.confirmNode.contains(confirmPoint) {
-                    gameScene?.sceneState = .actionMove(gameScene.desiredMoveTile!)
-                    gameScene?.desiredMoveTile = nil
-                    gameScene?.isConfirming = false
-                    confirmhud.confirmTapped()
-                }
-                return
-            }
-            
-            for node in acthud.actionButtons {
-                if node.contains(cameraPoint) {
-                    UIApplication.shared.sendAction(node.actionTouchUpInside!,
-                                                    to: node.targetTouchUpInside,
-                                                    from: node, for: nil)
-                    return
-                }
-            }
             
             gameScene?.tapped(at: scenePoint)
             

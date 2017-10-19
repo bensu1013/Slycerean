@@ -119,6 +119,7 @@ class GameScene: SKScene {
         self.addChild(gameCamera)
         self.camera = gameCamera
     }
+    
     func nextUnitTurn() {
         prepareSceneFor(unit: unitEntities[tempTurnIndex])
         tempTurnIndex = tempTurnIndex + 1 >= unitEntities.count ? 0 : tempTurnIndex + 1
@@ -126,6 +127,28 @@ class GameScene: SKScene {
     
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
+        
+        let confirmPoint = self.convert(point, to: confirmUIHook!)
+        if isConfirming {
+            if confirmUIHook!.cancelNode.contains(confirmPoint) {
+                sceneState = .readyMove
+                isConfirming = false
+                confirmUIHook?.cancelTapped()
+            } else if confirmUIHook!.confirmNode.contains(confirmPoint) {
+                sceneState = .actionMove(desiredMoveTile!)
+                desiredMoveTile = nil
+                isConfirming = false
+                confirmUIHook?.confirmTapped()
+            }
+            return
+        }
+        
+        // cameraPoint isnt converting, need to look in to.
+        let cameraPoint = self.convert(point, to: actUIHook!)
+        
+        if actUIHook?.tryTappingButton(onPoint: cameraPoint) ?? false {
+            return
+        }
         
         //taps should be handled in relation to the state of the scene
         
