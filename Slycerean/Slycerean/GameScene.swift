@@ -41,7 +41,7 @@ import GameplayKit
 
 
 enum SceneState {
-    case inactive, readyMove, actionMove(TileCoord), readyAttack, actionAttack(TileCoord), turnEnd
+    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack(TileCoord), actionAttack(TileCoord), turnEnd
 }
 
 class GameScene: SKScene {
@@ -128,24 +128,8 @@ class GameScene: SKScene {
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
         
-        let confirmPoint = self.convert(point, to: confirmUIHook!)
-        if isConfirming {
-            if confirmUIHook!.cancelNode.contains(confirmPoint) {
-                sceneState = .readyMove
-                isConfirming = false
-                confirmUIHook?.cancelTapped()
-            } else if confirmUIHook!.confirmNode.contains(confirmPoint) {
-                sceneState = .actionMove(desiredMoveTile!)
-                desiredMoveTile = nil
-                isConfirming = false
-                confirmUIHook?.confirmTapped()
-            }
-            return
-        }
-        
         // cameraPoint isnt converting, need to look in to.
         let cameraPoint = self.convert(point, to: actUIHook!)
-        
         if actUIHook?.tryTappingButton(onPoint: cameraPoint) ?? false {
             return
         }
@@ -156,12 +140,20 @@ class GameScene: SKScene {
         switch sceneState {
         case .readyMove:
             if gameBoard.layer(type: .highlight, hasObjectNamed: HighlightType.movementStep.rawValue, at: tileCoord) {
-//                self.sceneState = .actionMove(tileCoord)
-                gameBoard.removeAllChildrenInLayer(type: .highlight)
-                gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
-                confirmUIHook?.showAlert(titled: "Move To This Location?")
-                isConfirming = true
-                desiredMoveTile = tileCoord
+                sceneState = .confirmMove(tileCoord)
+            }
+            break
+        case .confirmMove:
+            let confirmPoint = self.convert(point, to: confirmUIHook!)
+            if confirmUIHook!.cancelNode.contains(confirmPoint) {
+                sceneState = .readyMove
+                isConfirming = false
+                confirmUIHook?.cancelTapped()
+            } else if confirmUIHook!.confirmNode.contains(confirmPoint) {
+                sceneState = .actionMove(desiredMoveTile!)
+                desiredMoveTile = nil
+                isConfirming = false
+                confirmUIHook?.confirmTapped()
             }
             break
         case .readyAttack:
@@ -192,6 +184,15 @@ class GameScene: SKScene {
         case .readyMove:
             stateChangedToReadyMove()
             break
+        case .confirmMove(let tileCoord):
+            
+            gameBoard.removeAllChildrenInLayer(type: .highlight)
+            gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
+            confirmUIHook?.showAlert(titled: "Move To This Location?")
+            isConfirming = true
+            desiredMoveTile = tileCoord
+            
+            break
         case .actionMove(let tileCoord):
             currentActiveUnit?.moveComponent.moveTo(tileCoord) {
                 self.sceneState = .inactive
@@ -199,6 +200,8 @@ class GameScene: SKScene {
             break
         case .readyAttack:
             gameBoard.activateTilesForAction(for: currentActiveUnit!)
+            break
+        case .confirmAttack(let tileCoord):
             break
         case .actionAttack(let tileCoord):
             // figure out attack size
