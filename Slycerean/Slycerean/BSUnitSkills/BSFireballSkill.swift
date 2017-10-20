@@ -12,7 +12,7 @@ class BSFireballSkill: BSActivatableSkill {
     
     var name = "Fireball"
     
-    var attackPattern = BSAttackPattern.init(pattern: .cross(1), distance: 5)
+    var attackPattern = BSAttackPattern.init(pattern: .cross(1), max: 5, min: 1)
     
     /// amount of health change, negative for damage, positive for healing
     var healthModifier = -10

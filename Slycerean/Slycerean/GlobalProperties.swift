@@ -14,7 +14,7 @@ let kLayerNamedDoodad       =  "Doodad"
 let kLayerNamedHighlight    =  "Highlight"
 let kLayerNamedUnit         =  "Unit"
 
-let kObjectHighlightPath    =  "HightlightPath"
+let kObjectHighlightPath    =  "HighlightPath"
 let kObjectNamedWall        =  "Wall"
 let kObjectNamedFloor       =  "Floor"
 

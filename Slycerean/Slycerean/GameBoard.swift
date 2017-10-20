@@ -264,15 +264,16 @@ extension GameBoard {
     
     private func tryInsertWalkPathHighLight(at tileCoord: TileCoord) -> Bool {
         if self.isValidWalkingTile(for: tileCoord) &&
-            !layer(type: .highlight, hasObjectNamed: HighlightType.movementStep.rawValue, at: tileCoord) {
+            !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
             layer(type: .highlight, insert: HighlightSprite(type: .movementStep), at: tileCoord)
             return true
         }
         return false
     }
+    
     func searchForTargetTiles(beginningAt tileCoord: TileCoord, with skill: BSActivatableSkill) -> [TileCoord] {
         
-        let distance = skill.attackPattern.distance
+        let distance = skill.attackPattern.max
         
         var steps = 0
         var targetTiles = [TileCoord]()
@@ -331,8 +332,6 @@ extension GameBoard {
         var bottom = targetCoord.bottom
         var left = targetCoord.left
         var right = targetCoord.right
-        
-        
         for _ in 1...range {
             
             if isValidAttackingTile(for: top) {
@@ -356,30 +355,95 @@ extension GameBoard {
         return tileAndHighlightType
     }
     func activateTilesForAction(for unit: GameUnit) {
-        guard let unitAction = unit.chosenSkill else {
+        guard let action = unit.chosenSkill else {
             print("No skill found when selection occured")
             return
         }
         
-        let startCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
-        let targetTiles = searchForTargetTiles(beginningAt: startCoord, with: unitAction)
+//        let targetTiles = searchForTargetTiles(beginningAt: startCoord, with: unitAction)
         
-        for targetCoord in targetTiles {
-            switch unitAction.attackPattern.pattern {
-            case .point:
-                highlightLayer.addHighlights(at: targetCoord, with: [(targetCoord, .targetMain)])
-                break
-            case .cross(let range):
-                let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)
-                highlightLayer.addHighlights(at: targetCoord, with: tileAndHighlightType)
-                break
-            case .diamond( _):
-                break
-            case .square( _):
-                break
+        let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
+        var startTiles = [unitPosition]
+        var steps = 0
+
+        let mainHighlightTile = HighlightSprite(type: .movementMain)
+        layer(type: .highlight, insert: mainHighlightTile, at: unitPosition)
+        
+        while steps < action.attackPattern.max {
+            var nextTiles = [TileCoord]()
+            for startPos in startTiles {
+                let top = startPos.top
+                if isValidAttackingTile(for: top) &&
+                    !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: top) {
+                    if steps < action.attackPattern.min {
+                        layer(type: .highlight, insert: HighlightSprite(type: .blank), at: top)
+                    } else {
+                        layer(type: .highlight, insert: HighlightSprite(type: .targetMain), at: top)
+                    }
+                    nextTiles.append(top)
+                }
+                let bottom = startPos.bottom
+                if isValidAttackingTile(for: bottom) &&
+                    !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: bottom) {
+                    if steps < action.attackPattern.min {
+                        layer(type: .highlight, insert: HighlightSprite(type: .blank), at: bottom)
+                    } else {
+                        layer(type: .highlight, insert: HighlightSprite(type: .targetMain), at: bottom)
+                    }
+                    nextTiles.append(bottom)
+                }
+                let left = startPos.left
+                if isValidAttackingTile(for: left) &&
+                    !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: left) {
+                    if steps < action.attackPattern.min {
+                        layer(type: .highlight, insert: HighlightSprite(type: .blank), at: left)
+                    } else {
+                        layer(type: .highlight, insert: HighlightSprite(type: .targetMain), at: left)
+                    }
+                    nextTiles.append(left)
+                }
+                let right = startPos.right
+                if isValidAttackingTile(for: right) &&
+                    !layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: right) {
+                    if steps < action.attackPattern.min {
+                        layer(type: .highlight, insert: HighlightSprite(type: .blank), at: right)
+                    } else {
+                        layer(type: .highlight, insert: HighlightSprite(type: .targetMain), at: right)
+                    }
+                    nextTiles.append(right)
+                }
             }
+            startTiles = nextTiles
+            steps += 1
         }
         
+        
+        
+//        for targetCoord in targetTiles {
+//            switch unitAction.attackPattern.pattern {
+//            case .point:
+//                highlightLayer.addHighlights(at: targetCoord, with: [(targetCoord, .targetMain)])
+//                break
+//            case .cross(let range):
+//                let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)
+//                highlightLayer.addHighlights(at: targetCoord, with: tileAndHighlightType)
+//                break
+//            case .diamond( _):
+//                break
+//            case .square( _):
+//                break
+//            }
+//        }
+        
+    }
+    
+    private func tryInsertAttackPathHighLight(at tileCoord: TileCoord) -> Bool {
+        if isValidWalkingTile(for: tileCoord) &&
+            !layer(type: .highlight, isUnoccupiedAt: tileCoord) {
+            layer(type: .highlight, insert: HighlightSprite(type: .movementStep), at: tileCoord)
+            return true
+        }
+        return false
     }
     
     private func isValidHighlightTile(at tileCoord: TileCoord) -> Bool {

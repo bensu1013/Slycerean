@@ -24,7 +24,7 @@ class Tile: SKSpriteNode {
     }
 }
 enum HighlightType: String {
-    case movementMain, movementStep, targetMain, targetSplash
+    case movementMain, movementStep, targetMain, targetSplash, blank
 }
 class HighlightSprite: SKSpriteNode {
     var visualNode: SKSpriteNode!
@@ -34,7 +34,7 @@ class HighlightSprite: SKSpriteNode {
         self.type = type
         super.init(texture: nil, color: .clear, size: CGSize.init(width: 128, height: 128))
         self.anchorPoint = .zero
-        self.name = type.rawValue
+        self.name = kObjectHighlightPath
         setupFor(type: type)
     }
     
@@ -52,6 +52,8 @@ class HighlightSprite: SKSpriteNode {
             setupForTargetMain()
         case .targetSplash:
             setupForTargetSplash()
+        case .blank:
+            setupForBlank()
         }
     }
     
@@ -84,6 +86,9 @@ class HighlightSprite: SKSpriteNode {
         visualNode.alpha = 0.65
         visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
         self.addChild(visualNode)
+    }
+    private func setupForBlank() {
+        visualNode = SKSpriteNode()
     }
     private func animateBlinking(for node: SKNode) {
         if let _ = action(forKey: "blinking") { return }

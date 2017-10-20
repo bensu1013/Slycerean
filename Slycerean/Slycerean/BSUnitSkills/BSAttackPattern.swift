@@ -10,7 +10,9 @@ import Foundation
 
 struct BSAttackPattern {
     var pattern: BSAttackPatternStyle
-    var distance: Int
+    
+    var max: Int    // Maximum distance attack can could
+    var min: Int    // Minimum distance attack, must be smaller than max
 }
 
 enum BSAttackPatternStyle {
