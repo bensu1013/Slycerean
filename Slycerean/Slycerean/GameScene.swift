@@ -61,9 +61,6 @@ class GameScene: SKScene {
     weak var gameHud: BSGameHUD?
     var currentActiveUnit: GameUnit?
     
-    var isConfirming = false
-    var desiredMoveTile: TileCoord?
-    
     var userTurn: Bool = true {
         didSet {
             isUserInteractionEnabled = userTurn
@@ -153,8 +150,18 @@ class GameScene: SKScene {
             break
         case .readyAttack:
             if gameBoard.layer(type: .highlight, hasObjectNamed: HighlightType.targetMain.rawValue, at: tileCoord) {
-                self.sceneState = .actionAttack(tileCoord)
+                self.sceneState = .confirmAttack(tileCoord)
             }
+            break
+        case .confirmAttack(let tileCoord):
+            let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
+            guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
+            if tapped {
+                sceneState = .actionAttack(tileCoord)
+            } else {
+                sceneState = .readyAttack
+            }
+            let _ = tileCoord
             break
         default:
             break
@@ -183,8 +190,6 @@ class GameScene: SKScene {
             gameBoard.removeAllChildrenInLayer(type: .highlight)
             gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
             gameHud?.showConfirmation(with: "Move to this location?")
-            isConfirming = true
-            desiredMoveTile = tileCoord
             break
         case .actionMove(let tileCoord):
             currentActiveUnit?.moveComponent.moveTo(tileCoord) {
@@ -195,14 +200,15 @@ class GameScene: SKScene {
             gameBoard.activateTilesForAction(for: currentActiveUnit!)
             break
         case .confirmAttack(let tileCoord):
+            gameBoard.removeAllChildrenInLayer(type: .highlight)
+            gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .targetMain), at: tileCoord)
+            gameHud?.showConfirmation(with: "Attack here?")
             break
         case .actionAttack(let tileCoord):
             // figure out attack size
             // figure out units effected
             // resolve event
             // switch state
-            
-            
             //highlightnodes are being removed too early
             var highlightTiles = [TileAndHighlightType]()
             for (key, values) in gameBoard.highlightLayer.getGroupedHighlightTiles {
@@ -210,7 +216,6 @@ class GameScene: SKScene {
                     highlightTiles = values
                 }
             }
-            
             
             var arTar: [GameUnit] = []
             

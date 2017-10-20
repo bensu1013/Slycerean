@@ -15,22 +15,26 @@ class ConfirmationHUDComponent: SKNode {
     var cancelNode: SKSpriteNode!
     var confirmNode: SKSpriteNode!
     
-    required override init() {
+    required init(sceneSize: CGSize) {
         super.init()
         alpha = 0
         
         mainLabel = SKLabelNode()
-        mainLabel.position = CGPoint(x: 0, y: 256)
+        mainLabel.position = CGPoint(x: 0, y: 0)
         mainLabel.horizontalAlignmentMode = .center
         mainLabel.verticalAlignmentMode = .center
+        mainLabel.color = UIColor.white.withAlphaComponent(0.4)
         mainLabel.fontColor = .black
         mainLabel.fontSize = 48
         mainLabel.fontName = "Optima-Bold"
         addChild(mainLabel)
         
-        cancelNode = SKSpriteNode(texture: nil, color: .red, size: CGSize(width: 192, height: 128))
+        let buttonCenter = CGPoint(x: sceneSize.width/4, y: -sceneSize.height/4)
+        let buttonSize = CGSize(width: 160, height: 96)
+        
+        cancelNode = SKSpriteNode(texture: nil, color: .red, size: buttonSize)
         cancelNode.alpha = 1.0
-        cancelNode.position = CGPoint(x: -192/2 - 30, y: 0)
+        cancelNode.position = CGPoint(x: buttonCenter.x - buttonSize.width/2 - 15, y: buttonCenter.y)
         addChild(cancelNode)
         
         let cancelLabel = SKLabelNode(text: "Cancel")
@@ -41,9 +45,9 @@ class ConfirmationHUDComponent: SKNode {
         cancelLabel.fontName = "Optima-Bold"
         cancelNode.addChild(cancelLabel)
         
-        confirmNode = SKSpriteNode(texture: nil, color: .green, size: CGSize(width: 192, height: 128))
+        confirmNode = SKSpriteNode(texture: nil, color: .green, size: buttonSize)
         confirmNode.alpha = 1.0
-        confirmNode.position = CGPoint(x: 192/2 + 30, y: 0)
+        confirmNode.position = CGPoint(x: buttonCenter.x + buttonSize.width/2 + 15, y: buttonCenter.y)
         addChild(confirmNode)
         
         let confirmLabel = SKLabelNode(text: "Confirm")

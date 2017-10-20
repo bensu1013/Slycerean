@@ -11,13 +11,15 @@ import SpriteKit
 
 class BSGameHUD: SKNode {
     weak var gameScene: GameScene?
-    var confirmationComponent = ConfirmationHUDComponent()
-    var actionMenuComponent = ActionHUDComponent()
+    var confirmationComponent: ConfirmationHUDComponent
+    var actionMenuComponent: ActionHUDComponent
     var selectedUnitComponent: UnitHUDComponent
     var targetedUnitComponent: UnitHUDComponent
     
     required init(gameSceneSize size: CGSize) {
         
+        confirmationComponent = ConfirmationHUDComponent(sceneSize: size)
+        actionMenuComponent = ActionHUDComponent()
         selectedUnitComponent = UnitHUDComponent(size: CGSize(width: size.width / 3, height: size.height / 4))
         targetedUnitComponent = UnitHUDComponent(size: CGSize(width: size.width / 3, height: size.height / 4))
         
