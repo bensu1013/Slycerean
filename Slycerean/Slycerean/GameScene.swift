@@ -150,6 +150,8 @@ class GameScene: SKScene {
             break
         case .readyAttack:
             if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+                // find all tiles affected by skill and if unit can be targeted
+                
                 self.sceneState = .confirmAttack(tileCoord)
             }
             break
@@ -201,6 +203,8 @@ class GameScene: SKScene {
             break
         case .confirmAttack(let tileCoord):
             gameBoard.removeAllChildrenInLayer(type: .highlight)
+            // create highlight tiles for attack pattern
+            // show effected units
             gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .targetMain), at: tileCoord)
             gameHud?.showConfirmation(with: "Attack here?")
             break

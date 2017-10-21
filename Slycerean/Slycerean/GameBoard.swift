@@ -271,60 +271,6 @@ extension GameBoard {
         return false
     }
     
-    func searchForTargetTiles(beginningAt tileCoord: TileCoord, with skill: BSActivatableSkill) -> [TileCoord] {
-        
-        let distance = skill.attackPattern.max
-        
-        var steps = 0
-        var targetTiles = [TileCoord]()
-        if distance > 0 {
-            var checkedTiles = [tileCoord]
-            var startTiles  = [tileCoord]
-            while steps < distance {
-                var nextTiles = [TileCoord]()
-                for startPos in startTiles {
-                    let top = startPos.top
-                    if !checkedTiles.contains(top) {
-                        checkedTiles.append(top)
-                        nextTiles.append(top)
-                        if unitLayer.hasNodeNamed("Unit", atCoord: top) && isValidAttackingTile(for: top) {
-                            targetTiles.append(top)
-                        }
-                    }
-                    
-                    let bottom = startPos.bottom
-                    if !checkedTiles.contains(bottom) {
-                        checkedTiles.append(bottom)
-                        nextTiles.append(bottom)
-                        if unitLayer.hasNodeNamed("Unit", atCoord: bottom) && isValidAttackingTile(for: bottom) {
-                            targetTiles.append(bottom)
-                        }
-                    }
-                    let left = startPos.left
-                    if !checkedTiles.contains(left) {
-                        checkedTiles.append(left)
-                        nextTiles.append(left)
-                        if unitLayer.hasNodeNamed("Unit", atCoord: left) && isValidAttackingTile(for: left) {
-                            targetTiles.append(left)
-                        }
-                    }
-                    let right = startPos.right
-                    if !checkedTiles.contains(right) {
-                        checkedTiles.append(right)
-                        nextTiles.append(right)
-                        if unitLayer.hasNodeNamed("Unit", atCoord: right) && isValidAttackingTile(for: right) {
-                            targetTiles.append(right)
-                        }
-                    }
-                }
-                startTiles = nextTiles
-                steps += 1
-            }
-        } else {
-            targetTiles.append(tileCoord)
-        }
-        return targetTiles
-    }
     func createTileCoordsForCross(with range: Int, startingAt targetCoord: TileCoord) -> [TileAndHighlightType] {
         var tileAndHighlightType = [TileAndHighlightType]()
         tileAndHighlightType.append((targetCoord, .targetMain))
@@ -419,21 +365,29 @@ extension GameBoard {
         
         
         
-//        for targetCoord in targetTiles {
-//            switch unitAction.attackPattern.pattern {
-//            case .point:
-//                highlightLayer.addHighlights(at: targetCoord, with: [(targetCoord, .targetMain)])
-//                break
-//            case .cross(let range):
-//                let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)
-//                highlightLayer.addHighlights(at: targetCoord, with: tileAndHighlightType)
-//                break
-//            case .diamond( _):
-//                break
-//            case .square( _):
-//                break
-//            }
-//        }
+
+        
+    }
+    
+    func createSkillHighlightPatternFor(unit: GameUnit, at tileCoord: TileCoord) {
+        guard let action = unit.chosenSkill else {
+            print("No skill found when selection occured")
+            return
+        }
+        
+        switch action.attackPattern.pattern {
+        case .point:
+            layer(type: .highlight, insert: HighlightSprite.init(type: .targetMain), at: tileCoord)
+            break
+        case .cross(let range):
+//            let tileAndHighlightType = createTileCoordsForCross(with: range, startingAt: targetCoord)
+//            highlightLayer.addHighlights(at: targetCoord, with: tileAndHighlightType)
+            break
+        case .diamond( _):
+            break
+        case .square( _):
+            break
+        }
         
     }
     

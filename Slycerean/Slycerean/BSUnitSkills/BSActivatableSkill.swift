@@ -21,7 +21,7 @@ class BasicAttackSkill: BSActivatableSkill {
     
     var name = "BasicAttack"
 
-    var attackPattern = BSAttackPattern.init(pattern: .point, max: 3, min: 2)
+    var attackPattern = BSAttackPattern.init(pattern: .point, max: 2, min: 0)
     
     /// amount of health change, negative for damage, positive for healing
     var healthModifier = -4

@@ -113,9 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				FD7A84D11F641E180060823D /* GameBoard.swift */,
+				FDC937B11F85C3E600F62A3B /* TileCoord.swift */,
 				FD2B31FE1F65F86200564150 /* TileModels.swift */,
 				FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */,
-				FDC937B11F85C3E600F62A3B /* TileCoord.swift */,
 				FD7E98B61F760EF50012BF6C /* LayerNodes */,
 				FD7A84D31F64D9470060823D /* Level_0.json */,
 			);
