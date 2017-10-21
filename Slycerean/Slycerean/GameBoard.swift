@@ -227,34 +227,10 @@ extension GameBoard {
     
     func activateTilesForMovement(for unit: GameUnit) {
         let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
-        var startTiles = [unitPosition]
-        var steps = 0
-        // Bootleg way of changing button to have no action
-        let mainHighlightTile = HighlightSprite(type: .movementMain)
-        layer(type: .highlight, insert: mainHighlightTile, at: unitPosition)
-        
-        while steps < unit.unusedMovementSteps {
-            var nextTiles = [TileCoord]()
-            for startPos in startTiles {
-                let top = startPos.top
-                if tryInsertWalkPathHighLight(at: top) {
-                    nextTiles.append(top)
-                }
-                let bottom = startPos.bottom
-                if tryInsertWalkPathHighLight(at: bottom) {
-                    nextTiles.append(bottom)
-                }
-                let left = startPos.left
-                if tryInsertWalkPathHighLight(at: left) {
-                    nextTiles.append(left)
-                }
-                let right = startPos.right
-                if tryInsertWalkPathHighLight(at: right) {
-                    nextTiles.append(right)
-                }
-            }
-            startTiles = nextTiles
-            steps += 1
+        let moveTiles = BSTilePlotter.getValidWalkingTiles(onGameBoard: self, forUnit: unit)
+        layer(type: .highlight, insert: HighlightSprite(type: .movementMain), at: unitPosition)
+        for tile in moveTiles {
+            layer(type: .highlight, insert: HighlightSprite(type: .movementStep), at: tile)
         }
     }
     
@@ -363,9 +339,6 @@ extension GameBoard {
             steps += 1
         }
         
-        
-        
-
         
     }
     

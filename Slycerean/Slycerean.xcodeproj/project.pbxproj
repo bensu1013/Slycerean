@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD1109F91F9BA53600C9BBCF /* BSTilePlotter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1109F81F9BA53600C9BBCF /* BSTilePlotter.swift */; };
 		FD1BFD5B1F9592F200C1302E /* BSAttackPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1BFD5A1F9592F200C1302E /* BSAttackPattern.swift */; };
 		FD1BFD5D1F95992D00C1302E /* BSFireballSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1BFD5C1F95992D00C1302E /* BSFireballSkill.swift */; };
 		FD2B31FD1F65F82E00564150 /* LayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B31FC1F65F82E00564150 /* LayerNode.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FD1109F81F9BA53600C9BBCF /* BSTilePlotter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTilePlotter.swift; sourceTree = "<group>"; };
 		FD1BFD5A1F9592F200C1302E /* BSAttackPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSAttackPattern.swift; sourceTree = "<group>"; };
 		FD1BFD5C1F95992D00C1302E /* BSFireballSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSFireballSkill.swift; sourceTree = "<group>"; };
 		FD2B31FC1F65F82E00564150 /* LayerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerNode.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				FD7A84D11F641E180060823D /* GameBoard.swift */,
+				FD1109F81F9BA53600C9BBCF /* BSTilePlotter.swift */,
 				FDC937B11F85C3E600F62A3B /* TileCoord.swift */,
 				FD2B31FE1F65F86200564150 /* TileModels.swift */,
 				FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */,
@@ -332,6 +335,7 @@
 				FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */,
 				FD7E94DF1F886D3B00F5B573 /* BSGameView.swift in Sources */,
 				FDC937B21F85C3E600F62A3B /* TileCoord.swift in Sources */,
+				FD1109F91F9BA53600C9BBCF /* BSTilePlotter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
