@@ -15,6 +15,9 @@ class HighlightLayerNode: LayerNode {
     
     private var groupedHighlightTiles = [TileCoord:[TileAndHighlightType]]()
     
+    
+    
+    
     var getGroupedHighlightTiles: [TileCoord:[TileAndHighlightType]] {
         return groupedHighlightTiles
     }

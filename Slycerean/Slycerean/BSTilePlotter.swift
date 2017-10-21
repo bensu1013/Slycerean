@@ -50,5 +50,93 @@ struct BSTilePlotter {
         return Array(moveTiles)
     }
     
+    static func getValidAttackingTiles(onGameBoard board: GameBoard, forUnit unit: GameUnit) -> [TileCoord] {
+        guard let action = unit.chosenSkill else {
+            print("No skill found when selection occured")
+            return []
+        }
+        
+        let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
+        var attackTiles = Set<TileCoord>()
+        var checkedTiles = Set<TileCoord>()
+        var startTiles = [unitPosition]
+        var steps = 0
+        
+        while steps < action.attackPattern.max {
+            var nextTiles = [TileCoord]()
+            for startPos in startTiles {
+                let top = startPos.top
+                if board.isValidAttackingTile(for: top) &&
+                    !checkedTiles.contains(top) {
+                    if steps >= action.attackPattern.min {
+                        attackTiles.insert(top)
+                    }
+                    checkedTiles.insert(top)
+                }
+                let bottom = startPos.bottom
+                if board.isValidAttackingTile(for: bottom) &&
+                    !checkedTiles.contains(bottom) {
+                    if steps >= action.attackPattern.min {
+                        attackTiles.insert(bottom)
+                    }
+                    checkedTiles.insert(bottom)
+                }
+                let left = startPos.left
+                if board.isValidAttackingTile(for: left) &&
+                    !checkedTiles.contains(left) {
+                    if steps >= action.attackPattern.min {
+                        attackTiles.insert(left)
+                    }
+                    checkedTiles.insert(left)
+                }
+                let right = startPos.right
+                if board.isValidAttackingTile(for: right) &&
+                    !checkedTiles.contains(right) {
+                    if steps >= action.attackPattern.min {
+                        attackTiles.insert(right)
+                    }
+                    checkedTiles.insert(right)
+                }
+                nextTiles.append(top)
+                nextTiles.append(bottom)
+                nextTiles.append(left)
+                nextTiles.append(right)
+            }
+            startTiles = nextTiles
+            steps += 1
+        }
+        return Array(attackTiles)
+    }
     
+    static func getValidCrossPatternTiles(onGameBoard board: GameBoard,
+                                   withRange range: Int,
+                                   atTileCoord tileCoord: TileCoord) -> [TileCoord] {
+        
+        var patternTiles = [tileCoord]
+        var top = tileCoord.top
+        var bottom = tileCoord.bottom
+        var left = tileCoord.left
+        var right = tileCoord.right
+        for _ in 1...range {
+            
+            if board.isValidAttackingTile(for: top) {
+                patternTiles.append(top)
+            }
+            if board.isValidAttackingTile(for: bottom) {
+                patternTiles.append(bottom)
+            }
+            if board.isValidAttackingTile(for: left) {
+                patternTiles.append(left)
+            }
+            if board.isValidAttackingTile(for: right) {
+                patternTiles.append(right)
+            }
+            
+            top = top.top
+            bottom = bottom.bottom
+            left = left.left
+            right = right.right
+        }
+        return patternTiles
+    }
 }

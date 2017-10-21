@@ -41,7 +41,7 @@ import GameplayKit
 
 
 enum SceneState {
-    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack(TileCoord), actionAttack(TileCoord), turnEnd
+    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack([TileCoord]), actionAttack([TileCoord]), turnEnd
 }
 
 class GameScene: SKScene {
@@ -151,19 +151,28 @@ class GameScene: SKScene {
         case .readyAttack:
             if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
                 // find all tiles affected by skill and if unit can be targeted
-                
-                self.sceneState = .confirmAttack(tileCoord)
+                let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.chosenSkill!.attackPattern, atTileCoord: tileCoord)
+                var hasTarget = false
+                for tile in attackTiles {
+                    if gameBoard.layer(type: .unit, hasObjectNamed: "Unit", at: tile) {
+                        hasTarget = true
+                    }
+                }
+                if hasTarget {
+                    self.sceneState = .confirmAttack(attackTiles)
+                } else {
+                    print("no targets found in skill area")
+                }
             }
             break
-        case .confirmAttack(let tileCoord):
+        case .confirmAttack(let attackTiles):
             let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
             guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
             if tapped {
-                sceneState = .actionAttack(tileCoord)
+                sceneState = .actionAttack(attackTiles)
             } else {
                 sceneState = .readyAttack
             }
-            let _ = tileCoord
             break
         default:
             break
@@ -199,37 +208,29 @@ class GameScene: SKScene {
             }
             break
         case .readyAttack:
-            gameBoard.activateTilesForAction(for: currentActiveUnit!)
+            gameBoard.tryPlacingAttackTiles(for: currentActiveUnit!)
             break
-        case .confirmAttack(let tileCoord):
+        case .confirmAttack(let attackTiles):
             gameBoard.removeAllChildrenInLayer(type: .highlight)
             // create highlight tiles for attack pattern
             // show effected units
-            gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .targetMain), at: tileCoord)
+            if !gameBoard.tryPlacingAttackPatternTiles(withTiles: attackTiles) {
+                sceneState = .readyAttack
+                // no targets found, show on hud
+                return
+            }
             gameHud?.showConfirmation(with: "Attack here?")
             break
-        case .actionAttack(let tileCoord):
-            // figure out attack size
-            // figure out units effected
-            // resolve event
-            // switch state
-            //highlightnodes are being removed too early
-            var highlightTiles = [TileAndHighlightType]()
-            for (key, values) in gameBoard.highlightLayer.getGroupedHighlightTiles {
-                if key == tileCoord {
-                    highlightTiles = values
-                }
-            }
-            
+        case .actionAttack(let attackTiles):
+
             var arTar: [GameUnit] = []
             
             for unitEntity in unitEntities {
-                if highlightTiles.contains(where: {$0.tileCoord == unitEntity.tileCoord}) {
+                if attackTiles.contains(where: {$0 == unitEntity.tileCoord}) {
                     arTar.append(unitEntity)
                 }
             }
             
-            if arTar.isEmpty { return }
             currentActiveUnit?.attackEventAndDamage(units: arTar) {
                 self.sceneState = .inactive
             }
@@ -258,7 +259,7 @@ class GameScene: SKScene {
     }
     
     private func stateChangedToReadyMove() {
-        gameBoard.activateTilesForMovement(for: currentActiveUnit!)
+        gameBoard.tryPlacingMovementTiles(for: currentActiveUnit!)
     }
     
 }
