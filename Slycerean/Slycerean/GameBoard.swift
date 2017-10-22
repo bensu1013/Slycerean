@@ -255,10 +255,10 @@ extension GameBoard {
             return [tileCoord]
         case .cross(let range):
             return BSTilePlotter.getValidCrossPatternTiles(onGameBoard: self, withRange: range, atTileCoord: tileCoord)
-        case .diamond( _):
+        case .diamond(let range):
             return [tileCoord]
-        case .square( _):
-            return [tileCoord]
+        case .square(let range):
+            return BSTilePlotter.getValidSquarePatternTiles(onGameBoard: self, withRange: range, atTileCoord: tileCoord)
         }
     }
     

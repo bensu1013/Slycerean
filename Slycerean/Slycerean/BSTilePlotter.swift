@@ -111,14 +111,12 @@ struct BSTilePlotter {
     static func getValidCrossPatternTiles(onGameBoard board: GameBoard,
                                    withRange range: Int,
                                    atTileCoord tileCoord: TileCoord) -> [TileCoord] {
-        
         var patternTiles = [tileCoord]
         var top = tileCoord.top
         var bottom = tileCoord.bottom
         var left = tileCoord.left
         var right = tileCoord.right
         for _ in 1...range {
-            
             if board.isValidAttackingTile(for: top) {
                 patternTiles.append(top)
             }
@@ -136,6 +134,61 @@ struct BSTilePlotter {
             bottom = bottom.bottom
             left = left.left
             right = right.right
+        }
+        return patternTiles
+    }
+    
+    static func getValidDiamondPatternTiles(onGameBoard board: GameBoard,
+                                          withRange range: Int,
+                                          atTileCoord tileCoord: TileCoord) -> [TileCoord] {
+        var patternTiles = [tileCoord]
+        var top = tileCoord.top
+        var bottom = tileCoord.bottom
+        var left = tileCoord.left
+        var right = tileCoord.right
+        for _ in 1...range {
+            if board.isValidAttackingTile(for: top) {
+                patternTiles.append(top)
+            }
+            if board.isValidAttackingTile(for: bottom) {
+                patternTiles.append(bottom)
+            }
+            if board.isValidAttackingTile(for: left) {
+                patternTiles.append(left)
+            }
+            if board.isValidAttackingTile(for: right) {
+                patternTiles.append(right)
+            }
+            
+            top = top.top
+            bottom = bottom.bottom
+            left = left.left
+            right = right.right
+        }
+        return patternTiles
+    }
+    
+    static func getValidSquarePatternTiles(onGameBoard board: GameBoard,
+                                          withRange range: Int,
+                                          atTileCoord tileCoord: TileCoord) -> [TileCoord] {
+        var startCoord = tileCoord
+        for _ in 1...range {
+            startCoord = startCoord.topLeft
+        }
+        var startCoords = [startCoord]
+        for _ in 1...(range * 2) {
+            startCoord = startCoord.right
+            startCoords.append(startCoord)
+        }
+        var patternTiles = startCoords
+        for sCoord in startCoords {
+            var nextCoord = sCoord.bottom
+            for _ in 1...(range * 2) {
+                if board.isValidAttackingTile(for: nextCoord) {
+                    patternTiles.append(nextCoord)
+                }
+                nextCoord = nextCoord.bottom
+            }
         }
         return patternTiles
     }

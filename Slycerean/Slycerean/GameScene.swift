@@ -67,8 +67,6 @@ class GameScene: SKScene {
         }
     }
     
-    private var lastUpdateTime : TimeInterval = 0
-    
     override init(size: CGSize) {
         super.init(size: size)
         
@@ -105,10 +103,6 @@ class GameScene: SKScene {
         unitEntities.append(player2)
     }
     
-    override func update(_ currentTime: TimeInterval) {
-
-    }
-    
     func setupCamera(_ gameCamera: GameCamera) {
         self.gameCamera = gameCamera
         self.addChild(gameCamera)
@@ -120,65 +114,6 @@ class GameScene: SKScene {
         tempTurnIndex = tempTurnIndex + 1 >= unitEntities.count ? 0 : tempTurnIndex + 1
     }
     
-    // taprecognizer of view sent to scene to process
-    func tapped(at point: CGPoint) {
-        guard let gameHud = gameHud else { return }
-        
-        // cameraPoint isnt converting, need to look in to.
-        let cameraPoint = self.convert(point, to: gameHud.actionMenuComponent)
-        if gameHud.tryActionWithTap(on: cameraPoint) {
-            return
-        }
-        
-        //taps should be handled in relation to the state of the scene
-        
-        let tileCoord = TPConvert.tileCoordForPosition(point)
-        switch sceneState {
-        case .readyMove:
-            if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
-                sceneState = .confirmMove(tileCoord)
-            }
-            break
-        case .confirmMove(let tileCoord):
-            let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
-            guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
-            if tapped {
-                sceneState = .actionMove(tileCoord)
-            } else {
-                sceneState = .readyMove
-            }
-            break
-        case .readyAttack:
-            if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
-                // find all tiles affected by skill and if unit can be targeted
-                let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.chosenSkill!.attackPattern, atTileCoord: tileCoord)
-                var hasTarget = false
-                for tile in attackTiles {
-                    if gameBoard.layer(type: .unit, hasObjectNamed: "Unit", at: tile) {
-                        hasTarget = true
-                    }
-                }
-                if hasTarget {
-                    self.sceneState = .confirmAttack(attackTiles)
-                } else {
-                    print("no targets found in skill area")
-                }
-            }
-            break
-        case .confirmAttack(let attackTiles):
-            let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
-            guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
-            if tapped {
-                sceneState = .actionAttack(attackTiles)
-            } else {
-                sceneState = .readyAttack
-            }
-            break
-        default:
-            break
-        }
-    }
-    
     private func prepareSceneFor(unit: GameUnit) {
         currentActiveUnit = unit
         unit.prepareTurn()
@@ -188,61 +123,108 @@ class GameScene: SKScene {
         self.sceneState = .inactive
     }
     
+}
+
+//MARK: - Tap Management
+extension GameScene {
+    // taprecognizer of view sent to scene to process
+    func tapped(at point: CGPoint) {
+        guard let gameHud = gameHud else { return }
+        let cameraPoint = self.convert(point, to: gameHud.actionMenuComponent)
+        if gameHud.tryActionWithTap(on: cameraPoint) {
+            return
+        }
+        switch sceneState {
+        case .readyMove:
+            tappedWhenReadyMove(atPoint: point)
+            break
+        case .confirmMove(let moveTile):
+            tappedWhenConfirmMove(atPoint: point, withMoveTile: moveTile)
+            break
+        case .readyAttack:
+            tappedWhenReadyAttack(atPoint: point)
+            break
+        case .confirmAttack(let attackTiles):
+            tappedWhenConfirmAttack(atPoint: point, withAttackTiles: attackTiles)
+            break
+        default:
+            break
+        }
+    }
+    
+    private func tappedWhenReadyMove(atPoint point: CGPoint) {
+        let tileCoord = TPConvert.tileCoordForPosition(point)
+        if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+            sceneState = .confirmMove(tileCoord)
+        }
+    }
+    
+    private func tappedWhenConfirmMove(atPoint point: CGPoint, withMoveTile tileCoord: TileCoord) {
+        guard let gameHud = gameHud else { return }
+        let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
+        guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
+        if tapped {
+            sceneState = .actionMove(tileCoord)
+        } else {
+            sceneState = .readyMove
+        }
+    }
+    
+    private func tappedWhenReadyAttack(atPoint point: CGPoint) {
+        let tileCoord = TPConvert.tileCoordForPosition(point)
+        if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
+            // find all tiles affected by skill and if unit can be targeted
+            let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.chosenSkill!.attackPattern, atTileCoord: tileCoord)
+            var hasTarget = false
+            for unit in unitEntities {
+                if attackTiles.contains(unit.tileCoord) {
+                    hasTarget = true
+                }
+            }
+            if hasTarget {
+                self.sceneState = .confirmAttack(attackTiles)
+            } else {
+                print("no targets found in skill area")
+            }
+        }
+    }
+    
+    private func tappedWhenConfirmAttack(atPoint point: CGPoint,withAttackTiles attackTiles: [TileCoord]) {
+        guard let gameHud = gameHud else { return }
+        let confirmPoint = self.convert(point, to: gameHud.confirmationComponent)
+        guard let tapped = gameHud.tryConfirmWithTap(on: confirmPoint) else { return }
+        if tapped {
+            sceneState = .actionAttack(attackTiles)
+        } else {
+            sceneState = .readyAttack
+        }
+    }
+    
+}
+
+//MARK: - SceneState Management
+extension GameScene {
+    
     func shiftSceneTo(state: SceneState) {
         gameBoard.deactivateHighlightTiles()
         switch state {
         case .inactive:
             stateChangedToInactive()
-            break
         case .readyMove:
             stateChangedToReadyMove()
-            break
         case .confirmMove(let tileCoord):
-            gameBoard.removeAllChildrenInLayer(type: .highlight)
-            gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
-            gameHud?.showConfirmation(with: "Move to this location?")
-            break
+            stateChangedToConfirmMove(tileCoord: tileCoord)
         case .actionMove(let tileCoord):
-            currentActiveUnit?.moveComponent.moveTo(tileCoord) {
-                self.sceneState = .inactive
-            }
-            break
+            stateChangedToActionMove(tileCoord: tileCoord)
         case .readyAttack:
-            gameBoard.tryPlacingAttackTiles(for: currentActiveUnit!)
-            break
+            stateChangedToReadyAttack()
         case .confirmAttack(let attackTiles):
-            gameBoard.removeAllChildrenInLayer(type: .highlight)
-            // create highlight tiles for attack pattern
-            // show effected units
-            if !gameBoard.tryPlacingAttackPatternTiles(withTiles: attackTiles) {
-                sceneState = .readyAttack
-                // no targets found, show on hud
-                return
-            }
-            gameHud?.showConfirmation(with: "Attack here?")
-            break
+            stateChangedToConfirmAttack(tileCoords: attackTiles)
         case .actionAttack(let attackTiles):
-
-            var arTar: [GameUnit] = []
-            
-            for unitEntity in unitEntities {
-                if attackTiles.contains(where: {$0 == unitEntity.tileCoord}) {
-                    arTar.append(unitEntity)
-                }
-            }
-            
-            currentActiveUnit?.attackEventAndDamage(units: arTar) {
-                self.sceneState = .inactive
-            }
-            
-            break
+            stateChangedToActionAttack(tileCoords: attackTiles)
         case .turnEnd:
-            currentActiveUnit?.endTurn()
-            currentActiveUnit = nil
-            self.sceneState = .inactive
-            break
+            stateChangedtoTurnEnd()
         }
-        
     }
     
     private func stateChangedToInactive() {
@@ -262,8 +244,47 @@ class GameScene: SKScene {
         gameBoard.tryPlacingMovementTiles(for: currentActiveUnit!)
     }
     
+    private func stateChangedToConfirmMove(tileCoord: TileCoord) {
+        gameBoard.removeAllChildrenInLayer(type: .highlight)
+        gameBoard.layer(type: .highlight, insert: HighlightSprite.init(type: .movementMain), at: tileCoord)
+        gameHud?.showConfirmation(with: "Move to this location?")
+    }
+    
+    private func stateChangedToActionMove(tileCoord: TileCoord) {
+        currentActiveUnit?.moveComponent.moveTo(tileCoord) {
+            self.sceneState = .inactive
+        }
+    }
+    
+    private func stateChangedToReadyAttack() {
+        gameBoard.tryPlacingAttackTiles(for: currentActiveUnit!)
+    }
+    
+    private func stateChangedToConfirmAttack(tileCoords: [TileCoord]) {
+        gameBoard.removeAllChildrenInLayer(type: .highlight)
+        if !gameBoard.tryPlacingAttackPatternTiles(withTiles: tileCoords) {
+            sceneState = .readyAttack
+            return
+        }
+        gameHud?.showConfirmation(with: "Attack here?")
+    }
+    
+    private func stateChangedToActionAttack(tileCoords: [TileCoord]) {
+        var arTar: [GameUnit] = []
+        for unitEntity in unitEntities {
+            if tileCoords.contains(where: {$0 == unitEntity.tileCoord}) {
+                arTar.append(unitEntity)
+            }
+        }
+        currentActiveUnit?.attackEventAndDamage(units: arTar) {
+            self.sceneState = .inactive
+        }
+    }
+    
+    private func stateChangedtoTurnEnd() {
+        currentActiveUnit?.endTurn()
+        currentActiveUnit = nil
+        self.sceneState = .inactive
+    }
+    
 }
-
-
-
-
