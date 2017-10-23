@@ -11,9 +11,9 @@ import Foundation
 struct CollisionMap {
     private let columns: Int
     private let rows: Int
-    private var array: [Int]
+    private var array: [[Int]]
     
-    init(columns: Int, rows: Int, map: [Int]) {
+    init(columns: Int, rows: Int, map: [[Int]]) {
         self.columns = columns
         self.rows = rows
         array = map
@@ -21,10 +21,10 @@ struct CollisionMap {
     
     subscript(tileCoord: TileCoord) -> Int {
         get {
-            return array[(rows - tileCoord.row - 1)*columns + tileCoord.col]
+            return array[rows - tileCoord.row - 1][tileCoord.col]
         }
         set {
-            array[(rows - tileCoord.row - 1)*columns + tileCoord.col] = newValue
+            array[rows - tileCoord.row - 1][tileCoord.col] = newValue
         }
     }
     

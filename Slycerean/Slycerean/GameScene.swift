@@ -83,21 +83,21 @@ class GameScene: SKScene {
         
         let player = GameUnit(scene: self)
         player.spriteComponent.isUserInteractionEnabled = false
-        player.tileCoord = TileCoord(col: 0, row: 2)
+        player.tileCoord = TileCoord(col: 4, row: 4)
         player.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: player.spriteComponent, at: player.tileCoord)
         unitEntities.append(player)
         
         let player1 = GameUnit(scene: self)
         player1.spriteComponent.isUserInteractionEnabled = false
-        player1.tileCoord = TileCoord(col: 2, row: 2)
+        player1.tileCoord = TileCoord(col: 4, row: 3)
         player1.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: player1.spriteComponent, at: player1.tileCoord)
         unitEntities.append(player1)
         
         let player2 = GameUnit(scene: self)
         player2.spriteComponent.isUserInteractionEnabled = false
-        player2.tileCoord = TileCoord(col: 5, row: 5)
+        player2.tileCoord = TileCoord(col: 7, row: 6)
         player2.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: player2.spriteComponent, at: player2.tileCoord)
         unitEntities.append(player2)

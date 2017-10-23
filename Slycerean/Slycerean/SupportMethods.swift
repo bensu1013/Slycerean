@@ -11,6 +11,31 @@ import UIKit
 
 extension TileCoord: Equatable {}
 
+struct BSBundle {
+    // Loads a JSON file from the app bundle into a new dictionary
+    static func loadJSONFromBundle(_ filename: String) -> [String:Any]? {
+        if let url = Bundle.main.url(forResource: filename, withExtension: "json") {
+            let data = try? Data(contentsOf: url, options: .uncached)
+
+            if let data = data {
+                if let dictionary = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
+//                if let dictionary = dictionary as? [String:Any] {
+                    return dictionary
+                } else {
+                    print("Level file '\(filename)' is not valid JSON.")
+                    return nil
+                }
+            } else {
+                print("Could not load level file: \(filename).")
+                return nil
+            }
+        } else {
+            print("Could not find level file: \(filename)")
+            return nil
+        }
+    }
+}
+
 struct TPConvert {
     static private var size = CGSize(width: 128, height: 128)
     

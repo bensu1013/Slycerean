@@ -66,30 +66,28 @@ class GameBoard: SKNode {
     init?(scene: GameScene, filename: String) {
         gameScene = scene
         
-        
-        // logic layer for collisions
-        let array = [
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,
-            0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0]
-        
-        collisionMap = CollisionMap(columns: 15, rows: 15, map: array)
-        
-        // purely graphical layer, shouldn't need collision checks
-        floorLayer = FloorLayerNode(name: LayerType.floor.keyValue, tileData: temporaryTileMap["tiles"]! as! [[Int]], columns: 15, rows: 15, tileNames: [0:temporaryTileMap["type"]! as! String,2:kObjectNamedWall], tileSize: tileSize)
-        floorLayer.zPosition = 0
+        if let dictionary = BSBundle.loadJSONFromBundle(filename) {
+            // width and height in tiles for the level
+            columns = dictionary["width"] as? Int ?? 0
+            rows = dictionary["height"] as? Int ?? 0
+            
+            tileSize.width = dictionary["tileWidth"] as? CGFloat ?? 0
+            tileSize.height = dictionary["tileHeight"] as? CGFloat ?? 0
+            
+            collisionMap = CollisionMap(columns: columns, rows: rows, map: dictionary["collisionMap"] as? [[Int]] ?? [[0]])
+            
+            floorLayer = FloorLayerNode(name: LayerType.floor.keyValue)
+            floorLayer.zPosition = 0
+            
+            // purely graphical layer, shouldn't need collision checks
+            if let layersArray = dictionary["layers"] as? [[String:Any]] {
+                for (layerIndex, layerData) in layersArray.enumerated() {
+                    floorLayer.loadSublayer(withData: layerData, atZPosition: layersArray.count - layerIndex)
+                }
+            }
+        } else {
+            return nil
+        }
         
         // graphical with potential object interaction checks ( traps? )
         doodadLayer = LayerNode(name: LayerType.doodad.keyValue)
@@ -102,7 +100,6 @@ class GameBoard: SKNode {
         // actual unit entities on this layer
         unitLayer = UnitLayerNode(name: LayerType.unit.keyValue)
         unitLayer.zPosition = 300
-        
         
         effectLayer = LayerNode(name: LayerType.effect.keyValue)
         effectLayer.zPosition = 400

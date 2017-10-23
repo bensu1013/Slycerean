@@ -17,11 +17,13 @@ class Tile: SKSpriteNode {
         let texture = SKTexture(imageNamed: name)
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.name = name
+        self.anchorPoint = .zero
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
 enum HighlightType: String {
     case movementMain, movementStep, targetMain, targetSplash, blank
