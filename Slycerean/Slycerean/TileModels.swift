@@ -15,7 +15,7 @@ class Tile: SKSpriteNode {
     
     init(name: String) {
         let texture = SKTexture(imageNamed: name)
-        super.init(texture: texture, color: UIColor.clear, size: texture.size())
+        super.init(texture: texture, color: UIColor.clear, size: CGSize.init(width: 128, height: 128))
         self.name = name
         self.anchorPoint = .zero
     }

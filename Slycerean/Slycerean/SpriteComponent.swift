@@ -10,26 +10,28 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-var spriteTextures: [String:[SKTexture]] = ["up":[SKTexture.init(imageNamed: "up_1"),
-                                                  SKTexture.init(imageNamed: "up_2"),
-                                                  SKTexture.init(imageNamed: "up_3")],
-                                            "down":[SKTexture.init(imageNamed: "down_1"),
-                                                    SKTexture.init(imageNamed: "down_2"),
-                                                    SKTexture.init(imageNamed: "down_3")],
-                                            "left":[SKTexture.init(imageNamed: "left_1"),
-                                                    SKTexture.init(imageNamed: "left_2"),
-                                                    SKTexture.init(imageNamed: "left_3")],
-                                            "right":[SKTexture.init(imageNamed: "right_1"),
-                                                     SKTexture.init(imageNamed: "right_2"),
-                                                     SKTexture.init(imageNamed: "right_3")]]
+//var spriteTextures: [String:[SKTexture]] = ["up":[SKTexture.init(imageNamed: "up_1"),
+//                                                  SKTexture.init(imageNamed: "up_2"),
+//                                                  SKTexture.init(imageNamed: "up_3")],
+//                                            "down":[SKTexture.init(imageNamed: "down_1"),
+//                                                    SKTexture.init(imageNamed: "down_2"),
+//                                                    SKTexture.init(imageNamed: "down_3")],
+//                                            "left":[SKTexture.init(imageNamed: "left_1"),
+//                                                    SKTexture.init(imageNamed: "left_2"),
+//                                                    SKTexture.init(imageNamed: "left_3")],
+//                                            "right":[SKTexture.init(imageNamed: "right_1"),
+//                                                     SKTexture.init(imageNamed: "right_2"),
+//                                                     SKTexture.init(imageNamed: "right_3")]]
+
+let spriteTexture = SKTexture.init(imageNamed: "Character_Hero_Warrior")
 
 class SpriteComponent: SKSpriteNode {
     weak var unit: GameUnit?
-    
+    var direction: Direction = .down
     init(unit: GameUnit) {
         super.init(texture: nil, color: .clear, size: CGSize(width: 128.0, height: 128.0))
         self.name = "Unit"
-        self.texture = spriteTextures["down"]![0]
+        self.texture = SKTexture.init(rect: CGRect.init(x: 0, y: 200, width: 100, height: 100), in: spriteTexture)
         
     }
     
@@ -38,8 +40,45 @@ class SpriteComponent: SKSpriteNode {
     }
 
     func walk(_ direction: Direction, withKey: String) {
-        runAnimation(with: spriteTextures[direction.rawValue]!, andKey: withKey)
+        if self.direction != direction {
+            let x: CGFloat = 2
+            var y: CGFloat
+            switch direction {
+            case .down:
+                y = 2
+            case .up:
+                y = 1
+            case .left:
+                y = 0
+//                xScale = xScale < 0 ? xScale * 1 : xScale
+            case .right:
+                y = 0
+//                xScale = xScale > 0 ? xScale * -1 : xScale
+            }
+
+//            let t2 = SKTexture.init(rect: CGRect.init(x: spriteTexture.textureRect().maxX/(x+1),
+//                                                      y: spriteTexture.textureRect().maxY/y,
+//                                                      width: 100/spriteTexture.size().width,
+//                                                      height: 100/spriteTexture.size().height), in: spriteTexture)
+            
+            removeAllActions()
+            var textureRect=CGRect(x: x*(spriteTexture.size().width/6),
+                                   y: y*(spriteTexture.size().height/3),
+                                   width: spriteTexture.size().width/6,
+                                   height: spriteTexture.size().height/3)
+
+            textureRect=CGRect(x: textureRect.origin.x/spriteTexture.size().width,
+                               y: textureRect.origin.y/spriteTexture.size().height,
+                               width: textureRect.size.width/spriteTexture.size().width,
+                               height: textureRect.size.height/spriteTexture.size().height)
+            
+            let t1 =  SKTexture(rect: textureRect, in: spriteTexture)
+            
+            run(SKAction.repeatForever(SKAction.animate(with: [t1], timePerFrame: 0.3)))
+        }
+        //runAnimation(with: spriteTextures[direction.rawValue]!, andKey: withKey)
     }
+    
     
     private func runAnimation(with textures: [SKTexture], andKey key: String) {
         let animate = SKAction.animate(with: textures, timePerFrame: 0.2)

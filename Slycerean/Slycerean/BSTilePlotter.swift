@@ -72,6 +72,7 @@ struct BSTilePlotter {
                         attackTiles.insert(top)
                     }
                     checkedTiles.insert(top)
+                    nextTiles.append(top)
                 }
                 let bottom = startPos.bottom
                 if board.isValidAttackingTile(for: bottom) &&
@@ -80,6 +81,7 @@ struct BSTilePlotter {
                         attackTiles.insert(bottom)
                     }
                     checkedTiles.insert(bottom)
+                    nextTiles.append(bottom)
                 }
                 let left = startPos.left
                 if board.isValidAttackingTile(for: left) &&
@@ -88,6 +90,7 @@ struct BSTilePlotter {
                         attackTiles.insert(left)
                     }
                     checkedTiles.insert(left)
+                    nextTiles.append(left)
                 }
                 let right = startPos.right
                 if board.isValidAttackingTile(for: right) &&
@@ -96,11 +99,8 @@ struct BSTilePlotter {
                         attackTiles.insert(right)
                     }
                     checkedTiles.insert(right)
+                    nextTiles.append(right)
                 }
-                nextTiles.append(top)
-                nextTiles.append(bottom)
-                nextTiles.append(left)
-                nextTiles.append(right)
             }
             startTiles = nextTiles
             steps += 1
