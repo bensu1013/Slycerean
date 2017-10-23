@@ -31,7 +31,7 @@ class SpriteComponent: SKSpriteNode {
     init(unit: GameUnit) {
         super.init(texture: nil, color: .clear, size: CGSize(width: 128.0, height: 128.0))
         self.name = "Unit"
-        self.texture = SKTexture.init(rect: CGRect.init(x: 0, y: 200, width: 100, height: 100), in: spriteTexture)
+//        self.texture = SKTexture.init(rect: CGRect.init(x: 0, y: 200, width: 100, height: 100), in: spriteTexture)
         
     }
     
@@ -41,18 +41,19 @@ class SpriteComponent: SKSpriteNode {
 
     func walk(_ direction: Direction, withKey: String) {
         if self.direction != direction {
-            let x: CGFloat = 2
+            self.direction = direction
+            let x: CGFloat = 0
             var y: CGFloat
             switch direction {
             case .down:
-                y = 2
+                y = 0
             case .up:
                 y = 1
             case .left:
-                y = 0
-//                xScale = xScale < 0 ? xScale * 1 : xScale
+                y = 2
+//                xScale = xScale < 0 ? xScale * -1 : xScale
             case .right:
-                y = 0
+                y = 2
 //                xScale = xScale > 0 ? xScale * -1 : xScale
             }
 
@@ -62,19 +63,31 @@ class SpriteComponent: SKSpriteNode {
 //                                                      height: 100/spriteTexture.size().height), in: spriteTexture)
             
             removeAllActions()
-            var textureRect=CGRect(x: x*(spriteTexture.size().width/6),
-                                   y: y*(spriteTexture.size().height/3),
-                                   width: spriteTexture.size().width/6,
-                                   height: spriteTexture.size().height/3)
-
-            textureRect=CGRect(x: textureRect.origin.x/spriteTexture.size().width,
-                               y: textureRect.origin.y/spriteTexture.size().height,
-                               width: textureRect.size.width/spriteTexture.size().width,
-                               height: textureRect.size.height/spriteTexture.size().height)
+            var textureRect = CGRect(x: x*(spriteTexture.size().width/6),
+                                     y: y*(spriteTexture.size().height/3),
+                                     width: spriteTexture.size().width/6,
+                                     height: spriteTexture.size().height/3)
             
-            let t1 =  SKTexture(rect: textureRect, in: spriteTexture)
+            textureRect = CGRect(x: textureRect.origin.x/spriteTexture.size().width,
+                                 y: textureRect.origin.y/spriteTexture.size().height,
+                                 width: textureRect.size.width/spriteTexture.size().width,
+                                 height: textureRect.size.height/spriteTexture.size().height)
             
-            run(SKAction.repeatForever(SKAction.animate(with: [t1], timePerFrame: 0.3)))
+            let t1 = SKTexture(rect: textureRect, in: spriteTexture)
+            
+            textureRect = CGRect(x: (x+1)*(spriteTexture.size().width/6),
+                                 y: y*(spriteTexture.size().height/3),
+                                 width: spriteTexture.size().width/6,
+                                 height: spriteTexture.size().height/3)
+            
+            textureRect = CGRect(x: textureRect.origin.x/spriteTexture.size().width,
+                                 y: textureRect.origin.y/spriteTexture.size().height,
+                                 width: textureRect.size.width/spriteTexture.size().width,
+                                 height: textureRect.size.height/spriteTexture.size().height)
+            
+            let t2 = SKTexture(rect: textureRect, in: spriteTexture)
+            
+            run(SKAction.repeatForever(SKAction.animate(with: [t1, t2], timePerFrame: 0.5)))
         }
         //runAnimation(with: spriteTextures[direction.rawValue]!, andKey: withKey)
     }
