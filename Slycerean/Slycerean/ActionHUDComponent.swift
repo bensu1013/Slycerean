@@ -76,21 +76,20 @@ class ActionHUDComponent: SKNode {
     }
     
     @objc func basicAttackAction() {
-        gameScene?.currentActiveUnit?.chosenSkill = BasicAttackSkill()
+        gameScene?.currentActiveUnit?.selectedSkill = BasicAttackSkill()
         gameScene?.sceneState = .readyAttack
     }
     
     @objc func skillMenuAction() {
         // expand menu take skills from
 //        gameScene?.currentActiveUnit?.equippedSkills
-        let skills = gameScene?.currentActiveUnit?.equippedSkills
+        let skills = gameScene?.currentActiveUnit?.gameUnit?.equippedSkills
         for _ in skills! {
             
         }
     }
     
     @objc func endTurnAction() {
-        gameScene?.currentActiveUnit?.chosenSkill = nil
         gameScene?.sceneState = .turnEnd
     }
     

@@ -26,13 +26,15 @@ import GameplayKit
 let spriteTexture = SKTexture.init(imageNamed: "Character_Hero_Warrior")
 
 class SpriteComponent: SKSpriteNode {
-    weak var unit: GameUnit?
+
     var spriteSheet: SpriteSheet
     var direction: Direction = .down
-    init(unit: GameUnit) {
+    
+    init() {
         spriteSheet = SpriteSheet(texture: spriteTexture, columns: 6, rows: 3)
         super.init(texture: nil, color: .clear, size: CGSize(width: 128.0, height: 128.0))
         self.name = "Unit"
+        texture = spriteSheet.getTextureFrom(col: 0, row: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,14 +67,7 @@ class SpriteComponent: SKSpriteNode {
                 run(SKAction.scaleX(to: -1, duration: 0))
                 run(SKAction.repeatForever(SKAction.animate(with: [t1, t2], timePerFrame: 0.5)))
             }
-
         }
     }
-    
-    private func runAnimation(with textures: [SKTexture], andKey key: String) {
-        let animate = SKAction.animate(with: textures, timePerFrame: 0.2)
-        self.run(animate, withKey: key)
-    }
-    
     
 }

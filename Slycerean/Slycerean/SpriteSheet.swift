@@ -4,9 +4,9 @@ import SpriteKit
 
 struct SpriteSheet {
     
-    var texture: SKTexture
-    var cols: CGFloat
-    var rows: CGFloat
+    private var texture: SKTexture
+    private var cols: CGFloat
+    private var rows: CGFloat
     
     init(texture: SKTexture, columns: CGFloat, rows: CGFloat) {
         self.texture = texture

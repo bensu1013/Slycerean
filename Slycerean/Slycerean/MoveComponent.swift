@@ -12,12 +12,12 @@ import GameplayKit
 class MoveComponent {
     
     weak var scene: GameScene?
-    weak var unit: GameUnit?
+    weak var unit: BSBattleUnit?
     var shortestPath: [TileCoord]?
     fileprivate var currentStepAction: SKAction?
     var pathfinder = AStarPathfinder()
     
-    init(for  unit: GameUnit, in scene: GameScene) {
+    init(for unit: BSBattleUnit, in scene: GameScene) {
         self.scene = scene
         self.unit = unit
         self.pathfinder.dataSource = self
@@ -40,7 +40,7 @@ class MoveComponent {
         
         self.shortestPath = self.pathfinder.shortestPathFromTileCoord(fromTileCoord, toTileCoord: toTileCoord)
         if let path = shortestPath {
-            unit.unusedMovementSteps -= path.count
+            unit.unusedMovement -= path.count
             unit.tileCoord = toTileCoord
             self.popStepAndAnimate { completion() }
         }

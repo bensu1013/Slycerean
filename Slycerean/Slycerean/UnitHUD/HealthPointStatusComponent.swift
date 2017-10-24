@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class HealthPointStatusComponent: SKNode {
-    weak var unit: GameUnit?
+    weak var unit: BSBattleUnit?
     
     var mainLabel = SKLabelNode()
     var healthBar = StatusBarComponent(color: .red)
@@ -45,10 +45,10 @@ class HealthPointStatusComponent: SKNode {
     }
     
     
-    func displayNewUnit(_ unit: GameUnit) {
+    func displayNewUnit(_ unit: BSBattleUnit) {
         self.unit = unit
         
-        let scale = CGFloat(unit.currentHealthPoints) / CGFloat(unit.maximumHealthPoints)
+        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.gameUnit!.maximumHealthPoints)
         healthBar.animateBarToScale(scale, duration: 0)
         
         fractionLabel.updateUIForUnit(unit)
@@ -57,7 +57,7 @@ class HealthPointStatusComponent: SKNode {
     func updateUI() {
         guard let unit = unit else { return }
         fractionLabel.updateUIForUnit(unit)
-        let scale = CGFloat(unit.currentHealthPoints) / CGFloat(unit.maximumHealthPoints)
+        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.gameUnit!.maximumHealthPoints)
         healthBar.animateBarToScale(scale)
     }
     

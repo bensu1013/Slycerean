@@ -18,7 +18,7 @@ class BSFireballSkill: BSActivatableSkill {
     var healthModifier = -10
     
     
-    func useOnUnits(_ units: [GameUnit], completion: @escaping()->()) {
+    func useOnUnits(_ units: [BSBattleUnit], completion: @escaping()->()) {
         animatedEffect {
             units.forEach({ (unit) in
                 self.effectOnUnit(unit)
@@ -27,8 +27,8 @@ class BSFireballSkill: BSActivatableSkill {
         }
     }
     
-    func effectOnUnit(_ unit: GameUnit) {
-        unit.currentHealthPoints += healthModifier
+    func effectOnUnit(_ unit: BSBattleUnit) {
+        unit.currentHealth += healthModifier
     }
     
     func animatedEffect(completion: @escaping ()->()) {

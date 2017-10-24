@@ -11,9 +11,9 @@ import Foundation
 protocol BSActivatableSkill {
     var attackPattern: BSAttackPattern { get set }
     
-    func useOnUnits(_ units: [GameUnit], completion: @escaping()->())
+    func useOnUnits(_ units: [BSBattleUnit], completion: @escaping()->())
     // targeted unit be effected dependant on skill used
-    func effectOnUnit(_ unit: GameUnit)
+    func effectOnUnit(_ unit: BSBattleUnit)
     func animatedEffect(completion: @escaping ()->())
 }
 
@@ -27,7 +27,7 @@ class BasicAttackSkill: BSActivatableSkill {
     var healthModifier = -4
     
     
-    func useOnUnits(_ units: [GameUnit], completion: @escaping()->()) {
+    func useOnUnits(_ units: [BSBattleUnit], completion: @escaping()->()) {
         animatedEffect {
             units.forEach({ (unit) in
                 self.effectOnUnit(unit)
@@ -36,8 +36,8 @@ class BasicAttackSkill: BSActivatableSkill {
         }
     }
     
-    func effectOnUnit(_ unit: GameUnit) {
-        unit.currentHealthPoints += healthModifier
+    func effectOnUnit(_ unit: BSBattleUnit) {
+        unit.currentHealth += healthModifier
     }
     
     func animatedEffect(completion: @escaping ()->()) {

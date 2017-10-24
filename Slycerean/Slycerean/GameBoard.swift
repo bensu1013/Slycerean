@@ -226,7 +226,7 @@ extension GameBoard {
         removeAllChildrenInLayer(type: .highlight)
     }
     
-    func tryPlacingMovementTiles(for unit: GameUnit) -> Bool {
+    func tryPlacingMovementTiles(for unit: BSBattleUnit) -> Bool {
         let moveTiles = BSTilePlotter.getValidWalkingTiles(onGameBoard: self, forUnit: unit)
         if moveTiles.isEmpty { return false }
         layer(type: .highlight, insert: HighlightSprite(type: .movementMain), at: unit.tileCoord)
@@ -236,7 +236,7 @@ extension GameBoard {
         return true
     }
     
-    func tryPlacingAttackTiles(for unit: GameUnit) -> Bool {
+    func tryPlacingAttackTiles(for unit: BSBattleUnit) -> Bool {
         let attackTiles = BSTilePlotter.getValidAttackingTiles(onGameBoard: self, forUnit: unit)
         if attackTiles.isEmpty { return false }
         layer(type: .highlight, insert: HighlightSprite(type: .movementMain), at: unit.tileCoord)

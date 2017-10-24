@@ -52,11 +52,11 @@ class BSGameHUD: SKNode {
         actionMenuComponent.setupHUDFor(scene: gameScene)
     }
     
-    func setSelectedUnitHud(with unit: GameUnit) {
+    func setSelectedUnitHud(with unit: BSBattleUnit) {
         selectedUnitComponent.setupHUDFor(unit: unit)
     }
     
-    func setTargetedUnitHud(with unit: GameUnit) {
+    func setTargetedUnitHud(with unit: BSBattleUnit) {
         targetedUnitComponent.setupHUDFor(unit: unit)
     }
     

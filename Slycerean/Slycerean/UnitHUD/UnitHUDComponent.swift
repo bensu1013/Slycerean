@@ -20,7 +20,7 @@ class UnitHUDComponent: SKNode {
     
     weak var gameScene: GameScene?
     
-    weak var unit: GameUnit? {
+    weak var unit: BSBattleUnit? {
         didSet{
             self.isHidden = unit == nil
         }
@@ -76,17 +76,17 @@ class UnitHUDComponent: SKNode {
     }
     
     // showing a new unit
-    func setupHUDFor(unit: GameUnit) {
+    func setupHUDFor(unit: BSBattleUnit) {
         self.unit = unit
-        nameNode?.text = "\(unit.firstName) \(unit.lastName)"
+        nameNode?.text = "\(unit.gameUnit!.firstName) \(unit.gameUnit!.lastName)"
         healthPointNode?.displayNewUnit(unit)
-        movePointNode?.text = "\(unit.unusedMovementSteps)"
+        movePointNode?.text = "\(unit.unusedMovement)"
     }
     
     func updateUI() {
         guard let unit = unit else { return }
         healthPointNode?.updateUI()
-        movePointNode?.text = "\(unit.unusedMovementSteps)"
+        movePointNode?.text = "\(unit.unusedMovement)"
     }
     
 }

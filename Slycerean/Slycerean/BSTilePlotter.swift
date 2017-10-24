@@ -10,13 +10,13 @@ import Foundation
 
 struct BSTilePlotter {
     
-    static func getValidWalkingTiles(onGameBoard board: GameBoard, forUnit unit: GameUnit) -> [TileCoord] {
+    static func getValidWalkingTiles(onGameBoard board: GameBoard, forUnit unit: BSBattleUnit) -> [TileCoord] {
         
         let unitPosition = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
         var moveTiles = Set<TileCoord>()
         var startTiles = [unitPosition]
         var steps = 0
-        while steps < unit.unusedMovementSteps {
+        while steps < unit.unusedMovement {
             var nextTiles = [TileCoord]()
             for startPos in startTiles {
                 let top = startPos.top
@@ -50,8 +50,8 @@ struct BSTilePlotter {
         return Array(moveTiles)
     }
     
-    static func getValidAttackingTiles(onGameBoard board: GameBoard, forUnit unit: GameUnit) -> [TileCoord] {
-        guard let action = unit.chosenSkill else {
+    static func getValidAttackingTiles(onGameBoard board: GameBoard, forUnit unit: BSBattleUnit) -> [TileCoord] {
+        guard let action = unit.selectedSkill else {
             print("No skill found when selection occured")
             return []
         }

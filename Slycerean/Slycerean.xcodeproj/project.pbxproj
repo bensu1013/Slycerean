@@ -35,6 +35,8 @@
 		FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */; };
 		FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */; };
 		FD92084E1F9EC81D001FD8AB /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */; };
+		FD9208501F9EE707001FD8AB /* BSBattleTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92084F1F9EE707001FD8AB /* BSBattleTeam.swift */; };
+		FD9208521F9EE8EA001FD8AB /* BSBattleUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */; };
 		FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */; };
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
@@ -79,6 +81,8 @@
 		FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionMap.swift; sourceTree = "<group>"; };
 		FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitLayerNode.swift; sourceTree = "<group>"; };
 		FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSheet.swift; sourceTree = "<group>"; };
+		FD92084F1F9EE707001FD8AB /* BSBattleTeam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSBattleTeam.swift; sourceTree = "<group>"; };
+		FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSBattleUnit.swift; sourceTree = "<group>"; };
 		FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationHUDComponent.swift; sourceTree = "<group>"; };
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				FD7A84D01F5CFC580060823D /* Entity */,
 				FD7A84B21F5CB12F0060823D /* AppDelegate.swift */,
 				FD7A84B81F5CB12F0060823D /* GameScene.swift */,
+				FD92084F1F9EE707001FD8AB /* BSBattleTeam.swift */,
 				FD7A84BA1F5CB12F0060823D /* GameViewController.swift */,
 				FDD4CAD91F78A701003E1C6B /* GameCamera.swift */,
 				FD1BFD591F95911B00C1302E /* BSUnitSkills */,
@@ -192,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				FD7A84CA1F5CFAD60060823D /* GameUnit.swift */,
+				FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */,
 				FD7A84CC1F5CFB000060823D /* SpriteComponent.swift */,
 				FD7A84CE1F5CFB860060823D /* MoveComponent.swift */,
 				FD2B32031F6793C600564150 /* PathFinder.swift */,
@@ -307,6 +313,7 @@
 			files = (
 				FD7A84CB1F5CFAD60060823D /* GameUnit.swift in Sources */,
 				FD7A84CD1F5CFB000060823D /* SpriteComponent.swift in Sources */,
+				FD9208521F9EE8EA001FD8AB /* BSBattleUnit.swift in Sources */,
 				FD7A84D21F641E180060823D /* GameBoard.swift in Sources */,
 				FD7A84CF1F5CFB860060823D /* MoveComponent.swift in Sources */,
 				FD1BFD5D1F95992D00C1302E /* BSFireballSkill.swift in Sources */,
@@ -326,6 +333,7 @@
 				FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */,
 				FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */,
 				FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */,
+				FD9208501F9EE707001FD8AB /* BSBattleTeam.swift in Sources */,
 				FD2B31FF1F65F86200564150 /* TileModels.swift in Sources */,
 				FD7A84B31F5CB12F0060823D /* AppDelegate.swift in Sources */,
 				FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */,

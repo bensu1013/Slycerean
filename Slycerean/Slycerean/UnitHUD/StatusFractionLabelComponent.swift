@@ -51,10 +51,10 @@ class StatusFractionLabelComponent: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateUIForUnit(_ unit: GameUnit) {
-        currentAmoutLabel.text = "\(unit.currentHealthPoints)"
+    func updateUIForUnit(_ unit: BSBattleUnit) {
+        currentAmoutLabel.text = "\(unit.currentHealth)"
         separatorLabel.position = CGPoint(x: currentAmoutLabel.position.x + currentAmoutLabel.frame.size.width + 5, y: -2)
-        maximumAmountLabel.text = "\(unit.maximumHealthPoints)"
+        maximumAmountLabel.text = "\(unit.gameUnit!.maximumHealthPoints)"
         maximumAmountLabel.position = CGPoint(x: separatorLabel.position.x + separatorLabel.frame.size.width, y: -3)
     }
     

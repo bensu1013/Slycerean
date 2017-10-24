@@ -55,11 +55,12 @@ class GameScene: SKScene {
     var gameBoard: GameBoard!
 
     var gameCamera: GameCamera!
-    var unitEntities = [GameUnit]()
+    var unitEntities = [BSBattleUnit]()
+    var units = [GameUnit]()
     var tempTurnIndex = 0
     
     weak var gameHud: BSGameHUD?
-    var currentActiveUnit: GameUnit?
+    var currentActiveUnit: BSBattleUnit?
     
     var userTurn: Bool = true {
         didSet {
@@ -81,26 +82,29 @@ class GameScene: SKScene {
         gameBoard = GameBoard(scene: self, filename: "Level_0")
         addChild(gameBoard)
         
-        let player = GameUnit(scene: self)
-        player.spriteComponent.isUserInteractionEnabled = false
-        player.tileCoord = TileCoord(col: 4, row: 4)
-        player.spriteComponent.anchorPoint = CGPoint.zero
-        gameBoard.layer(type: .unit, insert: player.spriteComponent, at: player.tileCoord)
-        unitEntities.append(player)
+        let player = GameUnit()
+        units.append(player)
+        let bUnit = BSBattleUnit(gameUnit: player, atCoord: TileCoord(col: 4, row: 4), inScene: self)
+        bUnit.spriteComponent.isUserInteractionEnabled = false
+        bUnit.spriteComponent.anchorPoint = CGPoint.zero
+        gameBoard.layer(type: .unit, insert: bUnit.spriteComponent, at: bUnit.tileCoord)
+        unitEntities.append(bUnit)
         
-        let player1 = GameUnit(scene: self)
-        player1.spriteComponent.isUserInteractionEnabled = false
-        player1.tileCoord = TileCoord(col: 4, row: 3)
-        player1.spriteComponent.anchorPoint = CGPoint.zero
-        gameBoard.layer(type: .unit, insert: player1.spriteComponent, at: player1.tileCoord)
-        unitEntities.append(player1)
+        let player1 = GameUnit()
+        units.append(player1)
+        let bUnit1 = BSBattleUnit(gameUnit: player1, atCoord: TileCoord(col: 4, row: 3), inScene: self)
+        bUnit1.spriteComponent.isUserInteractionEnabled = false
+        bUnit1.spriteComponent.anchorPoint = CGPoint.zero
+        gameBoard.layer(type: .unit, insert: bUnit1.spriteComponent, at: bUnit1.tileCoord)
+        unitEntities.append(bUnit1)
         
-        let player2 = GameUnit(scene: self)
-        player2.spriteComponent.isUserInteractionEnabled = false
-        player2.tileCoord = TileCoord(col: 7, row: 6)
-        player2.spriteComponent.anchorPoint = CGPoint.zero
-        gameBoard.layer(type: .unit, insert: player2.spriteComponent, at: player2.tileCoord)
-        unitEntities.append(player2)
+        let player2 = GameUnit()
+        units.append(player2)
+        let bUnit2 = BSBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 7, row: 6), inScene: self)
+        bUnit2.spriteComponent.isUserInteractionEnabled = false
+        bUnit2.spriteComponent.anchorPoint = CGPoint.zero
+        gameBoard.layer(type: .unit, insert: bUnit2.spriteComponent, at: bUnit2.tileCoord)
+        unitEntities.append(bUnit2)
     }
     
     func setupCamera(_ gameCamera: GameCamera) {
@@ -114,7 +118,7 @@ class GameScene: SKScene {
         tempTurnIndex = tempTurnIndex + 1 >= unitEntities.count ? 0 : tempTurnIndex + 1
     }
     
-    private func prepareSceneFor(unit: GameUnit) {
+    private func prepareSceneFor(unit: BSBattleUnit) {
         currentActiveUnit = unit
         unit.prepareTurn()
         gameHud?.setSelectedUnitHud(with: unit)
@@ -137,16 +141,12 @@ extension GameScene {
         switch sceneState {
         case .readyMove:
             tappedWhenReadyMove(atPoint: point)
-            break
         case .confirmMove(let moveTile):
             tappedWhenConfirmMove(atPoint: point, withMoveTile: moveTile)
-            break
         case .readyAttack:
             tappedWhenReadyAttack(atPoint: point)
-            break
         case .confirmAttack(let attackTiles):
             tappedWhenConfirmAttack(atPoint: point, withAttackTiles: attackTiles)
-            break
         default:
             break
         }
@@ -174,7 +174,7 @@ extension GameScene {
         let tileCoord = TPConvert.tileCoordForPosition(point)
         if gameBoard.layer(type: .highlight, hasObjectNamed: kObjectHighlightPath, at: tileCoord) {
             // find all tiles affected by skill and if unit can be targeted
-            let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.chosenSkill!.attackPattern, atTileCoord: tileCoord)
+            let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.selectedSkill!.attackPattern, atTileCoord: tileCoord)
             var hasTarget = false
             for unit in unitEntities {
                 if attackTiles.contains(unit.tileCoord) {
@@ -241,7 +241,9 @@ extension GameScene {
     }
     
     private func stateChangedToReadyMove() {
-        gameBoard.tryPlacingMovementTiles(for: currentActiveUnit!)
+        if gameBoard.tryPlacingMovementTiles(for: currentActiveUnit!) {
+            
+        }
     }
     
     private func stateChangedToConfirmMove(tileCoord: TileCoord) {
@@ -257,7 +259,9 @@ extension GameScene {
     }
     
     private func stateChangedToReadyAttack() {
-        gameBoard.tryPlacingAttackTiles(for: currentActiveUnit!)
+        if gameBoard.tryPlacingAttackTiles(for: currentActiveUnit!) {
+            
+        }
     }
     
     private func stateChangedToConfirmAttack(tileCoords: [TileCoord]) {
@@ -270,7 +274,7 @@ extension GameScene {
     }
     
     private func stateChangedToActionAttack(tileCoords: [TileCoord]) {
-        var arTar: [GameUnit] = []
+        var arTar: [BSBattleUnit] = []
         for unitEntity in unitEntities {
             if tileCoords.contains(where: {$0 == unitEntity.tileCoord}) {
                 arTar.append(unitEntity)
@@ -284,6 +288,7 @@ extension GameScene {
     private func stateChangedtoTurnEnd() {
         currentActiveUnit?.endTurn()
         currentActiveUnit = nil
+        gameHud?.confirmationComponent.hideAlert()
         self.sceneState = .inactive
     }
     

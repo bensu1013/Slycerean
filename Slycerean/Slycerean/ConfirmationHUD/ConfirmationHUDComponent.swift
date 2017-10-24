@@ -25,11 +25,11 @@ class ConfirmationHUDComponent: SKNode {
         mainLabel.verticalAlignmentMode = .center
         mainLabel.color = UIColor.white.withAlphaComponent(0.4)
         mainLabel.fontColor = .black
-        mainLabel.fontSize = 48
+        mainLabel.fontSize = 56
         mainLabel.fontName = "Optima-Bold"
         addChild(mainLabel)
         
-        let buttonCenter = CGPoint(x: sceneSize.width/4, y: -sceneSize.height/4)
+        let buttonCenter = CGPoint(x: sceneSize.width/3, y: -sceneSize.height/3)
         let buttonSize = CGSize(width: 160, height: 96)
         
         cancelNode = SKSpriteNode(texture: nil, color: .red, size: buttonSize)
