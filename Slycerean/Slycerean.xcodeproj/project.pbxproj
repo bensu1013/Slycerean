@@ -34,6 +34,7 @@
 		FD7E94DF1F886D3B00F5B573 /* BSGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7E94DE1F886D3B00F5B573 /* BSGameView.swift */; };
 		FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */; };
 		FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */; };
+		FD92084E1F9EC81D001FD8AB /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */; };
 		FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */; };
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
@@ -77,6 +78,7 @@
 		FD7E94DE1F886D3B00F5B573 /* BSGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameView.swift; sourceTree = "<group>"; };
 		FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionMap.swift; sourceTree = "<group>"; };
 		FD856AC91F92595D003B29E5 /* UnitLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitLayerNode.swift; sourceTree = "<group>"; };
+		FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSheet.swift; sourceTree = "<group>"; };
 		FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationHUDComponent.swift; sourceTree = "<group>"; };
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				FD7A84CC1F5CFB000060823D /* SpriteComponent.swift */,
 				FD7A84CE1F5CFB860060823D /* MoveComponent.swift */,
 				FD2B32031F6793C600564150 /* PathFinder.swift */,
+				FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */,
 				FDC80AAA1F8C658A0005C355 /* BSGameSceneManager.swift in Sources */,
 				FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */,
+				FD92084E1F9EC81D001FD8AB /* SpriteSheet.swift in Sources */,
 				FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */,
 				FD7E94DF1F886D3B00F5B573 /* BSGameView.swift in Sources */,
 				FDC937B21F85C3E600F62A3B /* TileCoord.swift in Sources */,
