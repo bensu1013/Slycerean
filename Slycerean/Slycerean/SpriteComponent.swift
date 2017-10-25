@@ -10,18 +10,18 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-let spriteTexture = SKTexture.init(imageNamed: "Character_Hero_Warrior")
-
 class SpriteComponent: SKSpriteNode {
 
     var spriteSheet: SpriteSheet
     var direction: Direction = .down
     
-    init() {
-        spriteSheet = SpriteSheet(texture: spriteTexture, columns: 6, rows: 3)
+    init(spriteSheet: SpriteSheet) {
+        self.spriteSheet = spriteSheet
         super.init(texture: nil, color: .clear, size: CGSize(width: 128.0, height: 128.0))
         self.name = "Unit"
-        texture = spriteSheet.getTextureFrom(col: 0, row: 0)
+        let t1 = spriteSheet.getTextureFrom(col: 2, row: 0)
+        let t2 = spriteSheet.getTextureFrom(col: 3, row: 0)
+        run(SKAction.repeatForever(SKAction.animate(with: [t1, t2], timePerFrame: 0.5)))
     }
     
     required init?(coder aDecoder: NSCoder) {

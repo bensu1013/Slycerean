@@ -76,7 +76,7 @@ class ActionHUDComponent: SKNode {
     }
     
     @objc func basicAttackAction() {
-        gameScene?.currentActiveUnit?.selectedSkill = BasicAttackSkill()
+        gameScene?.currentActiveUnit?.selectedBasicAttack()
         gameScene?.sceneState = .readyAttack
     }
     
