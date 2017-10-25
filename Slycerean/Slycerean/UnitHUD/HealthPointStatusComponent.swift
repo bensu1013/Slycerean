@@ -48,7 +48,7 @@ class HealthPointStatusComponent: SKNode {
     func displayNewUnit(_ unit: BSBattleUnit) {
         self.unit = unit
         
-        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.gameUnit!.maximumHealthPoints)
+        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.maxHealth)
         healthBar.animateBarToScale(scale, duration: 0)
         
         fractionLabel.updateUIForUnit(unit)
@@ -57,7 +57,7 @@ class HealthPointStatusComponent: SKNode {
     func updateUI() {
         guard let unit = unit else { return }
         fractionLabel.updateUIForUnit(unit)
-        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.gameUnit!.maximumHealthPoints)
+        let scale = CGFloat(unit.currentHealth) / CGFloat(unit.maxHealth)
         healthBar.animateBarToScale(scale)
     }
     

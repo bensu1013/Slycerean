@@ -10,19 +10,6 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-//var spriteTextures: [String:[SKTexture]] = ["up":[SKTexture.init(imageNamed: "up_1"),
-//                                                  SKTexture.init(imageNamed: "up_2"),
-//                                                  SKTexture.init(imageNamed: "up_3")],
-//                                            "down":[SKTexture.init(imageNamed: "down_1"),
-//                                                    SKTexture.init(imageNamed: "down_2"),
-//                                                    SKTexture.init(imageNamed: "down_3")],
-//                                            "left":[SKTexture.init(imageNamed: "left_1"),
-//                                                    SKTexture.init(imageNamed: "left_2"),
-//                                                    SKTexture.init(imageNamed: "left_3")],
-//                                            "right":[SKTexture.init(imageNamed: "right_1"),
-//                                                     SKTexture.init(imageNamed: "right_2"),
-//                                                     SKTexture.init(imageNamed: "right_3")]]
-
 let spriteTexture = SKTexture.init(imageNamed: "Character_Hero_Warrior")
 
 class SpriteComponent: SKSpriteNode {

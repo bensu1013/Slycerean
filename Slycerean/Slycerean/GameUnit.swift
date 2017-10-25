@@ -10,12 +10,37 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-enum Direction: String {
-    case up, down, left, right
+enum BSGameUnitJob {
+    case warrior, wizard, ranger, rogue
+    func getBaseStats() -> BSJobBaseStats {
+        switch self {
+        case .warrior:
+            return BSJobBaseStats(baseHealth: 32, baseMove: 3, baseMagic: 1, upHealth: 4, upMagic: 0, basicAttack: BasicAttackSkill())
+        case .wizard:
+            return BSJobBaseStats(baseHealth: 16, baseMove: 3, baseMagic: 3, upHealth: 2, upMagic: 2, basicAttack: BasicAttackSkill())
+        case .ranger:
+            return BSJobBaseStats(baseHealth: 28, baseMove: 4, baseMagic: 2, upHealth: 3, upMagic: 1, basicAttack: BasicAttackSkill())
+        case .rogue:
+            return BSJobBaseStats(baseHealth: 22, baseMove: 5, baseMagic: 1, upHealth: 3, upMagic: 1, basicAttack: BasicAttackSkill())
+        }
+    }
+}
+struct BSJobBaseStats {
+    var baseHealth: Int
+    var baseMove: Int
+    var baseMagic: Int
+    
+    var upHealth: Int
+    var upMagic: Int
+    
+    var basicAttack: BSActivatableSkill
 }
 
 class GameUnit {
 
+    var classJob: BSGameUnitJob
+    var level: Int
+    
     var firstName: String = "First"
     var lastName: String = "Last"
     
@@ -23,9 +48,13 @@ class GameUnit {
     var totalMovementSteps: Int = 4
     var totalMagicPowers = 2
     
+    var basicAttack: BSActivatableSkill?
     var equippedSkills = [BSActivatableSkill]()
     
-    init() {
+    init(job: BSGameUnitJob, level: Int) {
+        self.classJob = job
+        self.level = level
+        
         equippedSkills.append(BSFireballSkill())
     }
     

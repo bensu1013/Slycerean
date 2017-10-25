@@ -54,7 +54,7 @@ class StatusFractionLabelComponent: SKNode {
     func updateUIForUnit(_ unit: BSBattleUnit) {
         currentAmoutLabel.text = "\(unit.currentHealth)"
         separatorLabel.position = CGPoint(x: currentAmoutLabel.position.x + currentAmoutLabel.frame.size.width + 5, y: -2)
-        maximumAmountLabel.text = "\(unit.gameUnit!.maximumHealthPoints)"
+        maximumAmountLabel.text = "\(unit.maxHealth)"
         maximumAmountLabel.position = CGPoint(x: separatorLabel.position.x + separatorLabel.frame.size.width, y: -3)
     }
     

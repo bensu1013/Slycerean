@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum Direction: String {
+    case up, down, left, right
+}
+
 class TileCoord: Hashable {
     var col: Int
     var row: Int

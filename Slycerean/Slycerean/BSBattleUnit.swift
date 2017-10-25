@@ -9,15 +9,32 @@
 import Foundation
 
 class BSBattleUnit {
-    weak var gameUnit: GameUnit?
-    weak var scene: GameScene!
+    private weak var gameUnit: GameUnit?
+//    weak var scene: GameScene!
+    var name: String {
+        let f = gameUnit?.firstName ?? ""
+        let l = gameUnit?.lastName ?? ""
+        return  f + " " + l
+    }
     
     var spriteComponent: SpriteComponent!
     var moveComponent: MoveComponent!
     
     var currentHealth: Int
+    var maxHealth: Int {
+        return gameUnit?.maximumHealthPoints ?? 0
+    }
     var unusedMovement: Int
+    var maxMovement: Int {
+        return gameUnit?.totalMovementSteps ?? 0
+    }
     var unusedMagic: Int
+    var maxMagic: Int {
+        return gameUnit?.totalMagicPowers ?? 0
+    }
+    var equippedSkills: [BSActivatableSkill] {
+        return gameUnit?.equippedSkills ?? []
+    }
     var tileCoord: TileCoord
     
     var hasActed: Bool

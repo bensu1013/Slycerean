@@ -83,10 +83,12 @@ class ActionHUDComponent: SKNode {
     @objc func skillMenuAction() {
         // expand menu take skills from
 //        gameScene?.currentActiveUnit?.equippedSkills
-        let skills = gameScene?.currentActiveUnit?.gameUnit?.equippedSkills
-        for _ in skills! {
-            
+        if let skills = gameScene?.currentActiveUnit?.equippedSkills {
+            for _ in skills {
+                
+            }
         }
+        
     }
     
     @objc func endTurnAction() {

@@ -78,7 +78,7 @@ class UnitHUDComponent: SKNode {
     // showing a new unit
     func setupHUDFor(unit: BSBattleUnit) {
         self.unit = unit
-        nameNode?.text = "\(unit.gameUnit!.firstName) \(unit.gameUnit!.lastName)"
+        nameNode?.text = unit.name
         healthPointNode?.displayNewUnit(unit)
         movePointNode?.text = "\(unit.unusedMovement)"
     }
