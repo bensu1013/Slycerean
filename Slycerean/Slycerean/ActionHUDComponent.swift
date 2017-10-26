@@ -9,6 +9,10 @@
 import Foundation
 import SpriteKit
 
+private enum ActionButtonType: String {
+    case skillMenuAction, movementAction, endTurnAction
+}
+
 protocol ActionHUDDelegate {
     
 }
@@ -17,32 +21,32 @@ class ActionHUDComponent: SKNode {
     
     weak var gameScene: GameScene?
     
-    var actionButtons = [SKSpriteNode]()
+    var actionButtons = [BSHUDActionSpriteNode]()
     
     override init() {
         super.init()
         
-        let basicAttackButton = SKSpriteNode(texture: SKTexture(imageNamed: "saber-slash"),
+        let basicAttackButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "saber-slash"),
                                              size: CGSize(width: 128, height: 128))
         basicAttackButton.anchorPoint = CGPoint(x: 0, y: 1)
         basicAttackButton.position = CGPoint(x: 30, y: -30)
-        basicAttackButton.name = "basicAttack"
+        basicAttackButton.type = .skillMenuAction
         actionButtons.append(basicAttackButton)
         addChild(basicAttackButton)
         
-        let skillMenuButton = SKSpriteNode(texture: SKTexture(imageNamed: "walking-boot"),
+        let skillMenuButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "walking-boot"),
                                            size: CGSize(width: 128, height: 128))
         skillMenuButton.anchorPoint = CGPoint(x: 0, y: 1)
         skillMenuButton.position = CGPoint(x: 30, y: -188)//basicAttackButton.position.y - basicAttackButton.size.height - 30)
-        skillMenuButton.name = "skillMenu"
+        skillMenuButton.type = .movementAction
         actionButtons.append(skillMenuButton)
         addChild(skillMenuButton)
         
-        let endTurnButton = SKSpriteNode(texture: SKTexture(imageNamed: "cancel"),
+        let endTurnButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "cancel"),
                                          size: CGSize(width: 128, height: 128))
         endTurnButton.anchorPoint = CGPoint(x: 0, y: 1)
         endTurnButton.position = CGPoint(x: 30, y: -336)//(skillMenuButton.position.y + skillMenuButton.size.height + 30))
-        endTurnButton.name = "endTurn"
+        endTurnButton.type = .endTurnAction
         actionButtons.append(endTurnButton)
         addChild(endTurnButton)
         
@@ -60,11 +64,12 @@ class ActionHUDComponent: SKNode {
     func tryTappingButton(onPoint point: CGPoint) -> Bool {
         for button in actionButtons {
             if button.contains(point) {
-                if button.name == "basicAttack" {
+                switch button.type {
+                case .skillMenuAction:
                     basicAttackAction()
-                } else if button.name == "skillMenu" {
-                    skillMenuAction()
-                } else if button.name == "endTurn" {
+                case .movementAction:
+                    movementAction()
+                case .endTurnAction:
                     endTurnAction()
                 }
                 return true
@@ -73,12 +78,16 @@ class ActionHUDComponent: SKNode {
         return false
     }
     
-    @objc func basicAttackAction() {
+    func basicAttackAction() {
         gameScene?.currentActiveUnit?.selectedBasicAttack()
         gameScene?.sceneState = .readyAttack
     }
     
-    @objc func skillMenuAction() {
+    func movementAction() {
+        gameScene?.sceneState = .readyMove
+    }
+    
+    func skillMenuAction() {
         // expand menu take skills from
 //        gameScene?.currentActiveUnit?.equippedSkills
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
@@ -86,11 +95,16 @@ class ActionHUDComponent: SKNode {
                 
             }
         }
-        
     }
     
-    @objc func endTurnAction() {
+    func endTurnAction() {
         gameScene?.sceneState = .turnEnd
     }
+    
+}
+
+class BSHUDActionSpriteNode: SKSpriteNode {
+    
+    fileprivate var type: ActionButtonType = .skillMenuAction
     
 }
