@@ -86,10 +86,10 @@ class ConfirmationHUDComponent: SKNode {
     }
     
     private func popBounceAction() -> SKAction {
-        let size1 = SKAction.scale(to: 0.8, duration: 0.05)
-        let size2 = SKAction.scale(to: 1.1, duration: 0.15)
-        let size3 = SKAction.scale(to: 0.95, duration: 0.1)
-        let size4 = SKAction.scale(to: 1.0, duration: 0.05)
+        let size1 = SKAction.scale(to: 0.8, duration: 0.03)
+        let size2 = SKAction.scale(to: 1.1, duration: 0.1)
+        let size3 = SKAction.scale(to: 0.95, duration: 0.05)
+        let size4 = SKAction.scale(to: 1.0, duration: 0.03)
         let done = SKAction.run({ self.hideAlert() })
         let sequence = SKAction.sequence([size1, size2, size3, size4, done])
         return sequence
@@ -97,11 +97,11 @@ class ConfirmationHUDComponent: SKNode {
     
     func showAlert(titled title: String) {
         mainLabel.text = title
-        run(SKAction.fadeAlpha(to: 1.0, duration: 0.3))
+        run(SKAction.fadeAlpha(to: 1.0, duration: 0.1))
     }
     
     func hideAlert() {
-        run(SKAction.fadeAlpha(to: 0.0, duration: 0.3))
+        run(SKAction.fadeAlpha(to: 0.0, duration: 0.1))
     }
     
 }

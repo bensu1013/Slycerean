@@ -40,6 +40,7 @@
 		FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */; };
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
+		FDC130E11FA170BB0096C306 /* BSSpriteLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */; };
 		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
 		FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */; };
 		FDC80AA81F8C5C480005C355 /* BSGameInputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */; };
@@ -86,6 +87,7 @@
 		FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationHUDComponent.swift; sourceTree = "<group>"; };
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
+		FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSSpriteLoader.swift; sourceTree = "<group>"; };
 		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameInputHandler.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				FD7A84CE1F5CFB860060823D /* MoveComponent.swift */,
 				FD2B32031F6793C600564150 /* PathFinder.swift */,
 				FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */,
+				FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				FD7887911F809F29003E05CD /* HealthPointStatusComponent.swift in Sources */,
 				FDCB365B1F98476F00F6744D /* BSGameHUD.swift in Sources */,
 				FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */,
+				FDC130E11FA170BB0096C306 /* BSSpriteLoader.swift in Sources */,
 				FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */,
 				FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */,
 				FD9208501F9EE707001FD8AB /* BSBattleTeam.swift in Sources */,

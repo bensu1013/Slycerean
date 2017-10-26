@@ -17,38 +17,32 @@ class ActionHUDComponent: SKNode {
     
     weak var gameScene: GameScene?
     
-    var basicAttackButton: ActionItem!
-    var skillMenuButton: ActionItem!
-    var endTurnButton: ActionItem!
-    var actionButtons = [ActionItem]()
+    var actionButtons = [SKSpriteNode]()
     
     override init() {
         super.init()
         
-        basicAttackButton = ActionItem()
-        basicAttackButton.setTextures(to: SKTexture(imageNamed: "saber-slash"))
-        basicAttackButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(basicAttackAction))
-        basicAttackButton.size = CGSize(width: 128, height: 128)
+        let basicAttackButton = SKSpriteNode(texture: SKTexture(imageNamed: "saber-slash"),
+                                             size: CGSize(width: 128, height: 128))
         basicAttackButton.anchorPoint = CGPoint(x: 0, y: 1)
         basicAttackButton.position = CGPoint(x: 30, y: -30)
+        basicAttackButton.name = "basicAttack"
         actionButtons.append(basicAttackButton)
         addChild(basicAttackButton)
         
-        skillMenuButton = ActionItem()
-        skillMenuButton.setTextures(to: SKTexture(imageNamed: "walking-boot"))
-        skillMenuButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(skillMenuAction))
-        skillMenuButton.size = CGSize(width: 128, height: 128)
+        let skillMenuButton = SKSpriteNode(texture: SKTexture(imageNamed: "walking-boot"),
+                                           size: CGSize(width: 128, height: 128))
         skillMenuButton.anchorPoint = CGPoint(x: 0, y: 1)
         skillMenuButton.position = CGPoint(x: 30, y: -188)//basicAttackButton.position.y - basicAttackButton.size.height - 30)
+        skillMenuButton.name = "skillMenu"
         actionButtons.append(skillMenuButton)
         addChild(skillMenuButton)
         
-        endTurnButton = ActionItem()
-        endTurnButton.setTextures(to: SKTexture(imageNamed: "cancel"))
-        endTurnButton.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(endTurnAction))
-        endTurnButton.size = CGSize(width: 128, height: 128)
+        let endTurnButton = SKSpriteNode(texture: SKTexture(imageNamed: "cancel"),
+                                         size: CGSize(width: 128, height: 128))
         endTurnButton.anchorPoint = CGPoint(x: 0, y: 1)
         endTurnButton.position = CGPoint(x: 30, y: -336)//(skillMenuButton.position.y + skillMenuButton.size.height + 30))
+        endTurnButton.name = "endTurn"
         actionButtons.append(endTurnButton)
         addChild(endTurnButton)
         
@@ -66,9 +60,13 @@ class ActionHUDComponent: SKNode {
     func tryTappingButton(onPoint point: CGPoint) -> Bool {
         for button in actionButtons {
             if button.contains(point) {
-                UIApplication.shared.sendAction(button.actionTouchUpInside!,
-                                                to: button.targetTouchUpInside,
-                                                from: button, for: nil)
+                if button.name == "basicAttack" {
+                    basicAttackAction()
+                } else if button.name == "skillMenu" {
+                    skillMenuAction()
+                } else if button.name == "endTurn" {
+                    endTurnAction()
+                }
                 return true
             }
         }

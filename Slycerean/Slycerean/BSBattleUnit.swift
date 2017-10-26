@@ -9,11 +9,6 @@
 import Foundation
 import SpriteKit
 
-let warriorTexture = SKTexture.init(imageNamed: "Character_Hero_Warrior")
-let archerTexture = SKTexture.init(imageNamed: "Character_Hero_Archer")
-let priestTexture = SKTexture.init(imageNamed: "Character_Hero_Priest")
-let monsterTexture = SKTexture.init(imageNamed: "Character_Monster_Boss")
-
 class BSBattleUnit {
     private weak var gameUnit: GameUnit?
 //    weak var scene: GameScene!
@@ -55,18 +50,7 @@ class BSBattleUnit {
         self.tileCoord = tileCoord
         self.hasActed = false
         self.hasFinished = false
-        var texture: SKTexture
-        switch gameUnit.classJob {
-        case .warrior:
-            texture = warriorTexture
-        case .wizard:
-            texture = priestTexture
-        case .ranger:
-            texture = archerTexture
-        case .rogue:
-            texture = monsterTexture
-        }
-        self.spriteComponent = SpriteComponent(spriteSheet: SpriteSheet(texture: texture, columns: 6, rows: 3))
+        self.spriteComponent = SpriteComponent(spriteSheet: BSSpriteLoader.shared.loadUnitSpriteSheet(for: gameUnit.classJob))
         self.moveComponent = MoveComponent(for: self, in: scene)
     }
     
