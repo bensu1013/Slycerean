@@ -64,6 +64,15 @@ class GameUnit {
     
 }
 
+class BSGameUnitSkillComponent {
+    
+    var learnedSkills = [Int]()
+    var equippedSkills = [BSActivatableSkill]()
+    
+    
+    
+}
+
 
 
 

@@ -44,12 +44,6 @@ class ActionHUDComponent: SKNode {
 
         secondaryActionBar.position = CGPoint(x: 0, y: -ActionBarHeight)
         secondaryActionBar.zPosition = -10
-        secondaryActionBar.prepareActionNodes(withTextures:
-            [SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "walking-boot"),
-             SKTexture.init(imageNamed: "cancel")])
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -80,13 +74,13 @@ class ActionHUDComponent: SKNode {
         if let position = secondaryActionBar.tryTapping(onPoint: secondaryPoint) {
             switch position {
             case .first:
-                basicAttackAction()
+                firstSkillAction()
             case .second:
-                skillMenuAction()
+                secondSkillAction()
             case .third:
-                movementAction()
+                thirdSkillAction()
             case .fourth:
-                endTurnAction()
+                fourthSkillAction()
             }
             return true
         }
@@ -107,6 +101,11 @@ class ActionHUDComponent: SKNode {
 //        gameScene?.currentActiveUnit?.equippedSkills
         isExpanded = true
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
+        secondaryActionBar.prepareActionNodes(withTextures:
+            [SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "walking-boot"),
+             SKTexture.init(imageNamed: "cancel")])
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
             for _ in skills {
                 
@@ -123,6 +122,18 @@ class ActionHUDComponent: SKNode {
         isExpanded = false
     }
     
+    func firstSkillAction() {
+        
+    }
+    func secondSkillAction() {
+        
+    }
+    func thirdSkillAction() {
+        
+    }
+    func fourthSkillAction() {
+        
+    }
 }
 
 class BSHUDActionSpriteNode: SKSpriteNode {

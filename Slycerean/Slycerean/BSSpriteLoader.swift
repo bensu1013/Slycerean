@@ -13,7 +13,9 @@ class BSSpriteLoader {
     static var shared = BSSpriteLoader()
     private init() {}
     
+    private var tileTextures = [String:SKTexture]()
     private var unitTextures = [BSGameUnitJob: SKTexture]()
+    private var iconTextures = [String:SKTexture]()
     
     func loadUnitSpriteSheet(for job: BSGameUnitJob) -> SpriteSheet {
         if let jobTexture = unitTextures[job] {
@@ -38,5 +40,7 @@ class BSSpriteLoader {
     func unloadUnitTextures() {
         unitTextures.removeAll()
     }
+    
+    
     
 }
