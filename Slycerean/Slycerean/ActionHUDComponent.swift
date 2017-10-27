@@ -9,8 +9,10 @@
 import Foundation
 import SpriteKit
 
-private enum ActionButtonType: String {
-    case skillMenuAction, movementAction, endTurnAction
+private var ActionBarHeight: CGFloat = 180
+
+enum ActionNodePosition: Int {
+    case first,second,third,fourth
 }
 
 protocol ActionHUDDelegate {
@@ -21,34 +23,32 @@ class ActionHUDComponent: SKNode {
     
     weak var gameScene: GameScene?
     
+    var isExpanded = false
     var actionButtons = [BSHUDActionSpriteNode]()
+    
+    var primaryActionBar = BSActionBar(size: CGSize(width: 612, height: ActionBarHeight), buttonCount: 4)
+    var secondaryActionBar = BSActionBar(size: CGSize(width: 612, height: ActionBarHeight), buttonCount: 4)
     
     override init() {
         super.init()
         
-        let basicAttackButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "saber-slash"),
-                                             size: CGSize(width: 128, height: 128))
-        basicAttackButton.anchorPoint = CGPoint(x: 0, y: 1)
-        basicAttackButton.position = CGPoint(x: 30, y: -30)
-        basicAttackButton.type = .skillMenuAction
-        actionButtons.append(basicAttackButton)
-        addChild(basicAttackButton)
         
-        let skillMenuButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "walking-boot"),
-                                           size: CGSize(width: 128, height: 128))
-        skillMenuButton.anchorPoint = CGPoint(x: 0, y: 1)
-        skillMenuButton.position = CGPoint(x: 30, y: -188)//basicAttackButton.position.y - basicAttackButton.size.height - 30)
-        skillMenuButton.type = .movementAction
-        actionButtons.append(skillMenuButton)
-        addChild(skillMenuButton)
+        addChild(primaryActionBar)
+        addChild(secondaryActionBar)
         
-        let endTurnButton = BSHUDActionSpriteNode(texture: SKTexture(imageNamed: "cancel"),
-                                         size: CGSize(width: 128, height: 128))
-        endTurnButton.anchorPoint = CGPoint(x: 0, y: 1)
-        endTurnButton.position = CGPoint(x: 30, y: -336)//(skillMenuButton.position.y + skillMenuButton.size.height + 30))
-        endTurnButton.type = .endTurnAction
-        actionButtons.append(endTurnButton)
-        addChild(endTurnButton)
+        primaryActionBar.prepareActionNodes(withTextures:
+            [SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "walking-boot"),
+             SKTexture.init(imageNamed: "cancel")])
+
+        secondaryActionBar.position = CGPoint(x: 0, y: -ActionBarHeight)
+        secondaryActionBar.zPosition = -10
+        secondaryActionBar.prepareActionNodes(withTextures:
+            [SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "saber-slash"),
+             SKTexture.init(imageNamed: "walking-boot"),
+             SKTexture.init(imageNamed: "cancel")])
         
     }
     
@@ -62,18 +62,33 @@ class ActionHUDComponent: SKNode {
     }
     
     func tryTappingButton(onPoint point: CGPoint) -> Bool {
-        for button in actionButtons {
-            if button.contains(point) {
-                switch button.type {
-                case .skillMenuAction:
-                    basicAttackAction()
-                case .movementAction:
-                    movementAction()
-                case .endTurnAction:
-                    endTurnAction()
-                }
-                return true
+        let primaryPoint = convert(point, to: primaryActionBar)
+        if let position = primaryActionBar.tryTapping(onPoint: primaryPoint) {
+            switch position {
+            case .first:
+                basicAttackAction()
+            case .second:
+                skillMenuAction()
+            case .third:
+                movementAction()
+            case .fourth:
+                endTurnAction()
             }
+            return true
+        }
+        let secondaryPoint = convert(point, to: secondaryActionBar)
+        if let position = secondaryActionBar.tryTapping(onPoint: secondaryPoint) {
+            switch position {
+            case .first:
+                basicAttackAction()
+            case .second:
+                skillMenuAction()
+            case .third:
+                movementAction()
+            case .fourth:
+                endTurnAction()
+            }
+            return true
         }
         return false
     }
@@ -90,6 +105,8 @@ class ActionHUDComponent: SKNode {
     func skillMenuAction() {
         // expand menu take skills from
 //        gameScene?.currentActiveUnit?.equippedSkills
+        isExpanded = true
+        secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
             for _ in skills {
                 
@@ -98,13 +115,18 @@ class ActionHUDComponent: SKNode {
     }
     
     func endTurnAction() {
-        gameScene?.sceneState = .turnEnd
+        if isExpanded {
+            secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: -ActionBarHeight), duration: 0.2))
+        } else {
+            gameScene?.sceneState = .turnEnd
+        }
+        isExpanded = false
     }
     
 }
 
 class BSHUDActionSpriteNode: SKSpriteNode {
     
-    fileprivate var type: ActionButtonType = .skillMenuAction
+    var type: ActionNodePosition = .first
     
 }

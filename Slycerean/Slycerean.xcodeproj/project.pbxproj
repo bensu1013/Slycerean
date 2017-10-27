@@ -41,6 +41,7 @@
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
 		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
 		FDC130E11FA170BB0096C306 /* BSSpriteLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */; };
+		FDC130E31FA2C7000096C306 /* BSActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC130E21FA2C7000096C306 /* BSActionBar.swift */; };
 		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
 		FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */; };
 		FDC80AA81F8C5C480005C355 /* BSGameInputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */; };
@@ -88,6 +89,7 @@
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
 		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
 		FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSSpriteLoader.swift; sourceTree = "<group>"; };
+		FDC130E21FA2C7000096C306 /* BSActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSActionBar.swift; sourceTree = "<group>"; };
 		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameInputHandler.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				FD7887941F817C60003E05CD /* ActionHUDComponent.swift */,
+				FDC130E21FA2C7000096C306 /* BSActionBar.swift */,
 			);
 			name = ActionHUD;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				FD7A84CD1F5CFB000060823D /* SpriteComponent.swift in Sources */,
 				FD9208521F9EE8EA001FD8AB /* BSBattleUnit.swift in Sources */,
 				FD7A84D21F641E180060823D /* GameBoard.swift in Sources */,
+				FDC130E31FA2C7000096C306 /* BSActionBar.swift in Sources */,
 				FD7A84CF1F5CFB860060823D /* MoveComponent.swift in Sources */,
 				FD1BFD5D1F95992D00C1302E /* BSFireballSkill.swift in Sources */,
 				FDC937B41F871AAD00F62A3B /* HighlightLayerNode.swift in Sources */,

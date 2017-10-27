@@ -11,7 +11,7 @@ import Foundation
 class BSFireballSkill: BSActivatableSkill {
     
     var name = "Fireball"
-    
+    var skillType: BSSkillType = .damaging
     var attackPattern = BSAttackPattern.init(pattern: .cross(1), max: 5, min: 1)
     
     /// amount of health change, negative for damage, positive for healing

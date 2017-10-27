@@ -29,7 +29,7 @@ class BSGameHUD: SKNode {
         targetedUnitComponent.position = CGPoint(x: size.width/2 - targetedUnitComponent.size.width,
                                                  y: size.height/2)
         actionMenuComponent.position = CGPoint(x: -size.width/2,
-                                               y: selectedUnitComponent.position.y - selectedUnitComponent.size.height)
+                                               y: -size.height/2)
         confirmationComponent.position = .zero
         
         addChild(selectedUnitComponent)

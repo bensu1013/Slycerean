@@ -186,7 +186,14 @@ extension GameScene {
             var hasTarget = false
             for unit in unitEntities {
                 if attackTiles.contains(unit.tileCoord) {
-                    hasTarget = true
+                    if let curUnit = currentActiveUnit,
+                         let skill = curUnit.selectedSkill {
+                        if !(skill.skillType == .basic &&
+                            unit === curUnit) {
+                            hasTarget = true
+                        }
+                    }
+                    
                 }
             }
             if hasTarget {

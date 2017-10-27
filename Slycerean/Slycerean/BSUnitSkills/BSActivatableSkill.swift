@@ -10,15 +10,21 @@ import Foundation
 
 protocol BSActivatableSkill {
     var attackPattern: BSAttackPattern { get set }
-    
+    var skillType: BSSkillType { get }
     func useOnUnits(_ units: [BSBattleUnit], completion: @escaping()->())
     // targeted unit be effected dependant on skill used
     func effectOnUnit(_ unit: BSBattleUnit)
     func animatedEffect(completion: @escaping ()->())
 }
 
+enum BSSkillType {
+    case basic, damaging, healing
+}
+
 struct WarriorBasicSkill: BSActivatableSkill {
     var name = "WarriorBasicSkill"
+    var skillType: BSSkillType = .basic
+    
     var attackPattern = BSAttackPattern.init(pattern: .point, max: 1, min: 0)
     
     /// amount of health change, negative for damage, positive for healing
@@ -44,6 +50,8 @@ struct WarriorBasicSkill: BSActivatableSkill {
 
 struct WizardBasicSkill: BSActivatableSkill {
     var name = "WizardBasicSkill"
+    var skillType: BSSkillType = .basic
+    
     var attackPattern = BSAttackPattern.init(pattern: .point, max: 3, min: 1)
     
     /// amount of health change, negative for damage, positive for healing
@@ -69,6 +77,8 @@ struct WizardBasicSkill: BSActivatableSkill {
 
 struct RangerBasicSkill: BSActivatableSkill {
     var name = "RangerBasicSkill"
+    var skillType: BSSkillType = .basic
+    
     var attackPattern = BSAttackPattern.init(pattern: .point, max: 4, min: 2)
     
     /// amount of health change, negative for damage, positive for healing
@@ -94,6 +104,8 @@ struct RangerBasicSkill: BSActivatableSkill {
 
 struct RogueBasicSkill: BSActivatableSkill {
     var name = "RogueBasicSkill"
+    var skillType: BSSkillType = .basic
+    
     var attackPattern = BSAttackPattern.init(pattern: .point, max: 1, min: 0)
     
     /// amount of health change, negative for damage, positive for healing
