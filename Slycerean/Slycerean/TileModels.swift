@@ -14,7 +14,7 @@ import SpriteKit
 class Tile: SKSpriteNode {
     
     init(name: String) {
-        let texture = SKTexture(imageNamed: name)
+        let texture = BSSpriteLoader.shared.loadTileTexture(forName: name)
         super.init(texture: texture, color: UIColor.clear, size: CGSize.init(width: 128, height: 128))
         self.name = name
         self.anchorPoint = .zero
@@ -60,7 +60,7 @@ class HighlightSprite: SKSpriteNode {
     }
     
     private func setupForMovementMain() {
-        let panelTexture = SKTexture.init(imageNamed: "blue_panel")
+        let panelTexture = BSSpriteLoader.shared.loadIconTexture(forName: "blue_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
         visualNode.alpha = 0.65
         visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
@@ -68,14 +68,14 @@ class HighlightSprite: SKSpriteNode {
         animateBlinking(for: visualNode)
     }
     private func setupForMovementStep() {
-        let panelTexture = SKTexture.init(imageNamed: "blue_panel")
+        let panelTexture = BSSpriteLoader.shared.loadIconTexture(forName: "blue_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
         visualNode.alpha = 0.65
         visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
         self.addChild(visualNode)
     }
     private func setupForTargetMain() {
-        let panelTexture = SKTexture.init(imageNamed: "red_panel")
+        let panelTexture = BSSpriteLoader.shared.loadIconTexture(forName: "red_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
         visualNode.alpha = 0.65
         visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor
@@ -83,7 +83,7 @@ class HighlightSprite: SKSpriteNode {
         animateBlinking(for: visualNode)
     }
     private func setupForTargetSplash() {
-        let panelTexture = SKTexture.init(imageNamed: "green_panel")
+        let panelTexture = BSSpriteLoader.shared.loadIconTexture(forName: "green_panel")
         visualNode = SKSpriteNode(texture: panelTexture, color: .clear, size: CGSize.init(width: 128, height: 128))
         visualNode.alpha = 0.65
         visualNode.position = CGPoint(x: 64, y: 64) // Animating scaling requires a center anchor

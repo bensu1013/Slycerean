@@ -17,6 +17,26 @@ class BSSpriteLoader {
     private var unitTextures = [BSGameUnitJob: SKTexture]()
     private var iconTextures = [String:SKTexture]()
     
+    func loadTileTexture(forName name: String) -> SKTexture {
+        if let tileTexture = tileTextures[name] {
+            return tileTexture
+        } else {
+            let tileTexture = SKTexture(imageNamed: name)
+            tileTextures[name] = tileTexture
+            return tileTexture
+        }
+    }
+    
+    func loadIconTexture(forName name: String) -> SKTexture {
+        if let iconTexture = iconTextures[name] {
+            return iconTexture
+        } else {
+            let iconTexture = SKTexture(imageNamed: name)
+            iconTextures[name] = iconTexture
+            return iconTexture
+        }
+    }
+    
     func loadUnitSpriteSheet(for job: BSGameUnitJob) -> SpriteSheet {
         if let jobTexture = unitTextures[job] {
             return SpriteSheet(texture: jobTexture, columns: 6, rows: 3)
@@ -35,6 +55,14 @@ class BSSpriteLoader {
             unitTextures[job] = unitTexture
             return SpriteSheet(texture: unitTexture, columns: 6, rows: 3)
         }
+    }
+    
+    func unloadTileTextures() {
+        tileTextures.removeAll()
+    }
+    
+    func unloadIconTextures() {
+        iconTextures.removeAll()
     }
     
     func unloadUnitTextures() {

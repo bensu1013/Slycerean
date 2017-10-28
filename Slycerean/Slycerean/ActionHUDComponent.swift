@@ -36,11 +36,13 @@ class ActionHUDComponent: SKNode {
         addChild(primaryActionBar)
         addChild(secondaryActionBar)
         
+        let spriteLoader = BSSpriteLoader.shared
+        
         primaryActionBar.prepareActionNodes(withTextures:
-            [SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "walking-boot"),
-             SKTexture.init(imageNamed: "cancel")])
+            [spriteLoader.loadIconTexture(forName: "saber-slash"),
+             spriteLoader.loadIconTexture(forName: "saber-slash"),
+             spriteLoader.loadIconTexture(forName: "walking-boot"),
+             spriteLoader.loadIconTexture(forName: "cancel")])
 
         secondaryActionBar.position = CGPoint(x: 0, y: -ActionBarHeight)
         secondaryActionBar.zPosition = -10
@@ -101,11 +103,12 @@ class ActionHUDComponent: SKNode {
 //        gameScene?.currentActiveUnit?.equippedSkills
         isExpanded = true
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
+        let spriteLoader = BSSpriteLoader.shared
         secondaryActionBar.prepareActionNodes(withTextures:
-            [SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "saber-slash"),
-             SKTexture.init(imageNamed: "walking-boot"),
-             SKTexture.init(imageNamed: "cancel")])
+            [spriteLoader.loadIconTexture(forName: "saber-slash"),
+             spriteLoader.loadIconTexture(forName: "saber-slash"),
+             spriteLoader.loadIconTexture(forName: "walking-boot"),
+             spriteLoader.loadIconTexture(forName: "cancel")])
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
             for _ in skills {
                 
