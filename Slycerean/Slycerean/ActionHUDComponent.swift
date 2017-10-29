@@ -38,11 +38,11 @@ class ActionHUDComponent: SKNode {
         
         let spriteLoader = BSSpriteLoader.shared
         
-        primaryActionBar.prepareActionNodes(withTextures:
-            [spriteLoader.loadIconTexture(forName: "saber-slash"),
-             spriteLoader.loadIconTexture(forName: "saber-slash"),
-             spriteLoader.loadIconTexture(forName: "walking-boot"),
-             spriteLoader.loadIconTexture(forName: "cancel")])
+        primaryActionBar.loadTexturesForButtons(withTextures:
+            [spriteLoader.loadIconTexture(forName: "Basic-Slash"),
+             spriteLoader.loadIconTexture(forName: "Icon-Skills"),
+             spriteLoader.loadIconTexture(forName: "Icon-Walk"),
+             spriteLoader.loadIconTexture(forName: "Icon-Cancel")])
 
         secondaryActionBar.position = CGPoint(x: 0, y: -ActionBarHeight)
         secondaryActionBar.zPosition = -10
@@ -104,14 +104,16 @@ class ActionHUDComponent: SKNode {
         isExpanded = true
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
         let spriteLoader = BSSpriteLoader.shared
-        secondaryActionBar.prepareActionNodes(withTextures:
-            [spriteLoader.loadIconTexture(forName: "saber-slash"),
-             spriteLoader.loadIconTexture(forName: "saber-slash"),
-             spriteLoader.loadIconTexture(forName: "walking-boot"),
-             spriteLoader.loadIconTexture(forName: "cancel")])
+//        secondaryActionBar.loadTexturesForButtons(withTextures:
+//            [spriteLoader.loadIconTexture(forName: "saber-slash"),
+//             spriteLoader.loadIconTexture(forName: "saber-slash"),
+//             spriteLoader.loadIconTexture(forName: "walking-boot"),
+//             spriteLoader.loadIconTexture(forName: "cancel")])
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
+            var c = 0
             for _ in skills {
-                
+                secondaryActionBar.loadTextureForButton(withTexture: spriteLoader.loadIconTexture(forName: "saber-slash"), atIndex: c)
+                c += 1
             }
         }
     }

@@ -32,7 +32,13 @@ class BSActionBar: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func prepareActionNodes(withTextures textures: [SKTexture]) {
+    func loadTextureForButton(withTexture texture: SKTexture, atIndex index: Int) {
+        if index < actionNodes.count {
+            actionNodes[index].texture = texture
+        }
+    }
+    
+    func loadTexturesForButtons(withTextures textures: [SKTexture]) {
         if actionNodes.count == textures.count {
             for i in 0..<actionNodes.count {
                 actionNodes[i].texture = textures[i]

@@ -18,6 +18,10 @@ class BSBattleUnit {
         return  f + " " + l
     }
     
+    var classJob: BSGameUnitJob {
+        return gameUnit?.classJob ?? .warrior
+    }
+    
     var spriteComponent: SpriteComponent!
     var moveComponent: MoveComponent!
     
@@ -56,6 +60,14 @@ class BSBattleUnit {
     
     func selectedBasicAttack() {
         selectedSkill = gameUnit?.basicAttack
+    }
+    
+    func trySelectingSkill(atIndex index: Int) -> Bool {
+        if index < equippedSkills.count {
+            selectedSkill = equippedSkills[index]
+            return true
+        }
+        return false
     }
     
     func prepareTurn() {

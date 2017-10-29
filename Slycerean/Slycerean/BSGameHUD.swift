@@ -54,6 +54,18 @@ class BSGameHUD: SKNode {
     
     func setSelectedUnitHud(with unit: BSBattleUnit) {
         selectedUnitComponent.setupHUDFor(unit: unit)
+        var basicIconName: String
+        switch unit.classJob {
+        case .warrior:
+            basicIconName = "Basic-Slash"
+        case .rogue:
+            basicIconName = "Basic-Stab"
+        case .wizard:
+            basicIconName = "Basic-Bolt"
+        case .ranger:
+            basicIconName = "Basic-Shoot"
+        }
+        actionMenuComponent.primaryActionBar.loadTextureForButton(withTexture: BSSpriteLoader.shared.loadIconTexture(forName: basicIconName), atIndex: 0)
     }
     
     func setTargetedUnitHud(with unit: BSBattleUnit) {
