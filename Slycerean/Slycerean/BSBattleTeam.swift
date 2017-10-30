@@ -9,7 +9,12 @@
 import Foundation
 
 enum BSTeam {
-    case user, bot, neutral
+    case user, ai
+    
+    var opposingTeam: BSTeam {
+        return self == user ? ai : user
+    }
+    
 }
 
 class BSBattleTeam {

@@ -39,10 +39,8 @@
 		FD9208521F9EE8EA001FD8AB /* BSBattleUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */; };
 		FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */; };
 		FDADC0F31F6A25F300C21A1B /* SupportMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */; };
-		FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */; };
 		FDC130E11FA170BB0096C306 /* BSSpriteLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */; };
 		FDC130E31FA2C7000096C306 /* BSActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC130E21FA2C7000096C306 /* BSActionBar.swift */; };
-		FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */; };
 		FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */; };
 		FDC80AA81F8C5C480005C355 /* BSGameInputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */; };
 		FDC80AAA1F8C658A0005C355 /* BSGameSceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC80AA91F8C658A0005C355 /* BSGameSceneManager.swift */; };
@@ -50,6 +48,7 @@
 		FDC937B41F871AAD00F62A3B /* HighlightLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */; };
 		FDCB365B1F98476F00F6744D /* BSGameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCB365A1F98476F00F6744D /* BSGameHUD.swift */; };
 		FDD4CADA1F78A701003E1C6B /* GameCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD4CAD91F78A701003E1C6B /* GameCamera.swift */; };
+		FDF0E5401FA6E177005BE888 /* BSBasicSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF0E53F1FA6E177005BE888 /* BSBasicSkills.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,10 +86,8 @@
 		FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSBattleUnit.swift; sourceTree = "<group>"; };
 		FDA7E8D11F95B1F80044D716 /* ConfirmationHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationHUDComponent.swift; sourceTree = "<group>"; };
 		FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportMethods.swift; sourceTree = "<group>"; };
-		FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitActionMenu.swift; sourceTree = "<group>"; };
 		FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSSpriteLoader.swift; sourceTree = "<group>"; };
 		FDC130E21FA2C7000096C306 /* BSActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSActionBar.swift; sourceTree = "<group>"; };
-		FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameInputHandler.swift; sourceTree = "<group>"; };
 		FDC80AA91F8C658A0005C355 /* BSGameSceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameSceneManager.swift; sourceTree = "<group>"; };
@@ -98,6 +95,7 @@
 		FDC937B31F871AAD00F62A3B /* HighlightLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightLayerNode.swift; sourceTree = "<group>"; };
 		FDCB365A1F98476F00F6744D /* BSGameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSGameHUD.swift; sourceTree = "<group>"; };
 		FDD4CAD91F78A701003E1C6B /* GameCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCamera.swift; sourceTree = "<group>"; };
+		FDF0E53F1FA6E177005BE888 /* BSBasicSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSBasicSkills.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +114,7 @@
 			children = (
 				FD1BFD5A1F9592F200C1302E /* BSAttackPattern.swift */,
 				FD7887821F7C955A003E05CD /* BSActivatableSkill.swift */,
+				FDF0E53F1FA6E177005BE888 /* BSBasicSkills.swift */,
 				FD1BFD5C1F95992D00C1302E /* BSFireballSkill.swift */,
 			);
 			path = BSUnitSkills;
@@ -130,7 +129,6 @@
 				FD2B31FE1F65F86200564150 /* TileModels.swift */,
 				FD7E98B71F76CC7B0012BF6C /* CollisionMap.swift */,
 				FD7E98B61F760EF50012BF6C /* LayerNodes */,
-				FD7A84D31F64D9470060823D /* Level_0.json */,
 			);
 			name = TileMap;
 			sourceTree = "<group>";
@@ -174,22 +172,22 @@
 		FD7A84B11F5CB12F0060823D /* Slycerean */ = {
 			isa = PBXGroup;
 			children = (
+				FD7A84D31F64D9470060823D /* Level_0.json */,
+				FDF0E5411FA6E19A005BE888 /* ResourceManagement */,
 				FD78878F1F808CA6003E05CD /* HUDComponents */,
 				FD2B32001F65FB4D00564150 /* TileMap */,
 				FD7A84D01F5CFC580060823D /* Entity */,
-				FD7A84B21F5CB12F0060823D /* AppDelegate.swift */,
-				FD7A84B81F5CB12F0060823D /* GameScene.swift */,
+				FD1BFD591F95911B00C1302E /* BSUnitSkills */,
 				FD92084F1F9EE707001FD8AB /* BSBattleTeam.swift */,
+				FD7A84B81F5CB12F0060823D /* GameScene.swift */,
 				FD7A84BA1F5CB12F0060823D /* GameViewController.swift */,
 				FDD4CAD91F78A701003E1C6B /* GameCamera.swift */,
-				FD1BFD591F95911B00C1302E /* BSUnitSkills */,
 				FD7E94DE1F886D3B00F5B573 /* BSGameView.swift */,
 				FDC80AA91F8C658A0005C355 /* BSGameSceneManager.swift */,
 				FDC80AA71F8C5C480005C355 /* BSGameInputHandler.swift */,
 				FDADC0F21F6A25F300C21A1B /* SupportMethods.swift */,
 				FDC6740B1F6EB347007A26A5 /* GlobalProperties.swift */,
-				FDADC0F41F6B765800C21A1B /* UnitActionMenu.swift */,
-				FDC674091F6EB17E007A26A5 /* SKButtonNode.swift */,
+				FD7A84B21F5CB12F0060823D /* AppDelegate.swift */,
 				FD7A84BC1F5CB12F0060823D /* Main.storyboard */,
 				FD7A84BF1F5CB12F0060823D /* Assets.xcassets */,
 				FD7A84C11F5CB12F0060823D /* LaunchScreen.storyboard */,
@@ -206,8 +204,6 @@
 				FD7A84CC1F5CFB000060823D /* SpriteComponent.swift */,
 				FD7A84CE1F5CFB860060823D /* MoveComponent.swift */,
 				FD2B32031F6793C600564150 /* PathFinder.swift */,
-				FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */,
-				FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -240,6 +236,15 @@
 				FD7887921F809FDB003E05CD /* StatusFractionLabelComponent.swift */,
 			);
 			path = UnitHUD;
+			sourceTree = "<group>";
+		};
+		FDF0E5411FA6E19A005BE888 /* ResourceManagement */ = {
+			isa = PBXGroup;
+			children = (
+				FDC130E01FA170BB0096C306 /* BSSpriteLoader.swift */,
+				FD92084D1F9EC81D001FD8AB /* SpriteSheet.swift */,
+			);
+			path = ResourceManagement;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +327,7 @@
 				FD9208521F9EE8EA001FD8AB /* BSBattleUnit.swift in Sources */,
 				FD7A84D21F641E180060823D /* GameBoard.swift in Sources */,
 				FDC130E31FA2C7000096C306 /* BSActionBar.swift in Sources */,
+				FDF0E5401FA6E177005BE888 /* BSBasicSkills.swift in Sources */,
 				FD7A84CF1F5CFB860060823D /* MoveComponent.swift in Sources */,
 				FD1BFD5D1F95992D00C1302E /* BSFireballSkill.swift in Sources */,
 				FDC937B41F871AAD00F62A3B /* HighlightLayerNode.swift in Sources */,
@@ -337,7 +343,6 @@
 				FD2B32041F6793C600564150 /* PathFinder.swift in Sources */,
 				FD7887911F809F29003E05CD /* HealthPointStatusComponent.swift in Sources */,
 				FDCB365B1F98476F00F6744D /* BSGameHUD.swift in Sources */,
-				FDADC0F51F6B765800C21A1B /* UnitActionMenu.swift in Sources */,
 				FDC130E11FA170BB0096C306 /* BSSpriteLoader.swift in Sources */,
 				FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */,
 				FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */,
@@ -350,7 +355,6 @@
 				FD7E98B81F76CC7B0012BF6C /* CollisionMap.swift in Sources */,
 				FD856ACA1F92595D003B29E5 /* UnitLayerNode.swift in Sources */,
 				FDC80AAA1F8C658A0005C355 /* BSGameSceneManager.swift in Sources */,
-				FDC6740A1F6EB17E007A26A5 /* SKButtonNode.swift in Sources */,
 				FD92084E1F9EC81D001FD8AB /* SpriteSheet.swift in Sources */,
 				FDC6740C1F6EB347007A26A5 /* GlobalProperties.swift in Sources */,
 				FD7E94DF1F886D3B00F5B573 /* BSGameView.swift in Sources */,
