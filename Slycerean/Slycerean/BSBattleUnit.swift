@@ -19,8 +19,10 @@ class BSBattleUnit {
     }
     
     var classJob: BSGameUnitJob {
-        return gameUnit?.classJob ?? .warrior
+        return gameUnit?.baseStats.job ?? .warrior
     }
+    
+    var team: BSTeam = .user
     
     var spriteComponent: SpriteComponent!
     var moveComponent: MoveComponent!
@@ -35,7 +37,7 @@ class BSBattleUnit {
     }
     var unusedMagic: Int
     var maxMagic: Int {
-        return gameUnit?.maximumMagic ?? 0
+        return gameUnit?.maximumEnergy ?? 0
     }
     var equippedSkills: [BSActivatableSkill] {
         return gameUnit?.equippedSkills ?? []
@@ -50,11 +52,11 @@ class BSBattleUnit {
         self.gameUnit = gameUnit
         self.currentHealth = gameUnit.maximumHealth
         self.unusedMovement = gameUnit.maximumMovement
-        self.unusedMagic = gameUnit.maximumMagic
+        self.unusedMagic = gameUnit.maximumEnergy
         self.tileCoord = tileCoord
         self.hasActed = false
         self.hasFinished = false
-        self.spriteComponent = SpriteComponent(spriteSheet: BSSpriteLoader.shared.loadUnitSpriteSheet(for: gameUnit.classJob))
+        self.spriteComponent = SpriteComponent(spriteSheet: BSSpriteLoader.shared.loadUnitSpriteSheet(for: gameUnit.baseStats.job))
         self.moveComponent = MoveComponent(for: self, in: scene)
     }
     

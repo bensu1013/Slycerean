@@ -12,7 +12,7 @@ enum BSTeam {
     case user, ai
     
     var opposingTeam: BSTeam {
-        return self == user ? ai : user
+        return self == BSTeam.user ? BSTeam.ai : BSTeam.user
     }
     
 }
@@ -24,8 +24,9 @@ class BSBattleTeam {
     init(team: BSTeam, party: [BSBattleUnit]) {
         self.team = team
         self.party = party
+        for member in self.party {
+            member.team = team
+        }
     }
-    
-    
     
 }

@@ -10,55 +10,86 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
+typealias BSJobBaseStats = (str: Int, dex: Int, int: Int, vit: Int)
+
 enum BSGameUnitJob {
     case warrior, wizard, ranger, rogue
     func getBaseStats() -> BSJobBaseStats {
         switch self {
         case .warrior:
-            return BSJobBaseStats(baseHealth: 32, baseMove: 3, baseMagic: 1, upHealth: 4, upMagic: 0, basicAttack: WarriorBasicSkill())
+            return (8,3,1,5)
         case .wizard:
-            return BSJobBaseStats(baseHealth: 16, baseMove: 3, baseMagic: 3, upHealth: 2, upMagic: 2, basicAttack: WizardBasicSkill())
+            return (2,3,9,3)
         case .ranger:
-            return BSJobBaseStats(baseHealth: 28, baseMove: 4, baseMagic: 2, upHealth: 3, upMagic: 1, basicAttack: RangerBasicSkill())
+            return (3,7,3,4)
         case .rogue:
-            return BSJobBaseStats(baseHealth: 22, baseMove: 5, baseMagic: 1, upHealth: 3, upMagic: 1, basicAttack: RogueBasicSkill())
+            return (4,6,2,4)
         }
     }
 }
-struct BSJobBaseStats {
-    var baseHealth: Int
-    var baseMove: Int
-    var baseMagic: Int
+
+struct BSCharacterStats {
+    var health: Int
+    var energy: Int
     
-    var upHealth: Int
-    var upMagic: Int
+    var strength: Int
+    var dexterity: Int
+    var intellect: Int
+    var vitality: Int
     
-    var basicAttack: BSActivatableSkill
+    var level: Int
+    var job: BSGameUnitJob
+    var jobLevels: [BSGameUnitJob:Int]
+}
+
+struct BSCharacterEquipment {
+    var weapon: String      // effects basic skill used, and damage dealt
+    var armor: String       // effects damage reduction
+    var relic: String       // special bonuses
 }
 
 class GameUnit {
 
-    var classJob: BSGameUnitJob
-    var level: Int
+    var baseStats: BSCharacterStats
+    var equipment: BSCharacterEquipment
     
     var firstName: String = "First"
     var lastName: String = "Last"
     
-    var maximumHealth: Int
-    var maximumMovement: Int
-    var maximumMagic: Int
+    var maximumHealth: Int {
+        return baseStats.health + (vitality * 2)
+    }
+    var maximumEnergy: Int {
+        return baseStats.energy + (intellect * 1)
+    }
+    var maximumMovement: Int {
+        return 4
+    }
+    var attackPower: Int = 4
+    var spellPower: Int = 4
+    
+    
+    // Total Stats depending on chosen class, base stats change
+    var strength: Int       // increases physical melee damage, minor increase to range
+    var dexterity: Int      // increases range damage, minor to melee
+    var intellect: Int      // increases spell damage, increase casting energy
+    var vitality: Int       // increases health and resist
+    
+    
     
     var basicAttack: BSActivatableSkill
     var equippedSkills = [BSActivatableSkill]()
     
-    init(job: BSGameUnitJob, level: Int) {
-        self.classJob = job
-        self.level = level
-        let stats = job.getBaseStats()
-        self.maximumHealth = stats.baseHealth + (stats.upHealth * level)
-        self.maximumMovement = stats.baseMove
-        self.maximumMagic = stats.baseMagic + (stats.upMagic * level)
-        basicAttack = stats.basicAttack
+    init(stats: BSCharacterStats, equipment: BSCharacterEquipment) {
+        self.baseStats = stats
+        self.equipment = equipment
+        let jobStats = stats.job.getBaseStats()
+        strength = jobStats.str + stats.strength
+        dexterity = jobStats.dex + stats.dexterity
+        intellect = jobStats.int + stats.intellect
+        vitality = jobStats.vit + stats.vitality
+        
+        basicAttack = WarriorBasicSkill()
         equippedSkills.append(BSFireballSkill())
     }
     

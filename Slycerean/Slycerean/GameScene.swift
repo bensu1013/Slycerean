@@ -82,7 +82,7 @@ class GameScene: SKScene {
         gameBoard = GameBoard(scene: self, filename: "Level_0")
         addChild(gameBoard)
         
-        let player = GameUnit(job: .warrior, level: 2)
+        let player = GameUnit(stats: BSCharacterStats(health: 30, energy: 2, strength: 1, dexterity: 1, intellect: 1, vitality: 1, level: 1, job: .warrior, jobLevels: [.warrior:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player)
         let bUnit = BSBattleUnit(gameUnit: player, atCoord: TileCoord(col: 4, row: 4), inScene: self)
         bUnit.spriteComponent.isUserInteractionEnabled = false
@@ -90,7 +90,7 @@ class GameScene: SKScene {
         gameBoard.layer(type: .unit, insert: bUnit.spriteComponent, at: bUnit.tileCoord)
         unitEntities.append(bUnit)
         
-        let player1 = GameUnit(job: .wizard, level: 10)
+        let player1 = GameUnit(stats: BSCharacterStats(health: 22, energy: 15, strength: 1, dexterity: 1, intellect: 1, vitality: 1, level: 1, job: .wizard, jobLevels: [.wizard:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player1)
         let bUnit1 = BSBattleUnit(gameUnit: player1, atCoord: TileCoord(col: 4, row: 3), inScene: self)
         bUnit1.spriteComponent.isUserInteractionEnabled = false
@@ -98,7 +98,7 @@ class GameScene: SKScene {
         gameBoard.layer(type: .unit, insert: bUnit1.spriteComponent, at: bUnit1.tileCoord)
         unitEntities.append(bUnit1)
         
-        let player2 = GameUnit(job: .ranger, level: 5)
+        let player2 = GameUnit(stats: BSCharacterStats(health: 25, energy: 5, strength: 1, dexterity: 1, intellect: 1, vitality: 1, level: 1, job: .ranger, jobLevels: [.ranger:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player2)
         let bUnit2 = BSBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 7, row: 6), inScene: self)
         bUnit2.spriteComponent.isUserInteractionEnabled = false
@@ -106,7 +106,7 @@ class GameScene: SKScene {
         gameBoard.layer(type: .unit, insert: bUnit2.spriteComponent, at: bUnit2.tileCoord)
         unitEntities.append(bUnit2)
         
-        let player3 = GameUnit(job: .rogue, level: 5)
+        let player3 = GameUnit(stats: BSCharacterStats(health: 24, energy: 4, strength: 1, dexterity: 1, intellect: 1, vitality: 1, level: 1, job: .rogue, jobLevels: [.rogue:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player3)
         let bUnit3 = BSBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 5, row: 6), inScene: self)
         bUnit3.spriteComponent.isUserInteractionEnabled = false
