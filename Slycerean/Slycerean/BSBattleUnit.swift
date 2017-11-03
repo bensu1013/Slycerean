@@ -39,6 +39,10 @@ class BSBattleUnit {
     var maxMagic: Int {
         return gameUnit?.maximumEnergy ?? 0
     }
+    var actionSpeedAccumulated: Int = 0
+    var actionSpeed: Int {
+        return gameUnit?.actionSpeed ?? 0
+    }
     var equippedSkills: [BSActivatableSkill] {
         return gameUnit?.equippedSkills ?? []
     }
@@ -81,6 +85,7 @@ class BSBattleUnit {
     
     func endTurn() {
         hasFinished = true
+        actionSpeedAccumulated = 0
         selectedSkill = nil
     }
     

@@ -104,11 +104,7 @@ class ActionHUDComponent: SKNode {
         isExpanded = true
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
         let spriteLoader = BSSpriteLoader.shared
-//        secondaryActionBar.loadTexturesForButtons(withTextures:
-//            [spriteLoader.loadIconTexture(forName: "saber-slash"),
-//             spriteLoader.loadIconTexture(forName: "saber-slash"),
-//             spriteLoader.loadIconTexture(forName: "walking-boot"),
-//             spriteLoader.loadIconTexture(forName: "cancel")])
+
         if let skills = gameScene?.currentActiveUnit?.equippedSkills {
             var c = 0
             for _ in skills {
@@ -128,7 +124,9 @@ class ActionHUDComponent: SKNode {
     }
     
     func firstSkillAction() {
-        
+        //TODO: make a method in scene or unit to handle this
+        gameScene?.currentActiveUnit?.selectedSkill = gameScene?.currentActiveUnit?.equippedSkills[0]
+        gameScene?.sceneState = .readyAttack
     }
     func secondSkillAction() {
         

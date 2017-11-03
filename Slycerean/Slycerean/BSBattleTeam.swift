@@ -29,4 +29,12 @@ class BSBattleTeam {
         }
     }
     
+    func startBattle() -> [BSBattleUnit] {
+        for member in party {
+            member.actionSpeedAccumulated = Int(arc4random_uniform(20)) + 1
+        }
+        return party
+    }
+    
+    
 }
