@@ -14,7 +14,8 @@
 		FD2B31FF1F65F86200564150 /* TileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B31FE1F65F86200564150 /* TileModels.swift */; };
 		FD2B32021F676BB300564150 /* FloorLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B32011F676BB300564150 /* FloorLayerNode.swift */; };
 		FD2B32041F6793C600564150 /* PathFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B32031F6793C600564150 /* PathFinder.swift */; };
-		FD383E171FABF6C3004A9910 /* BSBattleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E161FABF6C3004A9910 /* BSBattleSystem.swift */; };
+		FD383E171FABF6C3004A9910 /* BSBattleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E161FABF6C3004A9910 /* BSBattleController.swift */; };
+		FD383E191FAC13AA004A9910 /* BSAIBattleUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E181FAC13AA004A9910 /* BSAIBattleUnit.swift */; };
 		FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887821F7C955A003E05CD /* BSActivatableSkill.swift */; };
 		FD7887851F7DD736003E05CD /* UnitHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887841F7DD736003E05CD /* UnitHUDComponent.swift */; };
 		FD78878E1F808C9F003E05CD /* StatusBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */; };
@@ -60,7 +61,8 @@
 		FD2B31FE1F65F86200564150 /* TileModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileModels.swift; sourceTree = "<group>"; };
 		FD2B32011F676BB300564150 /* FloorLayerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloorLayerNode.swift; sourceTree = "<group>"; };
 		FD2B32031F6793C600564150 /* PathFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathFinder.swift; sourceTree = "<group>"; };
-		FD383E161FABF6C3004A9910 /* BSBattleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSBattleSystem.swift; sourceTree = "<group>"; };
+		FD383E161FABF6C3004A9910 /* BSBattleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSBattleController.swift; sourceTree = "<group>"; };
+		FD383E181FAC13AA004A9910 /* BSAIBattleUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSAIBattleUnit.swift; sourceTree = "<group>"; };
 		FD7887821F7C955A003E05CD /* BSActivatableSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSActivatableSkill.swift; sourceTree = "<group>"; };
 		FD7887841F7DD736003E05CD /* UnitHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitHUDComponent.swift; sourceTree = "<group>"; };
 		FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarComponent.swift; sourceTree = "<group>"; };
@@ -181,7 +183,7 @@
 				FD7A84D01F5CFC580060823D /* Entity */,
 				FD1BFD591F95911B00C1302E /* BSUnitSkills */,
 				FD92084F1F9EE707001FD8AB /* BSBattleTeam.swift */,
-				FD383E161FABF6C3004A9910 /* BSBattleSystem.swift */,
+				FD383E161FABF6C3004A9910 /* BSBattleController.swift */,
 				FD7A84B81F5CB12F0060823D /* GameScene.swift */,
 				FD7A84BA1F5CB12F0060823D /* GameViewController.swift */,
 				FDD4CAD91F78A701003E1C6B /* GameCamera.swift */,
@@ -204,6 +206,7 @@
 			children = (
 				FD7A84CA1F5CFAD60060823D /* GameUnit.swift */,
 				FD9208511F9EE8EA001FD8AB /* BSBattleUnit.swift */,
+				FD383E181FAC13AA004A9910 /* BSAIBattleUnit.swift */,
 				FD7A84CC1F5CFB000060823D /* SpriteComponent.swift */,
 				FD7A84CE1F5CFB860060823D /* MoveComponent.swift */,
 				FD2B32031F6793C600564150 /* PathFinder.swift */,
@@ -350,7 +353,8 @@
 				FD7887951F817C60003E05CD /* ActionHUDComponent.swift in Sources */,
 				FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */,
 				FD9208501F9EE707001FD8AB /* BSBattleTeam.swift in Sources */,
-				FD383E171FABF6C3004A9910 /* BSBattleSystem.swift in Sources */,
+				FD383E171FABF6C3004A9910 /* BSBattleController.swift in Sources */,
+				FD383E191FAC13AA004A9910 /* BSAIBattleUnit.swift in Sources */,
 				FD2B31FF1F65F86200564150 /* TileModels.swift in Sources */,
 				FD7A84B31F5CB12F0060823D /* AppDelegate.swift in Sources */,
 				FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */,

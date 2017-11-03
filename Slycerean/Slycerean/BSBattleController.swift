@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BSBattleSystem {
+class BSBattleController {
     
     var userTeam: BSBattleTeam
     var aiTeam: BSBattleTeam

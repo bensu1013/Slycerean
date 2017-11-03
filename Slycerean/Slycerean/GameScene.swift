@@ -11,7 +11,7 @@ import GameplayKit
 
 
 enum SceneState {
-    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack([TileCoord]), actionAttack([TileCoord]), turnEnd
+    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack([TileCoord]), actionAttack([TileCoord]), turnEnd, aiControl
 }
 
 class GameScene: SKScene {
@@ -24,13 +24,13 @@ class GameScene: SKScene {
     
     var gameBoard: GameBoard!
     var gameCamera: GameCamera!
-    var battleSystem: BSBattleSystem!
+    var battleController: BSBattleController!
     var units = [GameUnit]()
     var tempTurnIndex = 0
     
     weak var gameHud: BSGameHUD?
     var currentActiveUnit: BSBattleUnit? {
-        return battleSystem.currentActiveUnit
+        return battleController.currentActiveUnit
     }
     
     var userTurn: Bool = true {
@@ -43,9 +43,6 @@ class GameScene: SKScene {
         super.init(size: size)
         gameBoard = GameBoard(scene: self, filename: "Level_0")
         addChild(gameBoard)
-        
-        
-        
         
         let player = GameUnit(stats: BSCharacterStats(health: 30, energy: 2, actionSpeed: 4, level: 1, job: .warrior, jobLevels: [.warrior:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player)
@@ -63,20 +60,20 @@ class GameScene: SKScene {
         
         let player2 = GameUnit(stats: BSCharacterStats(health: 25, energy: 5, actionSpeed: 4, level: 1, job: .ranger, jobLevels: [.ranger:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player2)
-        let bUnit2 = BSBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 7, row: 6), inScene: self)
+        let bUnit2 = BSAIBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 7, row: 6), inScene: self)
         bUnit2.spriteComponent.isUserInteractionEnabled = false
         bUnit2.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit2.spriteComponent, at: bUnit2.tileCoord)
         
         let player3 = GameUnit(stats: BSCharacterStats(health: 24, energy: 4, actionSpeed: 4, level: 1, job: .rogue, jobLevels: [.rogue:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player3)
-        let bUnit3 = BSBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 5, row: 6), inScene: self)
+        let bUnit3 = BSAIBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 5, row: 6), inScene: self)
         bUnit3.spriteComponent.isUserInteractionEnabled = false
         bUnit3.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit3.spriteComponent, at: bUnit3.tileCoord)
         
-        battleSystem = BSBattleSystem(userTeam: BSBattleTeam.init(team: .user, party: [bUnit, bUnit1]),
-                                      aiTeam: BSBattleTeam.init(team: .ai, party: [bUnit2, bUnit3]))
+        battleController = BSBattleController(userTeam: BSBattleTeam.init(team: .user, party: [bUnit, bUnit1]),
+                                              aiTeam: BSBattleTeam.init(team: .ai, party: [bUnit2, bUnit3]))
         
     }
     
@@ -84,10 +81,7 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func sceneDidLoad() {        
-        
-        
-        
+    override func sceneDidLoad() {
 
     }
     
@@ -98,8 +92,8 @@ class GameScene: SKScene {
     }
     
     func nextUnitTurn() {
-        battleSystem.findNextActiveUnit()
-        prepareSceneFor(unit: battleSystem.currentActiveUnit!)
+        battleController.findNextActiveUnit()
+        prepareSceneFor(unit: battleController.currentActiveUnit!)
     }
     
     private func prepareSceneFor(unit: BSBattleUnit) {
@@ -107,7 +101,11 @@ class GameScene: SKScene {
         gameHud?.setSelectedUnitHud(with: unit)
         gameHud?.setGameScene(self)
         gameCamera.move(to: unit.spriteComponent.position, animated: true)
-        self.sceneState = .inactive
+        if unit.team == .user {
+            self.sceneState = .inactive
+        } else {
+            self.sceneState = .aiControl
+        }
     }
     
 }
@@ -117,6 +115,12 @@ extension GameScene {
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
         guard let gameHud = gameHud else { return }
+        switch sceneState {
+        case .aiControl:
+            return
+        default:
+            break
+        }
         let cameraPoint = self.convert(point, to: gameHud.actionMenuComponent)
         if gameHud.tryActionWithTap(on: cameraPoint) {
             return
@@ -159,7 +163,7 @@ extension GameScene {
             // find all tiles affected by skill and if unit can be targeted
             let attackTiles = gameBoard.getAttackPatternTiles(attackPattern: currentActiveUnit!.selectedSkill!.attackPattern, atTileCoord: tileCoord)
             var hasTarget = false
-            for unit in battleSystem.allUnits {
+            for unit in battleController.allUnits {
                 if attackTiles.contains(unit.tileCoord) {
                     if let curUnit = currentActiveUnit,
                          let skill = curUnit.selectedSkill {
@@ -213,6 +217,8 @@ extension GameScene {
             stateChangedToActionAttack(tileCoords: attackTiles)
         case .turnEnd:
             stateChangedtoTurnEnd()
+        case .aiControl:
+            stateChangedToAIControl()
         }
     }
     
@@ -264,7 +270,7 @@ extension GameScene {
     
     private func stateChangedToActionAttack(tileCoords: [TileCoord]) {
         var arTar: [BSBattleUnit] = []
-        for unitEntity in battleSystem.allUnits {
+        for unitEntity in battleController.allUnits {
             if tileCoords.contains(where: {$0 == unitEntity.tileCoord}) {
                 arTar.append(unitEntity)
             }
@@ -276,9 +282,17 @@ extension GameScene {
     
     private func stateChangedtoTurnEnd() {
         currentActiveUnit?.endTurn()
-        battleSystem.currentActiveUnit = nil
+        battleController.currentActiveUnit = nil
         gameHud?.confirmationComponent.hideAlert()
         self.sceneState = .inactive
+    }
+    
+    private func stateChangedToAIControl() {
+        if let unit = currentActiveUnit as? BSAIBattleUnit {
+            unit.takeTurn(board: gameBoard) {
+                self.sceneState = .turnEnd
+            }
+        }
     }
     
 }
