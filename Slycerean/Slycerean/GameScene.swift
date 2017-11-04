@@ -11,7 +11,7 @@ import GameplayKit
 
 
 enum SceneState {
-    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack([TileCoord]), actionAttack([TileCoord]), turnEnd, aiControl
+    case inactive, readyMove, confirmMove(TileCoord), actionMove(TileCoord), readyAttack, confirmAttack([TileCoord]), actionAttack([TileCoord]), turnEnd
 }
 
 class GameScene: SKScene {
@@ -32,7 +32,7 @@ class GameScene: SKScene {
     var currentActiveUnit: BSBattleUnit? {
         return battleController.currentActiveUnit
     }
-    
+    var isAITurn: Bool = false
     var userTurn: Bool = true {
         didSet {
             isUserInteractionEnabled = userTurn
@@ -102,9 +102,17 @@ class GameScene: SKScene {
         gameHud?.setGameScene(self)
         gameCamera.move(to: unit.spriteComponent.position, animated: true)
         if unit.team == .user {
+            self.isAITurn = false
             self.sceneState = .inactive
         } else {
-            self.sceneState = .aiControl
+            self.isAITurn = true
+            guard let unit = unit as? BSAIBattleUnit else {
+                self.sceneState = .turnEnd
+                return
+            }
+            unit.takeTurn(inScene: self, completion: {
+                
+            })
         }
     }
     
@@ -115,12 +123,9 @@ extension GameScene {
     // taprecognizer of view sent to scene to process
     func tapped(at point: CGPoint) {
         guard let gameHud = gameHud else { return }
-        switch sceneState {
-        case .aiControl:
-            return
-        default:
-            break
-        }
+        
+        if isAITurn { return }
+        
         let cameraPoint = self.convert(point, to: gameHud.actionMenuComponent)
         if gameHud.tryActionWithTap(on: cameraPoint) {
             return
@@ -217,8 +222,8 @@ extension GameScene {
             stateChangedToActionAttack(tileCoords: attackTiles)
         case .turnEnd:
             stateChangedtoTurnEnd()
-        case .aiControl:
-            stateChangedToAIControl()
+//        case .aiControl:
+//            stateChangedToAIControl()
         }
     }
     
@@ -287,12 +292,12 @@ extension GameScene {
         self.sceneState = .inactive
     }
     
-    private func stateChangedToAIControl() {
-        if let unit = currentActiveUnit as? BSAIBattleUnit {
-            unit.takeTurn(board: gameBoard) {
-                self.sceneState = .turnEnd
-            }
-        }
-    }
+//    private func stateChangedToAIControl() {
+//        if let unit = currentActiveUnit as? BSAIBattleUnit {
+//            unit.takeTurn(board: gameBoard) {
+//                self.sceneState = .turnEnd
+//            }
+//        }
+//    }
     
 }

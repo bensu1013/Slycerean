@@ -40,6 +40,9 @@ class MoveComponent {
         
         self.shortestPath = self.pathfinder.shortestPathFromTileCoord(fromTileCoord, toTileCoord: toTileCoord)
         if let path = shortestPath {
+            if unit.unusedMovement < path.count {
+                self.shortestPath?.removeSubrange((path.count - (path.count - unit.unusedMovement) - 1)..<path.count - 1)
+            }
             unit.unusedMovement -= path.count
             unit.tileCoord = toTileCoord
             self.popStepAndAnimate { completion() }

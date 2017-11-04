@@ -11,7 +11,7 @@ import SpriteKit
 
 class BSBattleUnit {
     private weak var gameUnit: GameUnit?
-//    weak var scene: GameScene!
+    weak var scene: GameScene!
     var name: String {
         let f = gameUnit?.firstName ?? ""
         let l = gameUnit?.lastName ?? ""
