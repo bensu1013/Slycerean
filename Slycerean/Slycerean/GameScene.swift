@@ -111,7 +111,7 @@ class GameScene: SKScene {
                 return
             }
             unit.takeTurn(inScene: self, completion: {
-                
+                self.sceneState = .turnEnd
             })
         }
     }
@@ -253,7 +253,10 @@ extension GameScene {
     }
     
     private func stateChangedToActionMove(tileCoord: TileCoord) {
-        currentActiveUnit?.moveComponent.moveTo(tileCoord) {
+        let pathfinder = AStarPathfinder()
+        pathfinder.dataSource = currentActiveUnit?.moveComponent
+        let path = pathfinder.shortestPathFromTileCoord(currentActiveUnit!.tileCoord, toTileCoord: tileCoord)
+        currentActiveUnit?.moveComponent.moveAlong(path: path!) {
             self.sceneState = .inactive
         }
     }

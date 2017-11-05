@@ -23,9 +23,10 @@ class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
         
         for unit in enemyTeam.party {
             //cant land on unit
-            
             if let path = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord) {
-            paths.append(path)
+                var path = path
+                path.removeLast()
+                paths.append(path)
             }
         }
         
@@ -37,7 +38,7 @@ class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
         
 
         
-        
+        completion()
     }
     
     func walkableAdjacentTilesCoordsForTileCoord(_ tileCoord: TileCoord) -> [TileCoord] {
