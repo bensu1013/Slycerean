@@ -11,9 +11,11 @@ import SpriteKit
 
 class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
 
-    
+    var actionStack = [()->()]()
     
     func takeTurn(inScene scene: GameScene, completion: @escaping () -> ()) {
+        self.scene = scene
+        actionStack.append(completion)
         
         let enemyTeam = scene.battleController.userTeam
         let pathFinder = AStarPathfinder()
@@ -23,22 +25,59 @@ class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
         
         for unit in enemyTeam.party {
             //cant land on unit
-            if let path = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord) {
-                var path = path
-                path.removeLast()
-                paths.append(path)
+            var tempPaths = [[TileCoord]]()
+            if let topPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.top) {
+                var path = topPath
+                tempPaths.append(path)
+            }
+            if let bottomPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.bottom) {
+                var path = bottomPath
+                tempPaths.append(path)
+            }
+            if let leftPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.left) {
+                var path = leftPath
+                tempPaths.append(path)
+            }
+            if let rightPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.right) {
+                var path = rightPath
+                tempPaths.append(path)
+            }
+            let shortestPath = tempPaths.sorted(by: { $0.count < $1.count }).first
+            if let shortestPath = shortestPath {
+                paths.append(shortestPath)
             }
         }
         
         if paths.isEmpty {
             
         } else {
-            scene.sceneState = .actionMove(paths[0].last!)
+//            actionStack.append({
+//                scene.sceneState = .actionMove(paths[0].last!)
+//            })
+            self.moveComponent.moveAlong(path: paths[0], completion: {
+                self.spriteComponent.run(SKAction.wait(forDuration: 1.0))
+                scene.sceneState = .turnEnd
+            })
         }
         
-
         
-        completion()
+       
+        
+    }
+    
+    func useActions() {
+        let wait = SKAction.wait(forDuration: 4.0)
+        let action = SKAction.run {
+            let nextAction = self.actionStack.removeLast()
+            nextAction()
+        }
+        let complete = SKAction.run { [weak self] in
+            if !self!.actionStack.isEmpty {
+                self?.useActions()
+            }
+        }
+        
+        self.spriteComponent.run(SKAction.sequence([action, wait, complete]))
     }
     
     func walkableAdjacentTilesCoordsForTileCoord(_ tileCoord: TileCoord) -> [TileCoord] {

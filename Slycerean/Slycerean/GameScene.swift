@@ -60,14 +60,14 @@ class GameScene: SKScene {
         
         let player2 = GameUnit(stats: BSCharacterStats(health: 25, energy: 5, actionSpeed: 4, level: 1, job: .ranger, jobLevels: [.ranger:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player2)
-        let bUnit2 = BSAIBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 7, row: 6), inScene: self)
+        let bUnit2 = BSAIBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 13, row: 13), inScene: self)
         bUnit2.spriteComponent.isUserInteractionEnabled = false
         bUnit2.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit2.spriteComponent, at: bUnit2.tileCoord)
         
         let player3 = GameUnit(stats: BSCharacterStats(health: 24, energy: 4, actionSpeed: 4, level: 1, job: .rogue, jobLevels: [.rogue:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
         units.append(player3)
-        let bUnit3 = BSAIBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 5, row: 6), inScene: self)
+        let bUnit3 = BSAIBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 14, row: 14), inScene: self)
         bUnit3.spriteComponent.isUserInteractionEnabled = false
         bUnit3.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit3.spriteComponent, at: bUnit3.tileCoord)
