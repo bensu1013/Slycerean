@@ -16,7 +16,7 @@ struct BSTilePlotter {
         var moveTiles = Set<TileCoord>()
         var startTiles = [unitPosition]
         var steps = 0
-        while steps < unit.unusedMovement {
+        while steps < unit.maxMovement {
             var nextTiles = [TileCoord]()
             for startPos in startTiles {
                 let top = startPos.top

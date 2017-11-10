@@ -40,10 +40,9 @@ class MoveComponent {
         
         self.shortestPath = self.pathfinder.shortestPathFromTileCoord(fromTileCoord, toTileCoord: toTileCoord)
         if let path = shortestPath {
-            if unit.unusedMovement < path.count {
-                self.shortestPath?.removeSubrange((path.count - (path.count - unit.unusedMovement) - 1)..<path.count - 1)
+            if unit.maxMovement < path.count {
+                self.shortestPath?.removeSubrange((path.count - (path.count - unit.maxMovement))..<path.count)
             }
-            unit.unusedMovement -= path.count
             unit.tileCoord = toTileCoord
             self.popStepAndAnimate { completion() }
         }
@@ -53,8 +52,8 @@ class MoveComponent {
         guard let unit = unit else { return }
         self.shortestPath = path
         if let path = shortestPath {
-            if unit.unusedMovement < path.count {
-                self.shortestPath?.removeSubrange((path.count - (path.count - unit.unusedMovement))..<path.count)
+            if unit.maxMovement < path.count {
+                self.shortestPath?.removeSubrange((path.count - (path.count - unit.maxMovement))..<path.count)
             }
     
             self.popStepAndAnimate { completion() }
@@ -77,8 +76,8 @@ class MoveComponent {
         
         // determine the direction in order to animate it appropriately
         let currentTileCoord = TPConvert.tileCoordForPosition(unit.spriteComponent.position)
-        unit.unusedMovement -= 1
         unit.tileCoord = nextTileCoord
+        unit.hasMoved = true
         // make sure the unit is facing in the right direction for its movement
         let diff = nextTileCoord - currentTileCoord
         if abs(diff.col) > abs(diff.row) {

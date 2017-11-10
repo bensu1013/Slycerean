@@ -33,7 +33,7 @@ class BSBattleTeam {
         //TODO: - REMOVE
         let base = team == .user ? 50 : 1
         for member in party {
-            member.actionSpeedAccumulated = Int(arc4random_uniform(20)) + 1
+            member.actionSpeedAccumulated = Int(arc4random_uniform(20)) + base
         }
         return party
     }

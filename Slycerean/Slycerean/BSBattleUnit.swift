@@ -31,7 +31,6 @@ class BSBattleUnit {
     var maxHealth: Int {
         return gameUnit?.maximumHealth ?? 0
     }
-    var unusedMovement: Int
     var maxMovement: Int {
         return gameUnit?.maximumMovement ?? 0
     }
@@ -48,6 +47,7 @@ class BSBattleUnit {
     }
     var tileCoord: TileCoord
     
+    var hasMoved: Bool
     var hasActed: Bool
     var hasFinished: Bool
     var selectedSkill: BSActivatableSkill?
@@ -55,9 +55,9 @@ class BSBattleUnit {
     init(gameUnit: GameUnit, atCoord tileCoord: TileCoord, inScene scene: GameScene) {
         self.gameUnit = gameUnit
         self.currentHealth = gameUnit.maximumHealth
-        self.unusedMovement = gameUnit.maximumMovement
         self.unusedMagic = gameUnit.maximumEnergy
         self.tileCoord = tileCoord
+        self.hasMoved = false
         self.hasActed = false
         self.hasFinished = false
         self.spriteComponent = SpriteComponent(spriteSheet: BSSpriteLoader.shared.loadUnitSpriteSheet(for: gameUnit.baseStats.job))
@@ -77,10 +77,9 @@ class BSBattleUnit {
     }
     
     func prepareTurn() {
-        guard let unit = gameUnit else { return }
+        hasMoved = false
         hasActed = false
         hasFinished = false
-        unusedMovement = unit.maximumMovement
     }
     
     func endTurn() {

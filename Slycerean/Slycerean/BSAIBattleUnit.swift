@@ -27,19 +27,19 @@ class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
             //cant land on unit
             var tempPaths = [[TileCoord]]()
             if let topPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.top) {
-                var path = topPath
+                let path = topPath
                 tempPaths.append(path)
             }
             if let bottomPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.bottom) {
-                var path = bottomPath
+                let path = bottomPath
                 tempPaths.append(path)
             }
             if let leftPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.left) {
-                var path = leftPath
+                let path = leftPath
                 tempPaths.append(path)
             }
             if let rightPath = pathFinder.shortestPathFromTileCoord(self.tileCoord, toTileCoord: unit.tileCoord.right) {
-                var path = rightPath
+                let path = rightPath
                 tempPaths.append(path)
             }
             let shortestPath = tempPaths.sorted(by: { $0.count < $1.count }).first
@@ -51,9 +51,7 @@ class BSAIBattleUnit: BSBattleUnit, PathfinderDataSource {
         if paths.isEmpty {
             
         } else {
-//            actionStack.append({
-//                scene.sceneState = .actionMove(paths[0].last!)
-//            })
+            paths.sort(by: { $0.count < $1.count })
             self.moveComponent.moveAlong(path: paths[0], completion: {
                 self.spriteComponent.run(SKAction.wait(forDuration: 1.0))
                 scene.sceneState = .turnEnd

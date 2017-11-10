@@ -227,6 +227,7 @@ extension GameBoard {
     }
     
     func tryPlacingMovementTiles(for unit: BSBattleUnit) -> Bool {
+        if unit.hasMoved { return false }
         let moveTiles = BSTilePlotter.getValidWalkingTiles(onGameBoard: self, forUnit: unit)
         if moveTiles.isEmpty { return false }
         layer(type: .highlight, insert: HighlightSprite(type: .movementMain), at: unit.tileCoord)

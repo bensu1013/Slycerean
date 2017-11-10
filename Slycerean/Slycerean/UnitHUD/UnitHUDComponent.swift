@@ -80,13 +80,13 @@ class UnitHUDComponent: SKNode {
         self.unit = unit
         nameNode?.text = unit.name
         healthPointNode?.displayNewUnit(unit)
-        movePointNode?.text = "\(unit.unusedMovement)"
+        movePointNode?.text = "\(unit.maxMovement)"
     }
     
     func updateUI() {
         guard let unit = unit else { return }
         healthPointNode?.updateUI()
-        movePointNode?.text = "\(unit.unusedMovement)"
+        movePointNode?.text = "\(unit.maxMovement)"
     }
     
 }
