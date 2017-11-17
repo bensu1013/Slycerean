@@ -16,6 +16,7 @@
 		FD2B32041F6793C600564150 /* PathFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B32031F6793C600564150 /* PathFinder.swift */; };
 		FD383E171FABF6C3004A9910 /* BSBattleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E161FABF6C3004A9910 /* BSBattleController.swift */; };
 		FD383E191FAC13AA004A9910 /* BSAIBattleUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E181FAC13AA004A9910 /* BSAIBattleUnit.swift */; };
+		FD383E1C1FBE7F4B004A9910 /* BSUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD383E1B1FBE7F4B004A9910 /* BSUserData.swift */; };
 		FD7887831F7C955A003E05CD /* BSActivatableSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887821F7C955A003E05CD /* BSActivatableSkill.swift */; };
 		FD7887851F7DD736003E05CD /* UnitHUDComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7887841F7DD736003E05CD /* UnitHUDComponent.swift */; };
 		FD78878E1F808C9F003E05CD /* StatusBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */; };
@@ -63,6 +64,7 @@
 		FD2B32031F6793C600564150 /* PathFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathFinder.swift; sourceTree = "<group>"; };
 		FD383E161FABF6C3004A9910 /* BSBattleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSBattleController.swift; sourceTree = "<group>"; };
 		FD383E181FAC13AA004A9910 /* BSAIBattleUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSAIBattleUnit.swift; sourceTree = "<group>"; };
+		FD383E1B1FBE7F4B004A9910 /* BSUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSUserData.swift; sourceTree = "<group>"; };
 		FD7887821F7C955A003E05CD /* BSActivatableSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSActivatableSkill.swift; sourceTree = "<group>"; };
 		FD7887841F7DD736003E05CD /* UnitHUDComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitHUDComponent.swift; sourceTree = "<group>"; };
 		FD78878D1F808C9F003E05CD /* StatusBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarComponent.swift; sourceTree = "<group>"; };
@@ -137,6 +139,14 @@
 			name = TileMap;
 			sourceTree = "<group>";
 		};
+		FD383E1A1FBE7F07004A9910 /* BSUserData */ = {
+			isa = PBXGroup;
+			children = (
+				FD383E1B1FBE7F4B004A9910 /* BSUserData.swift */,
+			);
+			name = BSUserData;
+			sourceTree = "<group>";
+		};
 		FD78878F1F808CA6003E05CD /* HUDComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				FD7A84D31F64D9470060823D /* Level_0.json */,
+				FD383E1A1FBE7F07004A9910 /* BSUserData */,
 				FDF0E5411FA6E19A005BE888 /* ResourceManagement */,
 				FD78878F1F808CA6003E05CD /* HUDComponents */,
 				FD2B32001F65FB4D00564150 /* TileMap */,
@@ -355,6 +366,7 @@
 				FD9208501F9EE707001FD8AB /* BSBattleTeam.swift in Sources */,
 				FD383E171FABF6C3004A9910 /* BSBattleController.swift in Sources */,
 				FD383E191FAC13AA004A9910 /* BSAIBattleUnit.swift in Sources */,
+				FD383E1C1FBE7F4B004A9910 /* BSUserData.swift in Sources */,
 				FD2B31FF1F65F86200564150 /* TileModels.swift in Sources */,
 				FD7A84B31F5CB12F0060823D /* AppDelegate.swift in Sources */,
 				FDA7E8D21F95B1F80044D716 /* ConfirmationHUDComponent.swift in Sources */,

@@ -25,7 +25,6 @@ class GameScene: SKScene {
     var gameBoard: GameBoard!
     var gameCamera: GameCamera!
     var battleController: BSBattleController!
-    var units = [GameUnit]()
     var tempTurnIndex = 0
     
     weak var gameHud: BSGameHUD?
@@ -44,29 +43,25 @@ class GameScene: SKScene {
         gameBoard = GameBoard(scene: self, filename: "Level_0")
         addChild(gameBoard)
         
-        let player = GameUnit(stats: BSCharacterStats(health: 30, energy: 2, actionSpeed: 4, level: 1, job: .warrior, jobLevels: [.warrior:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
-        units.append(player)
+        let player = BSUserData.shared.party[0]
         let bUnit = BSBattleUnit(gameUnit: player, atCoord: TileCoord(col: 4, row: 4), inScene: self)
         bUnit.spriteComponent.isUserInteractionEnabled = false
         bUnit.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit.spriteComponent, at: bUnit.tileCoord)
         
-        let player1 = GameUnit(stats: BSCharacterStats(health: 22, energy: 15, actionSpeed: 4, level: 1, job: .wizard, jobLevels: [.wizard:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
-        units.append(player1)
+        let player1 = BSUserData.shared.party[1]
         let bUnit1 = BSBattleUnit(gameUnit: player1, atCoord: TileCoord(col: 4, row: 3), inScene: self)
         bUnit1.spriteComponent.isUserInteractionEnabled = false
         bUnit1.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit1.spriteComponent, at: bUnit1.tileCoord)
         
         let player2 = GameUnit(stats: BSCharacterStats(health: 25, energy: 5, actionSpeed: 4, level: 1, job: .ranger, jobLevels: [.ranger:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
-        units.append(player2)
         let bUnit2 = BSAIBattleUnit(gameUnit: player2, atCoord: TileCoord(col: 13, row: 13), inScene: self)
         bUnit2.spriteComponent.isUserInteractionEnabled = false
         bUnit2.spriteComponent.anchorPoint = CGPoint.zero
         gameBoard.layer(type: .unit, insert: bUnit2.spriteComponent, at: bUnit2.tileCoord)
         
         let player3 = GameUnit(stats: BSCharacterStats(health: 24, energy: 4, actionSpeed: 4, level: 1, job: .rogue, jobLevels: [.rogue:1]), equipment: BSCharacterEquipment(weapon: "", armor: "", relic: ""))
-        units.append(player3)
         let bUnit3 = BSAIBattleUnit(gameUnit: player3, atCoord: TileCoord(col: 14, row: 14), inScene: self)
         bUnit3.spriteComponent.isUserInteractionEnabled = false
         bUnit3.spriteComponent.anchorPoint = CGPoint.zero
