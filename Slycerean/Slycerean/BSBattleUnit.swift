@@ -10,16 +10,16 @@ import Foundation
 import SpriteKit
 
 class BSBattleUnit {
-    private weak var gameUnit: GameUnit?
+    private var gameUnit: GameUnit
     weak var scene: GameScene!
     var name: String {
-        let f = gameUnit?.firstName ?? ""
-        let l = gameUnit?.lastName ?? ""
+        let f = gameUnit.firstName
+        let l = gameUnit.lastName
         return  f + " " + l
     }
     
     var classJob: BSGameUnitJob {
-        return gameUnit?.baseStats.job ?? .warrior
+        return gameUnit.baseStats.job
     }
     
     var team: BSTeam = .user
@@ -29,21 +29,21 @@ class BSBattleUnit {
     
     var currentHealth: Int
     var maxHealth: Int {
-        return gameUnit?.maximumHealth ?? 0
+        return gameUnit.maximumHealth
     }
     var maxMovement: Int {
-        return gameUnit?.maximumMovement ?? 0
+        return gameUnit.maximumMovement
     }
     var unusedMagic: Int
     var maxMagic: Int {
-        return gameUnit?.maximumEnergy ?? 0
+        return gameUnit.maximumEnergy
     }
     var actionSpeedAccumulated: Int = 0
     var actionSpeed: Int {
-        return gameUnit?.actionSpeed ?? 0
+        return gameUnit.actionSpeed
     }
     var equippedSkills: [BSActivatableSkill] {
-        return gameUnit?.equippedSkills ?? []
+        return gameUnit.equippedSkills
     }
     var tileCoord: TileCoord
     
@@ -65,7 +65,7 @@ class BSBattleUnit {
     }
     
     func selectedBasicAttack() {
-        selectedSkill = gameUnit?.basicAttack
+        selectedSkill = gameUnit.basicAttack
     }
     
     func trySelectingSkill(atIndex index: Int) -> Bool {
