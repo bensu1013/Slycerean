@@ -36,7 +36,9 @@ class BSBattleController {
                 currentActiveUnit = allUnits[0]
             }
             for unit in allUnits {
-                unit.actionSpeedAccumulated += unit.actionSpeed
+                if !unit.isDefeated {
+                    unit.actionSpeedAccumulated += unit.actionSpeed
+                }
             }
             allUnits.sort(by: { $0.actionSpeedAccumulated > $1.actionSpeedAccumulated })
         }

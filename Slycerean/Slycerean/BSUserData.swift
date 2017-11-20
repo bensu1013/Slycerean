@@ -12,7 +12,6 @@ class BSUserData {
     
     static let shared = BSUserData()
     
-    var name: String = "Sol"
     var coins: Int = 0
     var party: [BSGameUnit] = []
     

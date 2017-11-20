@@ -48,6 +48,7 @@ class BSBattleUnit {
     var hasMoved: Bool
     var hasActed: Bool
     var hasFinished: Bool
+    var isDefeated: Bool
     var selectedSkill: BSActivatableSkill?
     
     init(gameUnit: BSGameUnit, atCoord tileCoord: TileCoord, inScene scene: BSBattleScene) {
@@ -58,6 +59,7 @@ class BSBattleUnit {
         self.hasMoved = false
         self.hasActed = false
         self.hasFinished = false
+        self.isDefeated = false
         self.spriteComponent = SpriteComponent(spriteSheet: BSSpriteLoader.shared.loadUnitSpriteSheet(for: gameUnit.job))
         self.moveComponent = MoveComponent(for: self, in: scene)
     }
