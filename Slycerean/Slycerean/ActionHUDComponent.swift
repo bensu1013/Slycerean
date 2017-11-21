@@ -97,24 +97,18 @@ class ActionHUDComponent: SKNode {
     }
     
     func basicAttackAction() {
-//        gameScene?.currentActiveUnit?.selectedBasicAttack()
-//        gameScene?.sceneState = .readyAttack
         delegate?.basicSkillAction()
     }
     
     func movementAction() {
-//        gameScene?.sceneState = .readyMove
         delegate?.movementAction()
     }
     
     func skillMenuAction() {
-        // expand menu take skills from
-//        gameScene?.currentActiveUnit?.equippedSkills
         isExpanded = true
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
         let spriteLoader = BSSpriteLoader.shared
 
-//        if let skills = gameScene?.currentActiveUnit?.equippedSkills {
         if let skills = delegate?.skillsForUnit() {
             var c = 0
             for _ in skills {
@@ -128,16 +122,12 @@ class ActionHUDComponent: SKNode {
         if isExpanded {
             secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: -ActionBarHeight), duration: 0.2))
         } else {
-//            gameScene?.sceneState = .turnEnd
             delegate?.endTurnAction()
         }
         isExpanded = false
     }
     
     func firstSkillAction() {
-        //TODO: make a method in scene or unit to handle this
-//        gameScene?.currentActiveUnit?.selectedSkill = gameScene?.currentActiveUnit?.equippedSkills[0]
-//        gameScene?.sceneState = .readyAttack
         delegate?.firstSkillAction()
     }
     func secondSkillAction() {
@@ -152,7 +142,5 @@ class ActionHUDComponent: SKNode {
 }
 
 class BSHUDActionSpriteNode: SKSpriteNode {
-    
     var type: ActionNodePosition = .first
-    
 }
