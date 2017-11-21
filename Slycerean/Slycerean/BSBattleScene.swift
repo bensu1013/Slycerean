@@ -107,6 +107,61 @@ class BSBattleScene: SKScene {
     
 }
 
+extension BSBattleScene: ActionHUDButtonDelegate {
+    func firstSkillAction() {
+        guard let unit = currentActiveUnit else { return }
+        if !unit.hasActed {
+            unit.selectedSkill = unit.equippedSkills[0]
+            sceneState = .readyAttack
+        }
+    }
+    
+    func secondSkillAction() {
+        guard let unit = currentActiveUnit else { return }
+        if !unit.hasActed {
+            unit.selectedSkill = unit.equippedSkills[1]
+            sceneState = .readyAttack
+        }
+    }
+    
+    func thirdSkillAction() {
+        guard let unit = currentActiveUnit else { return }
+        if !unit.hasActed {
+            unit.selectedSkill = unit.equippedSkills[2]
+            sceneState = .readyAttack
+        }
+    }
+    
+    func fourthSkillAction() {
+        guard let unit = currentActiveUnit else { return }
+        if !unit.hasActed {
+            unit.selectedSkill = unit.equippedSkills[3]
+            sceneState = .readyAttack
+        }
+    }
+    
+    func basicSkillAction() {
+        if let unit = currentActiveUnit {
+            if !unit.hasActed {
+                unit.selectedBasicAttack()
+                sceneState = .readyAttack
+            }
+        }
+    }
+    
+    func skillsForUnit() -> [BSActivatableSkill] {
+        return currentActiveUnit?.equippedSkills ?? []
+    }
+    
+    func movementAction() {
+        sceneState = .readyMove
+    }
+    
+    func endTurnAction() {
+        sceneState = .turnEnd
+    }
+}
+
 //MARK: - Tap Management
 extension BSBattleScene {
     // taprecognizer of view sent to scene to process

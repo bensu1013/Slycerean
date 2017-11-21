@@ -15,13 +15,21 @@ enum ActionNodePosition: Int {
     case first,second,third,fourth
 }
 
-protocol ActionHUDDelegate {
+protocol ActionHUDButtonDelegate: class {
+    func firstSkillAction()
+    func secondSkillAction()
+    func thirdSkillAction()
+    func fourthSkillAction()
     
+    func basicSkillAction()
+    func skillsForUnit() -> [BSActivatableSkill]
+    func movementAction()
+    func endTurnAction()
 }
 
 class ActionHUDComponent: SKNode {
     
-    weak var gameScene: BSBattleScene?
+    weak var delegate: ActionHUDButtonDelegate?
     
     var isExpanded = false
     var actionButtons = [BSHUDActionSpriteNode]()
@@ -52,9 +60,8 @@ class ActionHUDComponent: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupHUDFor(scene: BSBattleScene) {
-        gameScene = scene
-        
+    func setupHUDWith(delegate: ActionHUDButtonDelegate) {
+        self.delegate = delegate
     }
     
     func tryTappingButton(onPoint point: CGPoint) -> Bool {
@@ -90,12 +97,14 @@ class ActionHUDComponent: SKNode {
     }
     
     func basicAttackAction() {
-        gameScene?.currentActiveUnit?.selectedBasicAttack()
-        gameScene?.sceneState = .readyAttack
+//        gameScene?.currentActiveUnit?.selectedBasicAttack()
+//        gameScene?.sceneState = .readyAttack
+        delegate?.basicSkillAction()
     }
     
     func movementAction() {
-        gameScene?.sceneState = .readyMove
+//        gameScene?.sceneState = .readyMove
+        delegate?.movementAction()
     }
     
     func skillMenuAction() {
@@ -105,7 +114,8 @@ class ActionHUDComponent: SKNode {
         secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: ActionBarHeight) , duration: 0.2))
         let spriteLoader = BSSpriteLoader.shared
 
-        if let skills = gameScene?.currentActiveUnit?.equippedSkills {
+//        if let skills = gameScene?.currentActiveUnit?.equippedSkills {
+        if let skills = delegate?.skillsForUnit() {
             var c = 0
             for _ in skills {
                 secondaryActionBar.loadTextureForButton(withTexture: spriteLoader.loadIconTexture(forName: "saber-slash"), atIndex: c)
@@ -118,24 +128,26 @@ class ActionHUDComponent: SKNode {
         if isExpanded {
             secondaryActionBar.run(SKAction.move(to: CGPoint(x: 0, y: -ActionBarHeight), duration: 0.2))
         } else {
-            gameScene?.sceneState = .turnEnd
+//            gameScene?.sceneState = .turnEnd
+            delegate?.endTurnAction()
         }
         isExpanded = false
     }
     
     func firstSkillAction() {
         //TODO: make a method in scene or unit to handle this
-        gameScene?.currentActiveUnit?.selectedSkill = gameScene?.currentActiveUnit?.equippedSkills[0]
-        gameScene?.sceneState = .readyAttack
+//        gameScene?.currentActiveUnit?.selectedSkill = gameScene?.currentActiveUnit?.equippedSkills[0]
+//        gameScene?.sceneState = .readyAttack
+        delegate?.firstSkillAction()
     }
     func secondSkillAction() {
-        
+        delegate?.secondSkillAction()
     }
     func thirdSkillAction() {
-        
+        delegate?.thirdSkillAction()
     }
     func fourthSkillAction() {
-        
+        delegate?.fourthSkillAction()
     }
 }
 

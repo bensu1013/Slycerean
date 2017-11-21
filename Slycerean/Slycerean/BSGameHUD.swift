@@ -49,7 +49,7 @@ class BSGameHUD: SKNode {
     
     func setGameScene(_ gameScene: BSBattleScene) {
         self.gameScene = gameScene
-        actionMenuComponent.setupHUDFor(scene: gameScene)
+        actionMenuComponent.setupHUDWith(delegate: gameScene)
     }
     
     func setSelectedUnitHud(with unit: BSBattleUnit) {
